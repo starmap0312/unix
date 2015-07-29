@@ -1,5 +1,6 @@
 # why is LVM required?
   LVM: Logical Volume Manager, used to resize filesystem's size online. size of LVM partition
+       create logical partitions that can span across one or more physical hard drives
     can be extended and reduced using lvextend and lvreduce commands.
     ex. (extend)
         lvextend -L +100M /dev/<name_lvm_partition> (extend the size by 100MB)
@@ -19,6 +20,10 @@
   fdisk /dev/hd* (IDE) or fdisk /dev/sd* (SCSI)
   type n (create a new partition)
   type w (write changes to partition table)
+
+  used to manage hard disk partition: create/delete/change a partition
+  1. fdisk -l: list all existing disk partitions
+  2. fdisk /dev/sda (interactive): delete a hard disk partition, create a new disk partition,
 
 # where are the kernel modules located?
   /lib/modules/<kernel-version>: all kernel modules or compiled drivers
@@ -206,20 +211,6 @@
   5. verify all rpm packages: rpm -Va
     (-V: verify, -a: all installed packages)
 
-# netstat: display network related information
-  display network connections, routing tables, interface statistics, multicast memberships,
-    masquerade connections, etc.
-  1. list all ports: netstat -a | more (netstat -at: tcp ports, netstat -au: udp ports)
-     (states: LISTEN/ESTABLISHED/CLOSE_WAIT)
-  2. list only listening ports: netstat -l (netstat -lt: tcp ports, netstat -lu: udp ports)
-  3. show statistics for each protocol: netstat -s
-  4. show PID/program names: netstat -pt (-p: PID/program names)
-     ex. netstat -ap | grep ssh (find out which port a program is using) 
-         netstat -an | grep ':80' (find out which process is using port 80)
-  5. don't resolve hostnames, portnames, and usernames: netstat -an (-n: no hostnames resolved)
-  6. display kernel routing information: netstat -r (-r: routing information), netstat -rn
-  7. show the list of network interfaces: netstat -i
-
 # modprobe: used to add loadable modules to linux kernel, view and remove modules
   linux maintains modules in /lib/modules/$(uname -r)
     the configuration files: /etc/modprobe.conf and /etc/modprobe.d
@@ -300,7 +291,7 @@
   6. ifconfig eth0 promisc, ifconfig eth0 -promisc
 
 # WOL (WakeOnLan): power up server remotely
-  1. NIC needs to support support WOL feature
+  1. NIC needs to support WOL feature
   2. enable wakeonlan of NIC: ethtool -s eth0 wol g
   3. install wakeonlan package on another machine: sudo apt-get install wakeonlan
   3. wake up from another machine connected to the same LAN (requires the mac address of NIC)
@@ -324,9 +315,6 @@
   4. semaphores: provide a synchronizing mechanism for processes that are accessing the same
      resource. no data is passed with a semaphore, it simply coordinates access to shared resources
   ipcs -a: list all the IPC facilities which has read access for the current process
-
-# LVM (Logical Volume Manager)
-  create logical partitions that can span across one or more physical hard drives
 
 # fdisk: manage hard disk partition
   create a partition, delete a partition, or change a partition
