@@ -1,0 +1,198 @@
+# list all the links from a directory: ls -lrt | grep "^l"
+  ls -l => list long format
+  ls -t => sort by modified time (new to old)
+  ls -rt => sort by reversed modified time (old to new)
+  grep "^l" => grep lines that begins with l (which represents link files)
+
+# create a read-only file
+  touch filename; chmod 400 filename
+
+# copy file from one host to other
+  scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
+  scp username@xx.xx.xx.xx:/remote_filepath local_folder_path
+  rsync -a local_folder_path1 local_folder_path2
+  rsync -a -e ssh username@xx.xx.xx.xx:/remote_folder_path local_folder_path
+  sftp username@xx.xx.xx.xx (login ftp and operate, ex. cd/ls/mkdir/rmdir/rm/pwd/put/get/exit)
+
+# check how much space left in current drive:
+  df -h
+
+# how to find cpu information os the system?
+  cat /proc/cpuinfo
+
+# how to set environment variable?
+  export var_name=1
+
+# how to check if a remote process is listening on a particular port?
+  telnet hostname port
+
+# how to find out whether the system is 32 or 64 bit? command: uname -a
+  find out which operating system is running on in UNIX
+
+# what is nohup in UNIX?
+  nohup is a command used to run process in background, but unlike & the process started with
+      nohup will not stop even if the user who started the process log off the system
+      in contrast, use & the process will terminate as soon as the user log off the system
+
+# how to replace all the keywords of a file with another?
+  sed 's/word1/word2/g' filename
+
+# how to grep phone number pattern in a file, i.e. (xxx) xxx-xxxx or xxx-xxx-xxxx?
+  egrep '^[0-9]{3}-[0-9]{3}-[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
+  egrep '^([0-9]{3}-){2}[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
+
+# how to print the 3rd column of a tab separated file?
+  awk -F "\t" '{print $3}' filename
+  cut -f3 filename
+
+# how to find which directory is taking how much space?
+  du -sh . (-s == -d 0, meaning list only depth 0)
+  du -h -d 0 .
+
+# how to find how many days the system is up?
+  uptime
+
+# how to find the hostname in your network using an IP address, or vice versa?
+  nslookup IP
+
+# how to print the 10th line of a file?
+  head -n 10 filename | tail -n 1
+  sed -n '10p' filename
+  awk 'NR == 10' filename
+
+# what is command substitution?
+  backquotes: command enclosed in backquotes are executed by shell and its stdout is viewed
+      as arguments in the command line
+  ex. sudo chown `id -u` /folder_name (id -u == 1000 is your user id), so the command is equal to
+      sudo chown 1000 /folder_name
+
+# how to run a process in background? command: ./prog1 &
+  how to bring a background process into foreground? command: fg "JobId"
+  how to kill a process? command: kill -9 PID
+      signals: 9  ==> KILL, non-catchable, non-ignorable kill
+               15 ==> TERM, software termination signal (default)
+
+# how to know if a remote host is alive?
+  ping "IpAddress"
+
+# how to see command line history in UNIX?
+  history & grep
+
+# execute previous commands:
+  1. !"cmd": execute last command of cmd
+  2. !!: execute last command
+  3. CRTL + r and type command initials
+  4. history | grep command
+  ex. ls -lrt ==> !ls executes last ls command
+      vim filename ==> !vim executes last vim command
+
+# move across directories:
+  1. cd ~ (move to home directory)
+  2. cd - (move to previous directory)
+
+# suspend process:
+  CTRL + z to suspend running process and fg 1, fg 2 to bring it on foreground
+
+# tar:
+  tar cvf archive_name.tar dirname/
+  tar xvf archive_name.tar
+
+# diff:
+  diff -w filename1 filename2: ignore white spaces when comparing
+  ("Ilov eyo u" == "I love you")
+
+# sort:
+  sort filename: sort a file in an ascending order
+  sort -r filename: sort a file in a descending order
+  sort -t: -k 3n /etc/passwd ==> sort file by the 3rd field
+
+# export:
+  export VAR_NAME=xxxxxxxxxxxxxxx (export an environment variable)
+
+# xargs: read items from STDIN or pipes, delimited by blanks or newlines, and executes command
+  ex.
+  echo 1 2 3 4 | xargs echo
+  find . -name "*.bak" -type f -print | xargs rm -f
+  ls *.jpg | xargs -n1 -i cp {} /path/to/folder ==> copy all jpg files to /path/to/folder
+  find . -name *.jpg -type f -print | xargs tar -zxvf archive.tar.gz ==> compress all jpg files
+
+# gzip and bzip2:
+  gzip filename ==> create a filename.gz compressed file
+  gzip -d filename.gz ==> uncompress filename.gz file
+  bzip2 filename ==> create a filename.bz2 compressed file
+  bzip2 -d filename.bz2 ==> uncompress filename.bz2 file
+
+# shutdown
+  shutdown -h now ==> shutdown
+  shutdown -r now ==> reboot
+  shutdown -h +10 ==> shutdown after 10 seconds
+
+# service:
+  service ssh status   ==> list the status of a service
+  service ssh restart  ==> restart a service
+  service --status-all ==> list the status of all services
+
+# cp
+  cp -p filename1 filename2 ==> preserving the mode, ownership, and timestamp
+  cp -i filename1 filename2 ==> prompt for confirmation before overwritting
+
+# mv
+  mv -i filename1 filename2 ==> prompt for confirmation before overwritting
+
+# cat
+  cat -n filename ==> prepend the line number
+
+# mount
+  mount ==> print the list of mounted file systems
+  /etc/fstab ==> edit for automatic mounting when system restarts
+
+# chmod
+  chmod -R ug+rwx folder_name/ ==> apply file permissions recursively
+
+# chown
+  chown -R owner_name:group_name folder_name/ ==> change ownership recursively
+
+# passwd
+  passwd [username] ==> change user's password
+  passwd -d username ==> remove user's password, user can login without password
+
+# ifconfig
+  ifconfig -a ==> view all the interfaces with status
+  ifconfig eth0 up, ifconfig eth0 down ==> start or stop an interface
+
+# uname
+  uname -a ==> display information about system, ex. kernel name, host name, kernel release number
+
+# whereis
+  whereis ls ==> find out where a command exists
+
+# whatis
+  whatis ls ==> display a single line description about a command
+
+# locate
+  locate crontab ==> search for the location of a specific file (or group of files)
+  (showing all filenames in the system that contain the word crontab)
+
+# tail
+  tail -n 5 filename ==> print the last 5 lines of file
+  tail -f log_file ==> view the content of log_file in real-time, press ctrl-c to exit
+
+# su
+  su - user_name ==> switch to another user_name (super user do not need to enter password)
+  su - user_name -c 'ls' ==> execute only one command 'ls' as user_name
+
+# mysql
+  mysql -u user_name -p ==> connect to the local mysql server
+  mysql -u user_name -p -h 10.1.168.72 ==> connect to a remote mysql server
+
+# ping
+  ping -c 5 gmail.com ==> ping a remote host by sending only 5 packets
+
+# date
+  date ==> show the system date
+  date -s "01/31/2012 23:59:53" ==> set the system date
+
+# wget
+  wget http://www.google.com ==> download file from the internet
+  wget -O filename http://www.google.com ==> download and save as filename from the internet
+

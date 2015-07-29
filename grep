@@ -1,0 +1,37 @@
+# grep (global regular expression print) command:
+  grep -v pattern (invert match, exclude pattern)
+  grep -c pattern (return count of matched lines)
+  grep -A "number of lines" pattern (after context)
+  grep -B "number of lines" pattern (before context)
+  grep -C "number of lines" pattern (surround context)
+      ex. grep -C 2 pattern ==> print two lines of context around each matching line
+  grep -i pattern (case insensitive): ex. grep -i error ==> match Error, erROr, ERROR
+  grep -w keyword filename (search whole word in a file) == grep '\<keyword\>' filename
+  grep -n keyword filename (display line number)
+  grep --color keyword filename (highlight matching with colors)
+  grep -l keyword *.txt (display filenames containing keyword)
+  grep -R keyword * (recursively grep files in current directory)
+
+# regular expressions:
+  the following characters are of special meaning
+  ^ (carat): match the beginning of a line
+  $ (dollar sign): match the end of a line
+  \<keyword\> (escaped angle brackets): match a word, surrounded by white spaces, punctuation,
+      or line beginnings and endings
+  modifier: * (match >= 0 times), ? (match 0 or 1 time), + (match >= 1 times ),
+      {n} (match n times), {n,} (match >= n times), {n,m} (match >= n, <= m times)
+  [] (brackets): match any the enclosed characters, ex. [aeiou], [0-9](hypen - for range)
+  [^]: match any character except the enclosed characters, ex. [^0-9] match non-digit
+
+  note that the meta-characters ?, +, {, }, |, (, ), <, > lose their special meaning when
+      use grep. if grep ?, +, {, }, |, (, ), you are actually match them literally
+      escape them \?, \+, \{, \}, \|, \(, \), \<, \> to apply their special meaning
+      alternatively, use egrep (extended grep), grep -E (no needs to escape symbols)
+          (moreover, egrep accepts multi-pattern by concatenating patterns using |)
+      in contrast, ^(begins with), $(ends with), .(wildcard), [, ] has special meaning, so
+      escape them \^, \$, \., \[, \] to match them literally
+
+  ex. 1. match email addresses: grep '[A-Za-z0-9_.%]\+@[A-Za-z0-9_.%]\+\.[A-Za-z]\+'
+                                egrep '[A-Za-z0-9_.%]+@[A-Za-z0-9_.%]+\.[A-Za-z]+'
+      2. match 3-5 digits: grep '[0-9]\{3,5\}'
+                           egrep '[0-9]{3,5}'

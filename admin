@@ -1,0 +1,344 @@
+# why is LVM required?
+  LVM: Logical Volume Manager, used to resize filesystem's size online. size of LVM partition
+    can be extended and reduced using lvextend and lvreduce commands.
+    ex. (extend)
+        lvextend -L +100M /dev/<name_lvm_partition> (extend the size by 100MB)
+        resize2fs /dev/<name_lvm_partition>
+        df -h (check the size of partition)
+        (reduce)
+        umount filesystem
+        resize2fs /dev/mapper/<name_lvm_partition> 10G
+        lvreduce -L 10G /dev/mapper<name_lvm_partition>
+
+# how to check memory and cpu stats?
+  memory: free and vmstat commands
+    ex. free, free -k, free -m, free -g (in bytes, kilo bytes, mega bytes, giga bytes)
+  cpu: sar command
+
+# how to create partition from a raw disk?
+  fdisk /dev/hd* (IDE) or fdisk /dev/sd* (SCSI)
+  type n (create a new partition)
+  type w (write changes to partition table)
+
+# where are the kernel modules located?
+  /lib/modules/<kernel-version>: all kernel modules or compiled drivers
+  use command lsmod to view all installed kernel modules
+
+# what is umask?
+  umask: user file creation mask, which controls the file permissions when file or directory
+    are created
+
+# how to change the default run level in linux?
+  init: command that temporarily change run level, ex. init 3 (default level is 5)
+  edit: /et/inittab
+
+# how to list or enable services that are enabled at a particular run level?
+  list service: chkconfig --list | grep 5:on
+  enable service: chkconfig <name_service> on --level 3
+
+# how to share a directory using nfs?
+  edit file: /etc/exports
+  add a entry: /<name_directory> <ip or network>(options)
+  restart nfs service
+
+# how to check nfs share?
+  showmount -e <ip_nfs>
+
+# default ports:
+  SMTP: 25
+  DNS: 53
+  FTP: 20 (data transfer), 21 (connection established)
+  DHCP: 67 (UDP, DHCP server), 63 (UDP, DHCP client)
+  SSH: 22
+  Squid: 3128
+
+# what is network bonding?
+  the aggregation of multiple LAN cards into a single bonded interface to provide fault
+    tolerance and high performance (a.k.a NIC teaming)
+
+# how to check default route and routing table?
+  netstat -nr: default route
+  route -n: routing table
+
+# how to check which port are listening in my system?
+  netstat --listen
+  lsof -i
+
+# how to change kernel parameters?
+  edit: /etc/sysctl.conf
+  sysctl -p (make the changes permanently without rebooting)
+
+# what is load average in a linux?
+  the average sum of the number of process waiting in the run queue and the number of process
+    currently executing over the period of 1, 5, and 15 minutes
+  use top and uptime command to find out the load average
+
+# what is GRUB?
+  a multiboot boot loader (boot loader is the first software program that runs when a
+    computer starts; it loads and transfer control to OS kernel software)
+
+# explain linux boot process
+  there are 6 high-level stages
+  1. BIOS: basic input/output system
+  2. MBR: master boot record
+  3. GRUB: grand unified bootloader
+  4. Kernel: kernel
+  5. Init: init
+  6. Runlevel: runlevel programs are executed from /etc/rc.d/rc[0-6].d/
+
+# what is user profile file?
+  $HOME/.bash_profile, $HOME/.bash_bashrc
+
+# how to show user info?
+  finger <username>
+
+# how to lock user password
+  usermod -L username
+  passwd -d username (remove user's password, user can login without password)
+
+# dd: a useful backup command
+  used by linux kernel makefiles to make boot images, need to be run as superuser
+  ex.
+  1. disk to disk backup
+     dd if=/dev/sda of=/dev/sdb
+     (backup an entire hard disk to another hard disk connected to the same system)
+     (if: inputfile, of: output file)
+     dd if=/dev/sda of=/dev/sdb conv=noerror,sync
+     (conv=noerror: continue to copy if there are read errors, sync: copy via synchronized I/O)
+  2. create an image of a hard disk
+     dd if=/dev/hda of=/path/to/folder/hda.img
+     (create and save the disk image file in other storage devices, allowing quick data restoring)
+  3. restore disk using hard disk image
+     dd if=/path/to/folder/hdadisk.img of=/dev/hdb
+     (continuing 2, the above command restores /dev/hda to /dev/hdb)
+  4. create a floppy image
+     dd if=/dev/fd0 of=floppy.img
+  5. backup a partition
+     dd if=/dev/hda1 of=/path/to/folder/hda_partition1.img
+  6. CDROM backup
+     dd if=/dev/cdrom of=/path/to/folder/cdrom.iso bs=2048
+     (if CD is auto mounted, unmount the CD device before creating the iso image)
+     (bs=2048: specify the block size)
+
+# rsync: remote sync, synchronize the files and directories from one location to another
+  replicate the whole content between source and destination (local or remote) directories
+  - speed: transfers only the changed blocks or bytes
+  - security: allows encryption of data using ssh protocol
+  - less bandwidth: uses compression and decompression of data
+  ex.
+  1. sync two local folders
+    rsync -zvr /path/to/local/folder1/ /path/to/local/folder2/
+    (-z: enable compression, -v: verbose, -r: recursive mode)
+    (rsync does not preserve timestamps)
+  2. sync with preservation of timestamps, symbolic links, and permissions, etc.
+    rsync -avz /path/to/local/folder1/ /path/to/local/folder2/
+    (-a: recursive mode, preserves symbolic links, permissions, timestamps, and owners and groups)
+  3. sync only one file
+    rsync -v /path/to/local/file /path/to/local/folder/
+  4. sync to remote system, and vice versa
+    rsync -avz /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+    rsync -avz username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folder/
+    Password: xxxxx (password required)
+    (you can set up passwordless login to bypass the entering of passwords)
+  5. enable the secured remote connection
+    rsync -avz -e ssh username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folder/
+  6. do not overwrite the modified files at the destination
+    rsync -avzu /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  7. sync only the directory tree structure (not the files)
+    rsync -v -d /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  8. delete the target file at the destination if the file not present in the source
+    rsync -avz --delete /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  9. do not create new files at the destination (sync only existing files at the destination)
+    rsync -avz --existing /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+ 10. include and exclude file patterns
+    rsync -avz --include '*.cpp' --exclude '*' /path/to/local/folder/ \
+      username@10.1.168.72:/path/to/remote/folder/
+    (include files and directories ending with .cpp and exclude all other files)
+ 11. do not transfer large files
+    rsync -avz --max-size='10K' /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+
+# 2 steps to setup passwordless login
+  login remote host without password
+  1. ssh-keygen: creates public and private keys
+  2. ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72
+    (appends the keys to remote host's .ssh/authorized_key)
+
+# 5 steps to setup user and group disk quota
+  - hard limit: if set to 2GB, user cannot create new files after using 2GB
+  - soft limit: if set to 1GB, user will receive warning but can still create files before reaching
+    hard limit
+  - grace period: if set to 10 days, user can create new files in additional 10 days
+  1. enable quota check
+    edit /etc/fstab
+    LABEL=/home /home ext2 defaults,usrquota,grpquota 1 2
+  2. initial quota check
+    quotacheck -avug
+    (-a: check all quota-enabled filesystems, -v: verbose, -u: check user disk quota,
+     -g: check group disk quota)
+  3. assign disk quota to a user
+    edquota username
+  4. report disk quota usage
+    repquota /home
+  5. add quotacheck to daily cron job
+    add file /etc/cron.daily/quotacheck (quotacheck -avug)
+    (this will send the output of the quotacheck command to root email address)
+
+# troubleshooting using dmesg:
+  when system boots up, kernel gets loaded into the memory and then kernel controls the entire
+    system. the messages about the hardware devices are printed out on the screen and can be
+    viewed using dmesg command
+  1. view the boot messages: dmesg | more
+  2. view avaiable system memory message: dmesg | grep Memory
+  3. view Ethernet link status (UP/DOWN): dmesg | grep eth
+  4. change the dmesg buffer size: edit /boot/config (change CONFIG_LOG_BUF_SHIFT=18)
+  5. clear messages in dmesg buffer: dmesg -c
+
+# rpm package management (Redhat/CentOS)
+  rpm: Redhat Package Manager
+  1. install an rpm package: rpm -ivh MySQL-client-3.23.57-1.i386.rpm
+    (-i: install, -v: verbose, -h: print hash marks when the package is unpacked)
+  2. query all rpm packages: rpm -qa
+    (-q: query, -a: all installed packages)
+  3. upgrade an rpm package: rpm -Uvh MySQL-client-3.23.57-1.i386.rpm
+    (like installing, but automatically uninstalling existing version before installing)
+  4. uninstall an rpm package: rpm -ev MySQL-client
+    (-e: uninstall)
+  5. verify all rpm packages: rpm -Va
+    (-V: verify, -a: all installed packages)
+
+# netstat: display network related information
+  display network connections, routing tables, interface statistics, multicast memberships,
+    masquerade connections, etc.
+  1. list all ports: netstat -a | more (netstat -at: tcp ports, netstat -au: udp ports)
+     (states: LISTEN/ESTABLISHED/CLOSE_WAIT)
+  2. list only listening ports: netstat -l (netstat -lt: tcp ports, netstat -lu: udp ports)
+  3. show statistics for each protocol: netstat -s
+  4. show PID/program names: netstat -pt (-p: PID/program names)
+     ex. netstat -ap | grep ssh (find out which port a program is using) 
+         netstat -an | grep ':80' (find out which process is using port 80)
+  5. don't resolve hostnames, portnames, and usernames: netstat -an (-n: no hostnames resolved)
+  6. display kernel routing information: netstat -r (-r: routing information), netstat -rn
+  7. show the list of network interfaces: netstat -i
+
+# modprobe: used to add loadable modules to linux kernel, view and remove modules
+  linux maintains modules in /lib/modules/$(uname -r)
+    the configuration files: /etc/modprobe.conf and /etc/modprobe.d
+  1. modprobe -l: list avaiable kernel modules
+  2. lsmod: list currently loaded modules
+  3. sudo modprobe vmhgfs: install new module vmhgfs into linux kernel
+  4. modprobe -r vmhgfs: remove currently loaded module (-r: unload module)
+
+# ethtool: view and change ethernet device parameters
+  1. ethtool eth0: list ethernet device properties
+  2. ethtool -s eth0 autoneg off: turn off auto-negotiation
+
+# nfs mouting
+  1. exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
+  2. exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
+  3. edit /etc/exports ==> make export permanent
+     ex. /path/to/local/folder 10.1.168.72
+  4. mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
+     to a local folder
+  5. edit /etc/fstab ==> make mount permanent
+     ex. 10.1.168.72:/path/to/remote/folder /path/to/local/folder ext3 defaults 0 0
+  5. umount /path/to/local/folder ==> umount a remote filesystem
+
+# setup squid to control internet access
+  squid is a proxy caching server used to control network access at your work environment
+  1. restrict access to specific websites
+     ex. www.google.com/www.facebook.com
+  2. restrict access to particular network
+     ex. 192.168.1.0/24
+  3. use regular expression to allow or deny websites
+
+# 2 ways to add swap space using dd, mkswap, and swapon
+  free -k/-m/-g/-h: show the swap space currently used by the system
+  1. use a hard disk partition as swap space
+     mkswap /dev/sdc1, swapon /dev/sdc1
+     (edit /etc/fstab: make the swap space permanent
+      /dev/sdc1 swap swap defaults 0 0)
+  2. use a file as swap space
+     dd if=/dev/zero of=/path/to/local/file bs=1M count=1024 ==> create a zeroed, 1024MB file
+     chmod 600 /path/to/local/file
+     mkswap /path/to/local/file, swapon /path/to/local/file
+
+# snort
+  a free lightweight network intrusion detection system for both Unix/Windows systems
+
+# view and delete iptable rules
+  1. view all iptable rules: iptables --list
+  2. delete iptable rules: iptables --flush
+
+# disable ping replies
+  to avoid network flooding or network congestion
+  1. echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
+  2. edit sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
+
+# create linux user
+  1. useradd username ==> create users with default configurations
+  2. adduser username ==> create users interactively
+  3. newusers filename ==> create bulk users from file (the same format as /etc/passwd)
+
+# mount and view ISO files
+  ISO: International Organization for Standardization
+  ISO files, typically used to distribute operating systems
+  mount /path/to/local/file.iso /tmp/mnt -o loop ==> a loop device is a pseudo-device
+
+# chage
+  used to manage password expiration and aging
+
+# ifconfig
+  used to initialize network interfaces and to enable/disable network interfaces
+  promiscuous mode: a network card never drops a packet
+  MTU(maximun transmission unit): the maximun number of octects the interface can handle in
+    one transaction (default: 1500)
+  1. ifconfig eth0
+  2. ifconfig -a
+  3. ifconfig eth0 up (ifup eth0)
+  4. ifconfig eth0 down (ifdown eth0)
+  5. ifconfig eth0 192.168.2.2 ==> assign the IP address to an interface
+  6. ifconfig eth0 promisc, ifconfig eth0 -promisc
+
+# WOL (WakeOnLan): power up server remotely
+  1. NIC needs to support support WOL feature
+  2. enable wakeonlan of NIC: ethtool -s eth0 wol g
+  3. install wakeonlan package on another machine: sudo apt-get install wakeonlan
+  3. wake up from another machine connected to the same LAN (requires the mac address of NIC)
+     wakeonlan 00:16:k5:64:A9:68
+
+# lshw: list hardware spec
+  supports html and xml format (lshw -html, lshw -xml)
+
+# disable SELinux (Security-Enhanced Linux)
+  1. echo "0" > /selinux/enforce ==> disable temporarily
+  2. edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
+
+# ipcs
+  IPC (Inter-Process Communication)
+  1. pipes: named pipes provide a way for processes running on different computer systems to
+     communicate over the network
+  2. shared memory: exchange messages in shared memory. one process can create a portion of
+     memory which other process can access
+  3. message queue: a structured and ordered list of memory segments where processes store or
+     retrieve data
+  4. semaphores: provide a synchronizing mechanism for processes that are accessing the same
+     resource. no data is passed with a semaphore, it simply coordinates access to shared resources
+  ipcs -a: list all the IPC facilities which has read access for the current process
+
+# LVM (Logical Volume Manager)
+  create logical partitions that can span across one or more physical hard drives
+
+# fdisk: manage hard disk partition
+  create a partition, delete a partition, or change a partition
+  1. fdisk -l: list all existing disk partitions
+  2. fdisk /dev/sda (interactive): delete a hard disk partition, create a new disk partition,
+     
+# logrotate: manage log files
+  rotate the log files, compress the rotated log files, log files with date filenames,
+    remove old log files
+  edit /etc/logrotate.conf
+
+# 3 admin rules
+  1. backup everything (and validate the backup) regularly
+  2. master the command line (avoid UI if possible)
+  3. automate everything

@@ -1,0 +1,120 @@
+# sar: System Activity Reporter, part of the sysstat package (sar/iosstat/pidstat/nfsiostat...)
+  1. monitor system real teim performance (cpu, memory, i/o, etc.)
+  2. collect performance data in the background and do analysis on the historical data 
+     for bottlenecks
+  ex.
+  sar -u 1 3 ==> system cpu statistics 3 times with 1 second interval
+  sar -b 1 3 ==> i/o statistics 3 times with 1 second interval
+  sar -r 1 3 ==> memory statistics 3 times with 1 second interval
+  sar -n DEV 1 3 ==> network statistics (DEV: network devices such as eth0, eth1, etc.)
+
+# tcpdump: a network packet analyzer
+  allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
+  1. tcpdump -i eth0 (-i: interface): capture packets from an interface
+  2. tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
+  3. tcpdump -w filename.pcap -i eth0: write captured packets to a file
+  3. tcpdump -tttt -r filename.pcap: read captured packets from a saved file
+     (-tttt: proper readable timestamp)
+
+# ntop: display network usage, a top-like utility for monitoring network traffic
+  ntop: display network traffic statistics
+
+# nagios: an open source monitoring tool
+  ex. monitor databases, hardwares (ex. disk partition becomes 80% full), services (ex. nfs),
+      webservers, etc.
+
+# iostat: reports cpu, disk i/o, nfs statistics, part of sar utility
+  ex.
+  iostat -c ==> display only cpu usage
+  iostat -d ==> display only disk i/o statistics
+  iostat -n ==> display only network statistics
+  iostat -p sda ==> display i/o statistics for only a device (/dev/sda)
+
+# vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
+  ex.
+  vmstat ==> display information such as used/free virtual memory, memory swapped from/to disk,
+             interrupts per second, context switches, blocks in/out per second
+  vmstat 2 10 ==> execute 10 times with 2 seconds interval
+
+# mpstat: reports processors statistics
+  ex.
+  mpstat -A ==> display all information
+  mpstat -P ALL ==> display statistics of all individual CPUs or cores
+  mpstat -P 0 ==> display statistics of a particular CPU
+
+# free: display information of physical and swap memory
+  free -m: display the values in MB (default: KB)
+
+# ps: process monitoring, help to identify performance bottlenecks
+  PID: each process is assigned a unique process, PPID: parent PID
+  ps -ef: view current running process
+     -e: display all processes
+     -f: display full listing (uid/pid/parent pid(PPID)/CPU usage/start time/controlling tty/
+         elapsed CPU usage(TIME)/associated command(CMD))
+  ps -aux: view current running process (BSD machines)
+  (ps -ef omits process with long command line, whereas ps -auxwww list all command lines)
+  ps -f -u username
+     -u: display processes belonging to a specific username
+  ps -e -o pid,args --forest: list all processes in a hierarchy
+  pstree: display all processes in hierarchical structure
+
+# top: display processes in order of cpu usage
+  press M: sorted by memory usage
+  top -u username: display processes belonging to username
+  top -p 1309,1882: display processes of particular PIDs
+
+# pmap: display the memory map of a given process
+  pmap 1309: display the memory map of process with PID 1309
+
+# netstat: display network related information
+  display network connections, routing tables, interface statistics, multicast memberships,
+    masquerade connections, etc.
+  netstat -a: list all ports
+  netstat -at: list all tcp ports
+  netstat -au: list all udp ports
+    (port state: LISTEN/ESTABLISHED/CLOSE_WAIT)
+  netstat -l: list all listening ports
+  netstat -lt: list all tcp listening ports
+  netstat -lu: list all udp listening ports
+  netstat -s: show statistics for each protocol
+    (protocol: TCP/IP/ICMP/UDP)
+  netstat -p: show PID/program names: netstat -pt
+    -p: display PID/program names
+     ex. netstat -ap | grep ssh (find out which port a program is using)
+         netstat -an | grep ':80' (find out which process is using port 80)
+  netstat -an: don't resolve hostnames, portnames, and usernames
+    -n: no hostnames resolved
+  netstat -r: display the kernel routing information
+    -r: routing information
+  netstat -i: display the list of network interfaces
+
+# ss: socket statistics, display information similar to netstat
+  ss -l: display all listening ports
+  ss -o state established: display only established connections
+  ss -s: display socket summary statistics
+
+# strace: display the system calls used by a process and the signals received by the process
+  strace: System-calls Trace
+  used for debugging and troubleshooting the execution of an executable
+  useful when you do not have the source code but would like to debug a program
+  ex.
+  strace ls
+  strace -e open ls: display only a specifical system call
+    -e open: display only system call open
+
+# lsof: list open files
+  find out which processes are using a particular file
+  lsof: list down PID of all the process which is using a particular file
+    (COMMAND: process name, NAME: full path of open file, PID, USER, FD: file descriptor)
+  lsof -u username: display open files of a particular user
+  lsof filename: display users currently using filename
+    (ex. /usr/bin/vim ==> display users currently using vim)
+
+# uptime, w
+  w: who is logged on the system
+  uptime: how long the system has been up, total number of users logged on, load average
+
+# /proc: virtual filesystem
+  numbered directories: information about processes of particular PIDs
+    (sub-directories: cmd ()
+  system information files: ex. cpuinfo, meminfo, loadavg, etc.

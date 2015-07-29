@@ -1,0 +1,32 @@
+# inode: i.e. index node
+  in linux system the filesystem consists of two parts: 1. metadata(inode) 2. the data itself
+  what is inode? a data structure on Unix file system, ex. ext3, that stores basic information
+      about a regular file, directory, or other file system object
+  inode stores information such as: size of file(bytes), device id(device containing
+      the file), user id(the owner), group id, file modes(permissions), file access/change
+      time stamps, link count(number of hard links pointing to the inode), pointer to the
+      disk block storing the content, file type(file/directory/special block device),
+      block size of the filesystem, number of blocks the file uses
+  when inodes are created? ex. ext3 creates inodes when filesystem is created
+      (limited number of inodes)
+  when someone access a file: user gives a filename -> internally mapped to its inode number
+      stored in a "directory table" -> use the "inode number" to access the corresponding inode
+      (via a "inode table": inode number -> the respective inode)
+  what commands to see inode information? ex. ls -li, stat, df -i(total/used/free inodes)
+  why inode does not conatin filename? only information unique to an inode, ex. for hard
+      links, an inode could have 2 different files pointing to the same inode
+  when a file is moved from one location to another on the same filesystem, the inode number
+      stays the same
+  when we create a file or directory, no inode is created; instead, a already created inode
+      space is used and its information updated(inodes are only created at filesystem creation)
+  if an inode has 0 link, the resources are freed for reallocation, and its deletion must
+      must wait until all processes that opened it finish accessing it
+  how to find a file using an inode number? command: find / -inum "n" -exec ls -l {} \;
+
+  ex.
+  there is a file called xxx in a directory called yyy. suppose that new lines are added to
+      file xxx. what changes take place in file xxx, inode of file xxx, and directory yyy?
+      directory yyy has no change since the filenames and inode numbers do not change
+      inode of file xxx have changes of the file size, time of last access (aTime), time of last
+      modification (mTime)
+      the file xxx itself have changes in content (data)

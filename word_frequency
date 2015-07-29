@@ -1,0 +1,17 @@
+command: cat filename | tr -s ' ' '\n' | sort | uniq -c | sort -rn | awk '{print $2" "$1}'
+
+tr -s ' ' '\n': substitute all spaces with new lines
+sort: sort lines by alphabetical order (small to large)
+uniq -c: list the count of consecutive unique words 
+sort -rn: -r ==> reverse order (large to small), -n ==> sort by numerical value
+awk '{print $2" "$1}': print column 2 first and then column 1, separated by space
+
+ex. 
+input:
+the day is sunny the the
+the sunny is is
+output:
+the 4
+is 3
+sunny 2
+day 1

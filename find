@@ -1,0 +1,10 @@
+# find: find files
+  1. find . -mtime -1 ==> find files modified less than 1 day
+  2. find . -mtime 1  ==> find files modified exactly 1 day
+  3. find . -mtime +1 ==> find files modified more than 1 day
+  4. find . -perm 644 ==> find files with permission 644
+  5. find . -iname "pattern" ==> find filenames containing case insensitive pattern
+  6. find . -name "*.txt" | xargs grep "keyword" ==> find *.txt files containing "keyword"
+  7. find . -size +1000c -exec ls -l {} \; ==> find files of size larger than 1000 bytes
+      (use c in +1000c for bytes; otherwise, the size is in disk blocks)
+  8. find . -empty    ==> find empty files

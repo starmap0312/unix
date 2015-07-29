@@ -1,0 +1,60 @@
+# what is difference between swapping and paging?
+  swapping: move whole process from the swap device(ex. disk) to main memory for 
+      execution (process size must be less than the available main memory)
+      i.e. copy entire process address space out and in disk
+
+  paging: move only the required memory pages from the swap device to main memory for execution
+      this gives the concept of virtual memory, providing the flexibility in mapping th
+      virtual address space into the physical memory, allowing more processes to fit in the
+      main memory simutaneously. (a page is a 4KB area of memory)
+      i.e. copy one or more pages out and in disk
+
+# what is zombie process?
+  when a program forks and its child finishes before the parent, the kernel still keeps
+      information about the child (the child is still in process table) in case the parent 
+      needs it (ex. the parent needs to check the exit status of the child)
+  zombie process is a process state when the child dies before the parent process. in this
+      case the structural information of the process is still in process table
+  how to find zombie process? when run "ps aux", look for "Z" in the status field
+
+# what is ephemeral port in UNIX?
+  ephemeral ports are port used by OS for client sockets, there is a range on which OS can
+      open any port in the ephemeral port range
+  ephemeral port is a random high port used to communicate with a known server port
+      ex. when ssh to a server: 192.168.1.2:37852 ---> 192.168.1.3:22
+          22 is the standard ssh port on the remote server, and 37852 is the ephemeral port
+          on my local machine
+
+21. why is 1970-1-1 the epoch time?
+
+  the unix system time increment every second, a 32-bit unsigned integer could only represent 
+      around 136 years. for this reason, the time represented by 0 (called the epoch) is set 
+      in the very recent past, i.e. 1970-1-1.
+  note that a 32-bit integer can represent dates up to 2038-1-19, on which date it will wrap 
+      around to 1901-12-13.
+
+# what is kernel?
+  kernel is the unix operating system which controls computer resources. it starts up a separate,
+      interactive program, called shell, for each user
+
+# what is shell?
+  shell acts as an interface between the user and the system. it is an command interpreter that
+      takes commands and set them up for execution
+
+# what is a directory?
+  a directory is specialized form of file that maintains a list of files
+
+# what are the differences of library functions, system calls, and UNIX commands?
+  library functions: at run-time user's executable code calls a function linked to a shared 
+      library code (the library path is looked up at run-time to determine the location of
+      the function to call)
+      i.e. strcmp() and strlen(), the standard string manipulation functions
+           fopen() and malloc(), library functions that make system calls
+  system calls: low-level kernel calls handled by the kernel, i.e. a special interface used to 
+      make a call from user's code to the kernel (may need to escalate privileges: kernel mode)
+      i.e. socket(), to use a network socket service provided by kernel
+
+  application code ----> library functions
+        |                     |
+        |--------------> system calls ----> OS kernel ----> computer hardware
+

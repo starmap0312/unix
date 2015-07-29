@@ -1,0 +1,39 @@
+# what is TCP/IP?
+  a set of networking protocols used to construct global internet
+
+# does IP protect data on the network?
+  IP leaves all issues of data protection to the transport protocal. both TCP and UDP have
+    have mechanisms that guarantee that the data they deliver to an application is correct.
+  IP layer deals with the correct destination of packets, whereas the transport layer(TCP/
+    UDP/SCTP) checks if the data are delivered correctly using checksum mechanism.
+
+# what is the data unit of transport layer?
+  segment
+
+# how data is sent by IP layer?
+  packet
+
+# can we detect a TCP connection has crashed?
+  no. detecting crashed system over TCP/IP is difficult.
+
+# what OSI and TCP/IP stand for?
+  OSI: Open System Interconnection
+  TCP/IP: Transmission Control Protocol/Internet Protocol
+
+# the four layers of TCP/IP stack, also called the DoD model, are Application/Process,
+  Host-to-Host, Internet, and Network Access
+    the Host-to-Host layer is equivalent to the Transport layer of the OSI model
+    the Internet layer is equivalent to the Network layer of the OSI model
+
+# SMTP/HTTP/FTP services use TCP, whereas DHCP/SNMP/TFTP use UDP
+  both FTP and Telnet use TCP at the Transport layer; however, they both are Application
+    layer protocols
+
+# Internet Control Message Protocol (ICMP) is used to send error messages through the network.
+  every segment or ICMP payload must be encapsulated within an IP datagram (packet).
+
+# Address Resolution Protocol (ARP) is used to find hardware address from a known IP address
+
+# DNS uses both TCP and UDP. DNS uses TCP for zone exchanges between servers and uses UDP
+  when a client is trying to resolve a hostname to an IP address
+

@@ -1,0 +1,62 @@
+1. hostname: display the machine's hostname
+   hostname -d: display the domain name the machine belongs to
+   hostname -f: display the fully qualified host and domain name
+   hostname -i: display the IP address for the current machine
+
+2. ping: send packets to destination device, the destination device will send packets back
+   once recevied
+   two purposes: 1. ensure network connection can be established
+                 2. timing information such as the speed of the connection
+
+3. ifconfig: network configuration (current network adapter configuration)
+ 
+4. netstat: finding information of connection to and from the host
+   netstat -a: display all connections including TCP and UDP connections
+   netstat -t: display only TCP connection
+   netstat -u: display only UDP connection
+   netstat -g: display all multicast network subscribed by this host
+   ex. how to find which remote hosts are connecting to you on a particular port, ex. 10123?
+       command: netstat -a | grep "10123"
+
+5. nslookup: ip address <-> hostname
+   find all IP addresses for a given domain name
+   ex. nslookup www.google.com
+
+6. traceroute: view the number of hops and response time to get to a remote system
+
+7. finger: view user information such as user's login name, real time, terminal name, and
+       write status
+ 
+8. telnet: connect destination host via telnet protocol
+   telnet "hostname" "port"
+
+9. what is private IP?
+   there are 3 IP ranges reserved for private address that are not valid for internet use
+   class A: 10.0.0.0 - 10.255.255.255 (256 * 256 * 256)
+   class B: 172.16.0.0 - 172.31.255.255 (16 * 256 * 256)
+   class C: 198.168.0.0 - 192.168.255.255 (256 * 256)
+
+10. what is the benefit of subnetting?
+   provide a way to secure network traffic by isolating it from the rest of network
+   reduce network traffic (broadcast traffic can be isolated within a single logical network)
+   reduce the size of routing table
+
+11. what is the difference between static and dynamic IPs?
+   static IP: IP address is configured to the same IP address
+   dynamic IP: IP address may change periodically and is managed by a centralized network device
+
+12. what is DHCP scope?
+   a range or pool of IP addresses that can be leased to DHCP clients on a given subnet
+
+13. what is FQDN?
+   fully qualified domain name which contains both hostname and domain name
+   it uniquely identifies a host within a DNS hierarchy
+
+14. what is the DNS forwarder?
+   DNS servers often need to communicate with DNS servers outside of the local network
+   when a DNS server receives DNS queries that it cannot resolve locally, it then forwards
+   the queries to external DNS servers for resolution
+
+15. 
+yahho
+yahoo

@@ -1,0 +1,159 @@
+1. types of variables in a shell script
+  
+  system defined variables:  defined by system and in capital letters
+                             can be viewed by "set" command
+  user defined variables: defined by users
+  ex. use echo $<variable_name> to view the value
+
+2. how to redirect both stdout and stderr to the same location?
+  method1: 2>&1
+      ex. ls -l > output 2>&1
+  method2: &>
+      ex. ls -l &> output
+
+3. nested if statement
+  if [ condition ]  <==== [_condition_] must have spaces surrounding condition
+  then              <==== must be put in a distinct line (cannot be put after the if-statement)
+      command1
+      command2
+  else              <==== must be put in a distinct line
+      if [ condition ]
+      then
+          command3
+      else
+          command4
+      fi
+  fi                <==== must be put in a distinct line
+
+4. what is the use of "$?"?
+  $?: whether the previous command is executed successfully (0: successful)
+      (i.e. the exit status of the previous command)
+  other special variables:
+  $0: name of the script
+  $1: 1st argument
+  $2: 2nd argument
+  $#: number of arguments
+  $@: an array-like construct of all positional parameters, { $1, $2, $3, ... }
+  $*: all arguments separated with spaces, $1 $2 $3 ...
+  $$: PID of current shell (not subshell)
+  $!: PID of the most recent background command
+
+5. how to compare numbers?
+  -eq: equal
+  -ne: not equal
+  -gt: greater than
+  -lt: less than
+  -ge: greater than or equal
+  -le: less than or equal
+
+  ex.
+  x=10              <==== there cannot be spaces surrounding = (i.e. no x_=_10)
+  y=20              <==== there cannot be spaces surrounding = (i.e. no y_=_10)
+  if [ $x -gt $y ]  <==== use $variable_name to access variable
+  then
+      echo "x > y"
+  else
+      echo "x <= y"
+  fi
+
+6. how to compare strings?
+  test str1 == str2: equal (there must be spaces surrounding _==_)
+  test str1 != str2: not equal (there must be spaces surrounding _!=_)
+  test -z str: empty string
+  test -n str (test str): not empty string (-n can be omitted)
+
+  ex.
+  str1="abc"
+  str2="abc"
+  test $str1 == $str2 && echo "str1 equals str2"
+
+7. how to test files?
+  test -e filename: does filename exist?
+  test -f filename: is a file?
+  test -d filename: is a directory?
+  test -r filename: readable?
+  test -w filename: writable?
+  test -x filename: executable?
+  test -s filename: file not empty?
+
+8. how to define function?
+  function_name ()
+  {
+      commands
+  }
+
+  ex.
+  func()
+  {
+      read -p "input a number: " var
+      echo "the input number is $var"
+  }
+  func
+
+9. the while-loop statement
+  while [ condition ]
+  do
+      command
+  done
+
+10. the for-loop statement
+  for var in value1 value2 value3
+  do
+      command
+  done
+
+  ex.
+  for a in dog cat tiger
+  do
+      echo "$a"
+  done
+
+11. the switch statement
+  case $var in
+  value1)
+      command1
+      command2
+      ;;
+  value2)
+      command3
+      command4
+      ;;
+  *)
+      command5
+      ;;
+  esac
+
+  ex.
+  a=5
+  case $a in
+  1)
+      echo "$a == 1"
+      ;;
+  2)
+      echo "$a == 2"
+      ;;
+  *)
+      echo "$a != 1 and $a != 2"
+      ;;
+  esac
+
+12. what is the use of "#!/bin/bash"?
+  known as shebang, where # is called hash and ! is called bang
+  indicates that the script is to be executed by /bin/bash
+
+13. how to read input from terminal?
+  ex.
+  echo "Input value for variable a"
+  read a
+  or
+  read -p "Input value for variable a: " a
+  echo "variable a is $a"
+
+14. how to unset or de-assign a variable?
+  unset variable_name
+
+15. how to perform arithmetic operation?
+  a=`expr 5 + 2`           ==> "+" in 5_+_2 must be surrounded by spaces
+                               `expr ...` is needed as expr is a command
+  a=$[ 16 + 4 ]              ==> $[ expression ] is an alternative way of arithmetic operation
+

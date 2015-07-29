@@ -1,0 +1,48 @@
+# soft link (symbolic link, or symlink) vs. hard link
+  soft link: shortcut, a link to a file or directory
+             simply contains the pointer to the location of the destination file (folder)
+             there is no information about the destination file or contents of the file
+             when create a soft link, a new file is created with a new inode, which have
+             the pointer to the inode location of the original file
+
+             ex. ln -s /home/original /home/shortcut
+             (visible to users)     original file         <----    soft link
+                                          |                            |
+             (internally)           original file inode   <----    soft link inode
+                                          |
+                                          |----> data on hard disk
+  hard link: a direct pointer to the original inode of the original file (no inode created)
+             there is no difference between the original file and its hard link
+             hard links cannot cross file systems and cannot link to directories
+             command: stat filepath, used to check how many hard links are there to a file
+
+             ex. ln /home/original /home/hardlink
+             (visible to users)     original file         <----    hard link
+                                          |                            |
+             (internally)           original file inode   <------------
+                                          |
+                                          |----> data on hard disk
+
+  when to use soft links: 1. when linking files across file systems
+                          2. when linking to directories
+  when to use hard links: 1. fewer storage space (no inode created, usually an inode takes
+                             4KB, depending on file systems)
+                          2. better performance (accessing a hard link does not go through
+                             another file)
+                          3. when the original file may be moved to another location
+                             (hard links still work, whereas soft links break)
+                          4. redundancy: when want to make sure the safety of the data
+                             a file is deleted only when all its hard links are deleted
+                             (when link count goes to 0, the inode is removed by filesystem,
+                              and the file is deleted)
+                             whereas, in soft link you lose data if original file is deleted
+  the difference between soft and hard links: a soft link has a different inode than the
+      the source file, whereas a hard link uses the same inode number as the source file
+  how to find all soft links? command: find /etc -type l -exec ls -li {} \;
+      find ... -type l ==> find only symbolic links (-type f ==> find files)
+      find ... -exec ls -li {} \; ==> continues to execute ls -li for the listed files
+          (find ... -exec "utility" {} \; must be terminated by backslash and semicolon \;)
+          ("utility" is executed from current directory, and {} is replaced by current
+           pathname for each invocation of utility)
+  how to find all hard links? command: find /etc -links +1 -type f -exec ls -li {} \;
+      find ... -links 2 ==> find all files having 2 links
