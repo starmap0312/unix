@@ -3,6 +3,14 @@
       execution (process size must be less than the available main memory)
       i.e. copy entire process address space out and in disk
 
+      if a process needs to move a page from disk to physical memory but there is no free
+      space, the system must make room for the page by discarding other pages
+      if the pages to be dicarded are not written, then they do not need to be saved, but
+      if the pages have been modified, then they are called dirty pages and need to be saved
+      in the swap space, which is called swapping
+      linux uses a least recently used (LRU) algorithm to fairly choose pages to be removed from
+      the system
+
   paging: move only the required memory pages from the swap device to main memory for execution
       this gives the concept of virtual memory, providing the flexibility in mapping th
       virtual address space into the physical memory, allowing more processes to fit in the
@@ -48,13 +56,153 @@
   library functions: at run-time user's executable code calls a function linked to a shared 
       library code (the library path is looked up at run-time to determine the location of
       the function to call)
-      i.e. strcmp() and strlen(), the standard string manipulation functions
-           fopen() and malloc(), library functions that make system calls
+      ex. strcmp() and strlen() ==> the standard string manipulation functions
+           fopen() and malloc() ==> library functions that make system calls
   system calls: low-level kernel calls handled by the kernel, i.e. a special interface used to 
       make a call from user's code to the kernel (may need to escalate privileges: kernel mode)
-      i.e. socket(), to use a network socket service provided by kernel
-
+      ex. socket() ==> use a network socket service provided by kernel
+          creat()  ==> create a file
+          open()   ==> open a file
+          close()  ==> close an open file
+          read()   ==> read data from an open file
+          write()  ==> write data to an open file
+          lseek()  ==> position an open file
+          dup()    ==> duplicate an existing file descriptor 
   application code ----> library functions
         |                     |
         |--------------> system calls ----> OS kernel ----> computer hardware
+
+# what are static, shared dynamic, and loadable libraries?
+  library: group together multiple object code files into one single file, which simplies the
+    multiple use and sharing of software components between applications
+    ex. C++ STL can be linked with your code
+  two types of linux C/C++ libraries:
+    1. static libraries(.a): library of object code becomes part of the application
+      ex. gcc -c code1.c code2.c # producing code1.o and code2.o
+          ar rcs libmylib.a code1.o code2.o # producing libmylib.a
+          how to use the library:
+          1. gcc main.c libmylib.a # just like compile with object files
+          2. gcc main.c -L. -lmylib
+            -L: location of library to search
+            -l: name of library to link
+          ./a.out # execute the program
+    2. dynamic linked shared object libraries(.so): used in two ways
+      2.1 dynamically linked at run-time but statically aware:
+        the libraries must be available during compile/link phase. the shared objects are not
+        included into the executable but are dynamically linked during execution
+        ex. gcc -c -fPIC code1.c code2.c
+              -fPIC: position-independent code
+            gcc -shared -WI,-soname,libmylib.so.1 -o libmylib.so.1.0.0 code1.o code2.o
+              -shared: shared library
+              -WI: pass following parameters to linker, i.e. setting soname == libmylib.so.1 
+              (the output library will be libmylib.so.1.0.0 (real name)) 
+            ln -s libmylib.so.1.0.0 libmylib.so
+            ln -s libmylib.so.1.0.0 libmylib.so.1
+            how to use the library:
+            gcc main.c libmylib.so # just like static library
+            gcc main.c -L. -lmylib # ldd to view the dependency of executable and shared library
+            when execute a.out the libary libmylib.so must be installed in /usr/lib, or
+              set the LD_LIBRARY_PATH parameter for the library search
+      2.2 dynamically loaded/unloaded and linked during execution using the dynamic linking
+        loader system functions (ex. windows DLL, browser plug-in)
+        no need to link the library at compile-time, the dynamic loading is achieved by
+        calling the dl functions in the executable source code
+        ex. in main.c:
+            #include <dlfcn.h>
+            handle = dlopen("./libmylib.so", RTLD_LAZY);
+            ...
+            dlclose(handle);
+            
+            gcc main.c -ldl
+
+# how are devices represented in unix?
+  all devices are represented by special files located in /dev
+  the devices and regular files are named and accessed in the same way.
+  regular file: ordinary data file in the disk
+  block special file: represents a device whose data transfer is by blocks (simalr to a disk)
+  character special file: represents a device whose data transfer is by stream of bits in
+    sequential order (similar to a keyboard)
+
+# fork() system calls: used to create processes
+  create a child process of the caller, after creation both parent and child processes execute
+    the next instruction following the fork() system call
+  unix will make an exact copy of the parent's address space and give it to the child
+  how to distinguish the parent from the child?
+    1. if fork() returns a negative value, the creation of a child process was unsuccessful
+    2. fork() returns zero to newly created child process
+       fork() returns the created child's PID to the parent
+    the parent and child processes can use function getpid() to know if it's parent or child
+    ex. pid = fork()
+        if (pid == 0) { ... } // do child's task
+        else { ... } // do parent's task
+
+# directory permssion:
+  read permission: can list the content of the directory but cannot traverse the directory
+    (i.e. ls can view the filename in the, but cannot cat files in the directory)
+    ex. mkdir read_only
+        touch read_only/filename
+        chmod 400 read_only
+        ls read_only/
+          ls: filename: Permission denied
+        cat read_only/filename
+          cat: read_only/filename: Permission denied
+  execute permission: can traverse the directory but cannot list the content of the directory
+    ex. mkdir exe_only
+        touch exe_only/filename
+        echo content > exe_only/filename
+        ls exe_only/
+          ls: : Permission denied
+        cat exe_only/filename
+          content
+  write permission: need write permission to remove the directory
+  therefore, a normal directory requires read/write/execute permissions to view its content,
+    traverse its files, and remove itself
+
+# what are SUID/SGID/sticky bit?
+  SUID: if SUID is turned on (the s flag), other users have the owner privilege during execution
+  (similarly, if SGID si turned on, other users have the group privilege during execution)
+    ex.
+    ls -l /usr/bin/passwd
+      -r-s--x--x    1 root     root        13476 Aug  7  2001 /usr/bin/passwd 
+    ls -l /etc/shadow
+      -rw-------    1 root     root         2423 Jun 25 14:29 /etc/shadow 
+    only root can modify /etc/shadow. so how can other users executing /usr/bin/passwd
+      modify the /etc/shadow file?
+    because /usr/bin/passwd has its SUID turned on, i.e. the s flag of r-s in user permission
+      and group and other users have the execute permission, i.e. --x--x
+      when group users or other users execute the program, they have the owner's privilege during
+      the execution, and therefore can modify the /etc/shadow file
+  sticky bit: used for directories to protect files from removal/renaming
+      if a directory allows others to read/write/execute, then everyone can create files in
+        the directory. if the sticky bit of the directory is turned ON
+        if a user creates a file inside the directory that allows others to modify the file,
+        then everyone can change the file but only the owner or root can remove the file
+      ex.
+      ls -l /
+        drwxrwxrwt    2 root     root         4096 Jul 18 13:08 tmp
+      (the sticky bit, i.e. the flag t in others permission, is ON)
+  how to set SUID/SGID/sticky bit?
+    SUID: 4, SGID: 2, sticky bit: 1
+    ex.
+    chmod 4755 filename ==> set SUID of the program
+    chmod 6755 filename ==> set SUID and SGID of the program
+    chmod 1755 directory ==> set sticky bit of the directory
+
+# what is the difference between threads and processes?
+  linux uses a 1-1 threading model (there is no distinction between processes and threads, and
+    everything is simply a runnable task)
+  on linux, system call clone() clones a task, with a configurable level of sharing between tasks
+    CLONE_FILES: share the same file descriptor table (instead of creating a copy)
+    CLONE_VM: share the same memory space (instead of creating a Copy-On-Write (COW) copy)
+    CLONE_PARENT: don't set up a parent-child relationship between the new and old task
+      (otherwise, child getppid() == parent getpid())
+  ex. fork() calls clone() with least sharing (create a process)
+      pthread_create() calls clone() with most sharing (create a thread)
+      (therefore, fork() requires more work than pthread_create() because of copying the file
+       descriptor table and creating COW mapping for memory)
+  switching between tasks is a bit cheaper if they share the same memory space, because the data
+    may already be loaded in cache
+  if on a multi-processor system, not sharing (i.e. creating processes) is beneficail to
+    performance because synchronizing shared memory while each task runs on a different processor
+    is expensive
 

@@ -1,0 +1,36 @@
+# interprocess communication
+1. file: messages are written and read from a unix file. any number of processes can interoperate
+   pros: simple mechanism, by utilizing file operations
+   cons: slow ==> disk i/o is required
+         hard to coordinate ==> files are best used as read-only or write-only
+         security ==> root and other privileged users can access the information
+2. pipe/named pipe: exchange messages via dedicated file descriptors. more specifically, two
+     processes use standard file descriptors on each end of the connection, where one exclusive
+     to read and one exclusive to write operations
+   pros: simple mechanism
+   cons: do not provide random access. operates as a first-in, first-out (FIFO) device
+   (pipe: used between a parent and a child process on the name host
+    named pipe: used between two arbitrary processes on the same host
+    ex. producer and consumer applications)
+3. socket: like named pipes but can span hosts
+   (local sockets: also called unix socket, restricted to local connectivity
+    remote sockets: accept remote connection, ex. distributed processing or a web browser
+    such as network services ftp, ssh, apache web services)
+4. signal: used to communicate exceptional conditions
+   pros: useful for process management
+   cons: cannot transfer data in a signal, can only used for process management
+   (an interrupt that alerts the application to a specific condition)
+5. shared memory: information are shared via reading and writing a common memory segment
+   pros: suited for large data collections, grants fast random access
+   cons: more complicated to implement
+
+# how to create pipes?
+  use system call pipe(), which creates a pair of file descriptors, pointing to a pipe inode
+
+# how to implement shared memory?
+  each process maps the shared memory segment into its own address space
+  multiple can then exchange messages via the common memory segment
+  use special system calls to make a segment of memory accessible to multiple processes
+    ex. shm_open()   ==> creates a shared memory segment and returns a file descriptor
+        shm_unlink() ==> deletes a shared memory segment given a file descriptor
+        mmap()       ==> maps a shared memory segment into the process's memory

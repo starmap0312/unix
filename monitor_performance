@@ -44,6 +44,27 @@
 
 # free: display information of physical and swap memory
   free -m: display the values in MB (default: KB)
+  swap: a virtual memory created on disk to increase RAM size virtually
+  ex.
+          total  used  free  shared  buffers  cached
+    Mem:  8027   4377  3650  0       103      1630
+    -/+ buffers/cache: 2643  5384
+    Swap: 15624  608   15015
+
+    total Mem: total available RAM of the machine
+    used Mem:  used RAM space, including buffers and cached data size
+    free Mem: free RAM space
+    shared Mem: shared memory (obselete)
+    buffers Mem: RAM space buffered by different applications
+      a temporary location to store data for a particular application
+      ex. when send burst of data through network, if the network interface is capable of sending
+          less data, it will keep the data in the buffers 
+    cached Mem: RAM space used for caching of data for future purpose
+      a temporary location to store frequently used data for faster access
+    (the difference between buffers and cached is that cache can be used multiple times, whereas
+     buffers is used only one time. both are temporary for your data processing)
+    - buffers/cache: 2643 (actual used RAM) = 4377 (used RAM) - 103 (buffers) - 1630 (cached)
+    + buffers/cache: 5384 (actual available RAM) = 8027 (total RAM) - 2643 (actual used RAM)
 
 # ps: process monitoring, help to identify performance bottlenecks
   PID: each process is assigned a unique process, PPID: parent PID

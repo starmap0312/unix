@@ -38,6 +38,11 @@
                              whereas, in soft link you lose data if original file is deleted
   the difference between soft and hard links: a soft link has a different inode than the
       the source file, whereas a hard link uses the same inode number as the source file
+  how to create soft and hard links?
+      ln -s /path/to/original/filename softlink_filename
+      ln /path/to/original/filename hardlink_filename
+      (the softlink points to the location of the original file. if the original file is
+       moved, then the softlink is broken, whereas the hardlink still works)
   how to find all soft links? command: find /etc -type l -exec ls -li {} \;
       find ... -type l ==> find only symbolic links (-type f ==> find files)
       find ... -exec ls -li {} \; ==> continues to execute ls -li for the listed files

@@ -32,6 +32,15 @@
 # what is umask?
   umask: user file creation mask, which controls the file permissions when file or directory
     are created
+  ex. write umask command in /etc/profile or ~/.bashrc
+    umask 022 ==> permissive (default)
+      directory permission 755 (rwxr-xr-x), file permission 644 (rw-r--r--)
+    umask 026 ==> moderate
+      directory permission 751 (rwxr-x--x), file permission 644 (rw-r-----)
+    umask 027 ==> moderate
+      directory permission 750 (rwxr-x---), file permission 644 (rw-r-----)
+    umask 077 ==> severe
+      directory permission 700 (rwx------), file permission 600 (rw-------)
 
 # how to change the default run level in linux?
   init: command that temporarily change run level, ex. init 3 (default level is 5)
