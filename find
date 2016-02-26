@@ -6,5 +6,5 @@
   5. find . -iname "pattern" ==> find filenames containing case insensitive pattern
   6. find . -name "*.txt" | xargs grep "keyword" ==> find *.txt files containing "keyword"
   7. find . -size +1000c -exec ls -l {} \; ==> find files of size larger than 1000 bytes
-      (use c in +1000c for bytes; otherwise, the size is in disk blocks)
+    (use c in +1000c for bytes; otherwise, the size is in disk blocks)
   8. find . -empty    ==> find empty files

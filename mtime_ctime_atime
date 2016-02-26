@@ -1,4 +1,4 @@
-# what is the difference between mTime, cTime, and aTime?
+# differences of mTime, cTime, and aTime
   mTime: file "modify time" (when update the contents of file, ex. echo "new" > filename)
   cTime: inode/file "change time" (when update the file attributes, ex. permission of files,
       the owner, moving the file to other filesystem; note that when update the content

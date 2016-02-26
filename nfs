@@ -1,0 +1,18 @@
+# how to share a directory using nfs?
+  edit file: /etc/exports
+  add a entry: /<name_directory> <ip or network>(options)
+  restart nfs service
+
+# how to check nfs share?
+  showmount -e <ip_nfs>
+
+# nfs mouting
+  1. exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
+  2. exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
+  3. edit /etc/exports ==> make export permanent
+     ex. /path/to/local/folder 10.1.168.72
+  4. mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
+     to a local folder
+  5. edit /etc/fstab ==> make mount permanent
+     ex. 10.1.168.72:/path/to/remote/folder /path/to/local/folder ext3 defaults 0 0
+  5. umount /path/to/local/folder ==> umount a remote filesystem

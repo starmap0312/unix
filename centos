@@ -1,0 +1,20 @@
+# install CentOS on VirtualBox
+  1. download the latest CentOS image
+  2. create VM, disable audio, mount image, and install
+  3. add username to sudoers
+  4. connect to network on boot
+  5. set port forwarding at VirualBox (host to guest)
+    Network -> Adapter -> Port Forwarding (ex. 2222 -> 22)
+    ssh at your MAC terminal: ssh 127.0.0.1 -p 2222
+  6. set passwordless ssh
+  7. change hostname
+
+# connect to network on boot
+  edit /etc/sysconfig/network-scripts/ifcfg-eth0
+  add ONBOOT="yes"
+
+# change hostname
+  (before CentOS 6)
+  edit /etc/hosts, /etc/sysconfig/network and perform hostname new_name
+  (CentOS 7)
+  hostnamectl set-hostname new_name 

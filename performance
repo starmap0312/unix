@@ -1,3 +1,13 @@
+# what is load average in a linux?
+  the average sum of the number of process waiting in the run queue and the number of process
+    currently executing over the period of 1, 5, and 15 minutes
+  use top and uptime command to find out the load average
+
+# how to check memory and cpu stats?
+  memory: free and vmstat commands
+    ex. free, free -k, free -m, free -g (in bytes, kilo bytes, mega bytes, giga bytes)
+  cpu: sar command
+
 # sar: System Activity Reporter, part of the sysstat package (sar/iosstat/pidstat/nfsiostat...)
   1. monitor system real teim performance (cpu, memory, i/o, etc.)
   2. collect performance data in the background and do analysis on the historical data 

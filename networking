@@ -1,3 +1,39 @@
+# ifconfig
+  used to initialize network interfaces and to enable/disable network interfaces
+  promiscuous mode: a network card never drops a packet
+  MTU(maximun transmission unit): the maximun number of octects the interface can handle in
+    one transaction (default: 1500)
+  1. ifconfig eth0
+  2. ifconfig -a
+  3. ifconfig eth0 up (ifup eth0)
+  4. ifconfig eth0 down (ifdown eth0)
+  5. ifconfig eth0 192.168.2.2 ==> assign the IP address to an interface
+  6. ifconfig eth0 promisc, ifconfig eth0 -promisc
+
+# ethtool: view and change ethernet device parameters
+  1. ethtool eth0: list ethernet device properties
+  2. ethtool -s eth0 autoneg off: turn off auto-negotiation
+
+# default ports:
+  SMTP: 25
+  DNS: 53
+  FTP: 20 (data transfer), 21 (connection established)
+  DHCP: 67 (UDP, DHCP server), 63 (UDP, DHCP client)
+  SSH: 22
+  Squid: 3128
+
+# what is network bonding?
+  the aggregation of multiple LAN cards into a single bonded interface to provide fault
+    tolerance and high performance (a.k.a NIC teaming)
+
+# how to check default route and routing table?
+  netstat -nr: default route
+  route -n: routing table
+
+# how to check which port are listening in my system?
+  netstat --listen
+  lsof -i
+
 1. hostname: display the machine's hostname
    hostname -d: display the domain name the machine belongs to
    hostname -f: display the fully qualified host and domain name

@@ -1,0 +1,18 @@
+# create linux user
+  1. useradd username ==> create users with default configurations
+  2. adduser username ==> create users interactively
+  3. newusers filename ==> create bulk users from file (the same format as /etc/passwd)
+
+# what is user profile file?
+  $HOME/.bash_profile, $HOME/.bash_bashrc
+
+# how to show user info?
+  finger <username>
+
+# how to lock user password
+  usermod -L username
+  passwd -d username (remove user's password, user can login without password)
+
+# add users to sudoers
+  1. visudo (need to login as root or su)
+  2. add a line: username ALL=(ALL:ALL) ALL
