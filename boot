@@ -3,7 +3,7 @@
   a multiboot boot loader (boot loader is the first software program that runs when a
     computer starts; it loads and transfer control to OS kernel software)
 
-# explain linux boot process
+# linux boot process
   there are 6 high-level stages
   1. BIOS: Basic Input/Output System
     a program that a computer uses to get the computer started after you turn it on. it manages
@@ -28,3 +28,14 @@
 # how to list or enable services that are enabled at a particular run level?
   list service: chkconfig --list | grep 5:on
   enable service: chkconfig <name_service> on --level 3
+
+# PXE: Preboot Execution Environment
+  an execution environment before boot, which requires two things:
+  1. the network interface must support PXE client funcationality
+    i.e. need to set boot device in BIOS to network interface
+  2. the PXE server must provide DHCP and TFTP services
+    1.1. DHCP: provide network configuration parameters and let the client know where TFTP is
+    1.2 TFTP: provide the client with the boot loader and the kernel file
+  you need boot loader and kernel to either boot up or install OS on a computer
+  PXE is used when you need to install OS on a computer via network
+

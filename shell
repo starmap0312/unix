@@ -157,3 +157,17 @@ $ what is the use of "$?"?
                                `expr ...` is needed as expr is a command
   a=$[ 16 + 4 ]              ==> $[ expression ] is an alternative way of arithmetic operation
 
+# error redirection (file descriptor: 0: stdin, 1: stdout, 2: stderr)
+  ex.
+  du -sh 2>err_file
+  du -sh 2>/dev/null (redirect "... Permission denied ..." error to /dev/null)
+
+# expand: convert tabs to spaces
+  ex.
+  yum --showduplicates list docker-engine | expand
+
+# set: display all bash variables, including environment variables
+
+# variable substitution
+  var = value  ==> set var to a value
+  var := value ==> use var if set; otherwise, use value and assign value to var

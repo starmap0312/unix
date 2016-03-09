@@ -1,0 +1,20 @@
+# Push an image or a repository to a Docker Registry
+  sudo docker push [ip]:[port]/[repo_name]
+
+# Pull an image or a repository from a Docker Registry
+  sudo docker pull [ip]:[port]/[repo_name]
+
+# Restart a running container
+  docker restart 
+
+# List containers
+  docker ps
+
+# Attach to a running container
+  docker attach [container_name]
+
+# detach from the container
+  Ctrl-p + Ctrl-q
+
+# list local docker images
+  docker images

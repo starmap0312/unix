@@ -1,0 +1,11 @@
+# attach to a screen environment
+  screen
+
+# detach from a screen environment
+  Ctrl + a, d
+
+# re-attach to a screen environment
+  screen -r
+
+# list all screen environments
+  screen -ls

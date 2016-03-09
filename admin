@@ -93,3 +93,10 @@
     remove old log files
   edit /etc/logrotate.conf
 
+# ssh
+  options -T: Disable pseudo-tty allocation
+    do ssh test connection with -T, because some server could abort the transaction entirely
+    if a text-terminal (tty) is requested. -T avoids requesting said terminal, since GitHub
+    has no intention of giving you an interactive secure shell, where you could type command.
+    GitHub only wants to reply to your ssh request, in order to ascertain that the ssh command
+    does work (have the right public/private keys, and the public one registered to GitHub)

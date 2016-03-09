@@ -6,11 +6,12 @@
   grep -C "number of lines" pattern (surround context)
       ex. grep -C 2 pattern ==> print two lines of context around each matching line
   grep -i pattern (case insensitive): ex. grep -i error ==> match Error, erROr, ERROR
-  grep -w keyword filename (search whole word in a file) == grep '\<keyword\>' filename
+  grep -w keyword filename (search whole word in a file) ==> grep '\<keyword\>' filename
   grep -n keyword filename (display line number)
   grep --color keyword filename (highlight matching with colors)
   grep -l keyword *.txt (display filenames containing keyword)
   grep -R keyword * (recursively grep files in current directory)
+  grep -e pattern ==> echo "-A" | grep -e "-A" (not adding -e, the minus char will not be escaped)
 
 # regular expressions:
   the following characters are of special meaning
@@ -35,3 +36,8 @@
                                 egrep '[A-Za-z0-9_.%]+@[A-Za-z0-9_.%]+\.[A-Za-z]+'
       2. match 3-5 digits: grep '[0-9]\{3,5\}'
                            egrep '[0-9]{3,5}'
+
+# how to grep phone number pattern in a file, i.e. (xxx) xxx-xxxx or xxx-xxx-xxxx?
+  egrep '^[0-9]{3}-[0-9]{3}-[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
+  egrep '^([0-9]{3}-){2}[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
+

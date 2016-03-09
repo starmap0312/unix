@@ -75,3 +75,19 @@
      dd if=/dev/zero of=/path/to/local/file bs=1M count=1024 ==> create a zeroed, 1024MB file
      chmod 600 /path/to/local/file
      mkswap /path/to/local/file, swapon /path/to/local/file
+
+# du:
+  options:
+    -h: human readable
+    -s: display only a total for each argument (--summarize), list only depth 0 == -d 0
+  ex.
+  du -h dirname (display disk usage of dirname and all its subdirectories)
+  du -sh dirname (display only the disk usage of dirname)
+
+# check how much space left in current drive:
+  df -h
+
+# remove files older than X days
+ex.
+  find /path/to/dirname -mtime +5 -exec rm {} \;
+  (older than 5 days, rm removes files only, and {} \; at the end is required to end the command)
