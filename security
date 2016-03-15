@@ -17,13 +17,12 @@
 
 # ssh-agent
 
-bypass entering passphrase if you set up a passphrase while creating the public/private key pairs
+  bypass entering passphrase if you set up a passphrase while creating the public/private
+    key pairs
+  (MAC: ssh-agent is by default running, Centos: need to run ssh-agent + ssh-add)
 
-MAC: ssh-agent is by default running
-Centos: need to run ssh-agent + ssh-add
-
-usage: keeps your private key in memory and use it in order to passwordlessly ssh to a host
-ex.
+  usage: keeps your private key in memory and use it in order to passwordlessly ssh to a host
+  ex.
   basic usage
     localhost (MAC/CentOS) --> Remote Hosts
     (bypass entering the passphrase as long as ssh-agent is launched and localhost's private 
@@ -33,8 +32,8 @@ ex.
     (you can add a new line in ~.ssh/config: ForwardAgent yes, so that localhost's private key 
      will be forwarded when Server is making connections with Remote Hosts)
 
-need to launch ssh-agent whenever you launch a new shell
-edit .bash_profile to bypass the launch (no need to do this on MAC)
+  need to launch ssh-agent whenever you launch a new shell, or
+  edit .bash_profile (no need to do this on MAC)
 
 .bash_profile:
 
@@ -56,6 +55,12 @@ if [ -f "${SSH_ENV}" ]; then
 else
      start_agent;
 fi
+
+# check if ssh forwarding is enabled
+ 1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
+    is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
+ 2) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
+    env | grep SSH_AUTH_SOCK
 
 # disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
   add a new line in .ssh/config: StrictHostKeyChecking no

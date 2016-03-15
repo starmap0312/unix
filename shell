@@ -171,3 +171,13 @@ $ what is the use of "$?"?
 # variable substitution
   var = value  ==> set var to a value
   var := value ==> use var if set; otherwise, use value and assign value to var
+
+# test command
+  test -s filename: test if filename exists and has a size greater than zero
+  test -S filename: test if filename exists and is a socket
+  test -s filename || { echo "filename does not exist! Exiting..."; exit 1; }
+    test if the non-empty filename exists; otherwise, print error message and exit with 1
+
+# strip command
+  discard symbols from object files
+

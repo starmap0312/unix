@@ -3,6 +3,6 @@
   2) document-oriented: JSON-like documents with dynamic schemas
   
 # namespace
-  database_name.collection_name
+  namespace = database_name.collection_name
 
 # differences between MySQL and MongoDB
