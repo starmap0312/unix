@@ -100,3 +100,35 @@
     has no intention of giving you an interactive secure shell, where you could type command.
     GitHub only wants to reply to your ssh request, in order to ascertain that the ssh command
     does work (have the right public/private keys, and the public one registered to GitHub)
+
+# print subdirectories recursively
+  find /path/to/folder -type d -print
+
+# mv
+  mv -fv /path/to/file /path/to/folder/
+  options:
+    -f: do not prompt for confirmation before overwriting the destination path
+    -v: be verbose, showing files after they are moved
+
+# rm
+  mv -rf /path/to/folder
+  options:
+    -f: do not prompt for confirmation before removing files
+    -r: be recursive
+
+# skeleton files for bash environment: (.bash_profile and .bashrc)
+  /etc/skel/.bash_profile
+  /etc/skel/.bashrc
+  /etc/skel/.bash_logout
+
+# locale: Get locale-specific information
+
+# configure, make, make install
+ 1) configure: preparation of building the software on your specific system, making sure
+    that all the dependencies for the rest of the build and install process are available, and
+    finding out whatever it needs to know to use those dependencies
+ 2) make: runs a series of tasks defined in a Makefile to build the program from its source code
+ 3) make install: once the software is built and ready to run, the files need to be copied to
+    their final destination, so make install will copy the built program and its libraries and
+    documentations to the correct locations
+

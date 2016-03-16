@@ -1,4 +1,16 @@
 # revert to previous commit and make it a new commit
-git rm -r . # remove all files
-git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
-git commit # make a new commit
+  git rm -r . # remove all files
+  git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
+  git commit # make a new commit
+
+# git add -A
+  
+# git checkout: switch branches or restore working tree files
+  git checkout -f [branch]
+  options:
+    -f, --force: proceed even if the index or the working tree differs from HEAD,
+                 used to throw away local changes
+
+# git reset: reset current HEAD to the specified state
+  use "git reset HEAD <file>..." to unstage a staged modified file
+  git reset HEAD

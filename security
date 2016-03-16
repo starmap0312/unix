@@ -59,7 +59,8 @@ fi
 # check if ssh forwarding is enabled
  1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
     is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
- 2) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
+ 2) ssh-add -L: list the keys added on the local machine's agent
+ 3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
     env | grep SSH_AUTH_SOCK
 
 # disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
