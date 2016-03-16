@@ -181,3 +181,6 @@ $ what is the use of "$?"?
 # strip command
   discard symbols from object files
 
+# mktemp commnad
+  mktemp: make temporary file (unique)
+  mktemp -d: make temporary directory (unique)

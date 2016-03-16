@@ -3,14 +3,17 @@
   git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
   git commit # make a new commit
 
-# git add -A
+# git add
+  git add -A
+  -A, --all: all files in the entire working tree are updated
   
 # git checkout: switch branches or restore working tree files
   git checkout -f [branch]
-  options:
-    -f, --force: proceed even if the index or the working tree differs from HEAD,
-                 used to throw away local changes
+  -f, --force: proceed even if the index or the working tree differs from HEAD,
+               used to throw away local changes
 
 # git reset: reset current HEAD to the specified state
-  use "git reset HEAD <file>..." to unstage a staged modified file
-  git reset HEAD
+  git reset HEAD filename: unstage a staged modified file
+  git reset HEAD: unstage all staged modified files
+  git reset --hard HEAD~3: the last 3 versions: HEAD, HEAD^, and HEAD~2 are dropped
+
