@@ -44,7 +44,7 @@
 
 # how to change the default run level in linux?
   init: command that temporarily change run level, ex. init 3 (default level is 5)
-  edit: /et/inittab
+  edit: /etc/inittab
 
 # how to list or enable services that are enabled at a particular run level?
   list service: chkconfig --list | grep 5:on
