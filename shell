@@ -184,3 +184,22 @@ $ what is the use of "$?"?
 # mktemp commnad
   mktemp: make temporary file (unique)
   mktemp -d: make temporary directory (unique)
+
+# echo
+  options:
+    -n: do not output the trailing newline (no newlines)
+    -e: enable interpretation of backslash escapes
+    ex.
+      echo name\taddress   ==> nametaddress 
+      echo "name\taddress" ==> name	address
+      for i in filename0[0-5];
+        do echo -e $i"\t";
+      done
+      (-e: enable "\t", i.e. tab escape)
+
+# zcat/zmore/zless
+  uncompress .gz file and write the uncompressed data on standard output
+
+# tee: direct to both stdout and a file
+  echo helloworld | tee filename
+

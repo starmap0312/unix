@@ -33,7 +33,8 @@
 
 # how to print the 3rd column of a tab separated file?
   awk -F "\t" '{print $3}' filename
-  cut -f3 filename
+  cut -f3 filename (cut 3rd column using default separator "\t")
+  cut -d " " -f1 filename (cut 1st column using separator " ")
 
 # how to print the 10th line of a file?
   head -n 10 filename | tail -n 1

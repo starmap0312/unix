@@ -3,10 +3,35 @@
   git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
   git commit # make a new commit
 
+# discard unstaged changes of all files
+  git checkout .
+
 # git add
   git add -A
   -A, --all: all files in the entire working tree are updated
+
+# git remote add
+  1) add the remote repo & push master up to that repo
+    git remote add origin git@github.com:username/repo_name.git
+    git push origin master
+  2) set up the upstream of a forked repo
+    git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+  (git remote -v: view all remote repos)
   
+# git branch
+  git branch -a 
+  (-a, --all: list both remote-tracking and local branches)
+
+# git fetch: download objects and refs from another repository
+  git fetch upstream: fetch original remote repo
+  git fetch origin: fetch personal remote repo
+  git fetch --all: fetch all remotes (origin and upstream)
+
+# git pull: fetch from and merge with a local branch
+  git pull upstream: fetch original remote repo and merge with local branch
+  git pull origin: fetch personal remote repo and merge with local branch
+  git pull --all: fetch all remotes (origin and upstream) and merge with local branch
+
 # git checkout: switch branches or restore working tree files
   git checkout -f [branch]
   -f, --force: proceed even if the index or the working tree differs from HEAD,
@@ -17,3 +42,34 @@
   git reset HEAD: unstage all staged modified files
   git reset --hard HEAD~3: the last 3 versions: HEAD, HEAD^, and HEAD~2 are dropped
 
+# differences of git fork and clone
+  clone: clone a GitHub repo on local workstation
+  (need to be declared as a contributor to contribute back to the remote repository,
+   need to create a pull request)
+
+  fork:
+    1) clone a GitHub repo on the server side, i.e. clone a GitHub repo on your GitHub account
+       (can make changes to that forked GitHub repo)
+    2) can only contribute to the forked repo
+    3) if want to contribute to the upstream (original) repo, you need to create a pull request
+       to signal contribution back to the upstream repo
+    
+    Original (upstream/master)  --> Forked (origin/master)
+         |                             |
+         ------> Local (master) <-------
+
+# create a local branch that tracks a remote branch
+  git branch --track branch-name origin/branch-name
+
+# delete a local branch
+  git branch -d the_local_branch
+
+# answering a pull request: merge devel branch into master branch
+  Step 1)
+    git fetch origin
+    git checkout -b devel origin/devel
+    git merge master
+  Step 2)
+    git checkout master
+    git merge --no-ff devel
+    git push origin master (update on GitHub)

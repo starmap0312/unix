@@ -28,7 +28,13 @@
 
 # how to check default route and routing table?
   netstat -nr: default route
-  route -n: routing table
+  route -n: routing table (-n: not resolve names)
+  ex.
+    Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+    10.240.80.0     0.0.0.0         255.255.254.0   U     0      0        0 eth0
+    169.254.0.0     0.0.0.0         255.255.0.0     U     1002   0        0 eth0
+    0.0.0.0         10.240.80.1     0.0.0.0         UG    0      0        0 eth0
+  (10.240.80.0: host's network, 10.240.80.1: destination, Flags: U (Up), G (Gateway))
 
 # how to check which port are listening in my system?
   netstat --listen
@@ -104,4 +110,28 @@
   DNS servers often need to communicate with DNS servers outside of the local network
   when a DNS server receives DNS queries that it cannot resolve locally, it then forwards
   the queries to external DNS servers for resolution
+
+# Differentiated Services Code Point (DSCP)
+  a field in IP packet used to differenticate services
+
+# ip: show / manipulate routing, devices, policy routing and tunnels
+  combine ifconfig + route commands
+  ip -s: statistics
+  ip route show / ip r: list routes
+  (displays the contents of the routing tables or the route(s) selected by some criteria)
+  ex.
+    10.240.80.0/23 dev eth0  proto kernel  scope link  src 10.240.80.73 
+    169.254.0.0/16 dev eth0  scope link  metric 1002
+
+# arp: manipulate the system ARP cache (ARP: Address Resolution Protocol)
+  a local host sends arp packages to all the hosts in the subnet to obtain their MAC addresses
+  (which will be written into the arp table)
+  commands:
+    arp
+      Address                  HWtype  HWaddress           Flags Mask            Iface
+      ha1.vl-144.bas-1-prd.sg  ether   00:00:0c:9f:f0:01   C                     eth0
+
+    arp -n: get the IP/MAC mapping info from the arp table (-n: not resolve name)
+      Address                  HWtype  HWaddress           Flags Mask            Iface
+      10.240.80.1              ether   00:00:0c:9f:f0:01   C                     eth0
 

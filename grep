@@ -12,6 +12,7 @@
   grep -l keyword *.txt (display filenames containing keyword)
   grep -R keyword * (recursively grep files in current directory)
   grep -e pattern ==> echo "-A" | grep -e "-A" (not adding -e, the minus char will not be escaped)
+  grep -E "^pattern1|^pattern2"
 
 # regular expressions:
   the following characters are of special meaning
