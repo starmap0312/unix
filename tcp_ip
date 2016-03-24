@@ -1,5 +1,25 @@
-# what is TCP/IP?
+# TCP/IP
   a set of networking protocols used to construct global internet
+
+# differences between TCP and UDP
+  TCP (Transmission Control Protocol): connection oriented. once a connection is established,
+    data can be set bidirectional
+    usage: suited for applications that require high reliability and transmission time is less
+      critical
+    reliability: data transferred remains intact and arrives in the order it was sent
+    data flow control: requires three packets to set up a socket connection before data are sent
+       (SYN, SYN-ACK, ACK). TCP handles reliability and congestion control
+    error checking: has error checking
+    ex. HTTP, HTTPS, FTP, SMTP, Telnet
+  UDP (User Datagram Protocol): simpler and connectionless. multiple messages are
+    sent as packets in chunks using UDP. one program send a load of packets to antoher program and
+    that is the end of the relationship
+    usage: suitable for applications that need fast transmission, such as games. the stateless
+      nature is useful for servers that answer small queries from huge numbers of clients
+    reliability: no guarantee that the packets sent would reach at all
+    data flow control: no flow control
+    error checking: has error checking but no recovery options
+    ex. DNS, DHCP, TFTP, SNMP, RIP, VOIP
 
 # does IP protect data on the network?
   IP leaves all issues of data protection to the transport protocal. both TCP and UDP have
@@ -14,7 +34,7 @@
   packet
 
 # can we detect a TCP connection has crashed?
-  no. detecting crashed system over TCP/IP is difficult.
+  no. detecting crashed system over TCP/IP is difficult
 
 # what OSI and TCP/IP stand for?
   OSI: Open System Interconnection
@@ -29,11 +49,13 @@
   both FTP and Telnet use TCP at the Transport layer; however, they both are Application
     layer protocols
 
-# Internet Control Message Protocol (ICMP) is used to send error messages through the network.
-  every segment or ICMP payload must be encapsulated within an IP datagram (packet).
+# Internet Control Message Protocol (ICMP)
+  used to send error messages through the network. every segment or ICMP payload must be
+    encapsulated within an IP datagram (packet).
 
-# Address Resolution Protocol (ARP) is used to find hardware address from a known IP address
+# Address Resolution Protocol (ARP)
+  used to find hardware address from a known IP address
 
-# DNS uses both TCP and UDP. DNS uses TCP for zone exchanges between servers and uses UDP
-  when a client is trying to resolve a hostname to an IP address
-
+# DNS
+  uses both TCP and UDP. DNS uses TCP for zone exchanges between servers and uses UDP when 
+    a client is trying to resolve a hostname to an IP address

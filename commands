@@ -14,17 +14,11 @@
   rsync -a -e ssh username@xx.xx.xx.xx:/remote_folder_path local_folder_path
   sftp username@xx.xx.xx.xx (login ftp and operate, ex. cd/ls/mkdir/rmdir/rm/pwd/put/get/exit)
 
-# check how much space left in current drive:
-  df -h
-
 # how to find cpu information os the system?
   cat /proc/cpuinfo
 
 # how to set environment variable?
   export var_name=1
-
-# how to check if a remote process is listening on a particular port?
-  telnet hostname port
 
 # how to find out whether the system is 32 or 64 bit? command: uname -a
   find out which operating system is running on in UNIX
@@ -37,23 +31,10 @@
 # how to replace all the keywords of a file with another?
   sed 's/word1/word2/g' filename
 
-# how to grep phone number pattern in a file, i.e. (xxx) xxx-xxxx or xxx-xxx-xxxx?
-  egrep '^[0-9]{3}-[0-9]{3}-[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
-  egrep '^([0-9]{3}-){2}[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
-
 # how to print the 3rd column of a tab separated file?
   awk -F "\t" '{print $3}' filename
-  cut -f3 filename
-
-# how to find which directory is taking how much space?
-  du -sh . (-s == -d 0, meaning list only depth 0)
-  du -h -d 0 .
-
-# how to find how many days the system is up?
-  uptime
-
-# how to find the hostname in your network using an IP address, or vice versa?
-  nslookup IP
+  cut -f3 filename (cut 3rd column using default separator "\t")
+  cut -d " " -f1 filename (cut 1st column using separator " ")
 
 # how to print the 10th line of a file?
   head -n 10 filename | tail -n 1
@@ -71,9 +52,6 @@
   how to kill a process? command: kill -9 PID
       signals: 9  ==> KILL, non-catchable, non-ignorable kill
                15 ==> TERM, software termination signal (default)
-
-# how to know if a remote host is alive?
-  ping "IpAddress"
 
 # how to see command line history in UNIX?
   history & grep
@@ -156,10 +134,6 @@
   passwd [username] ==> change user's password
   passwd -d username ==> remove user's password, user can login without password
 
-# ifconfig
-  ifconfig -a ==> view all the interfaces with status
-  ifconfig eth0 up, ifconfig eth0 down ==> start or stop an interface
-
 # uname
   uname -a ==> display information about system, ex. kernel name, host name, kernel release number
 
@@ -184,9 +158,6 @@
 # mysql
   mysql -u user_name -p ==> connect to the local mysql server
   mysql -u user_name -p -h 10.1.168.72 ==> connect to a remote mysql server
-
-# ping
-  ping -c 5 gmail.com ==> ping a remote host by sending only 5 packets
 
 # date
   date ==> show the system date

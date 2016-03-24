@@ -1,0 +1,38 @@
+# rsync: remote sync, synchronize the files and directories from one location to another
+  replicate the whole content between source and destination (local or remote) directories
+  - speed: transfers only the changed blocks or bytes
+  - security: allows encryption of data using ssh protocol
+  - less bandwidth: uses compression and decompression of data
+  ex.
+  1. sync two local folders
+    rsync -zvr /path/to/local/folder1/ /path/to/local/folder2/
+    (-z: enable compression, -v: verbose, -r: recursive mode)
+    (rsync does not preserve timestamps)
+  2. sync with preservation of timestamps, symbolic links, and permissions, etc.
+    rsync -avz /path/to/local/folder1/ /path/to/local/folder2/
+    (-a: recursive mode, preserves symbolic links, permissions, timestamps, and owners and groups)
+  3. sync only one file
+    rsync -v /path/to/local/file /path/to/local/folder/
+  4. sync to remote system, and vice versa
+    rsync -avz /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+    rsync -avz username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folde
+r/
+    Password: xxxxx (password required)
+    (you can set up passwordless login to bypass the entering of passwords)
+  5. enable the secured remote connection
+    rsync -avz -e ssh username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folder/
+  6. do not overwrite the modified files at the destination
+    rsync -avzu /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  7. sync only the directory tree structure (not the files)
+    rsync -v -d /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  8. delete the target file at the destination if the file not present in the source
+    rsync -avz --delete /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  9. do not create new files at the destination (sync only existing files at the destination)
+    rsync -avz --existing /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+ 10. include and exclude file patterns
+    rsync -avz --include '*.cpp' --exclude '*' /path/to/local/folder/ \
+      username@10.1.168.72:/path/to/remote/folder/
+    (include files and directories ending with .cpp and exclude all other files)
+ 11. do not transfer large files
+    rsync -avz --max-size='10K' /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+

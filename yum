@@ -1,0 +1,11 @@
+# Yellowdog Updater Modified
+  1. sudo yum update & upgrade
+  2. sudo yum install pkg_name
+  3. options:
+    -y: assumes yes to all questions
+    -q: quiet, run without output
+  4. yum --showduplicates list docker-engine | expand
+    yum list: list all available and installed packages
+  5. yum repolist
+    roduces a list of configured repositories (default: list all enabled repo)
+    config files at: /etc/yum.repos.d/

@@ -1,4 +1,4 @@
-# what is difference between swapping and paging?
+# swapping vs. paging
   swapping: move whole process from the swap device(ex. disk) to main memory for 
       execution (process size must be less than the available main memory)
       i.e. copy entire process address space out and in disk
@@ -17,7 +17,7 @@
       main memory simutaneously. (a page is a 4KB area of memory)
       i.e. copy one or more pages out and in disk
 
-# what is zombie process?
+# zombie process
   when a program forks and its child finishes before the parent, the kernel still keeps
       information about the child (the child is still in process table) in case the parent 
       needs it (ex. the parent needs to check the exit status of the child)
@@ -25,7 +25,7 @@
       case the structural information of the process is still in process table
   how to find zombie process? when run "ps aux", look for "Z" in the status field
 
-# what is ephemeral port in UNIX?
+# ephemeral port
   ephemeral ports are port used by OS for client sockets, there is a range on which OS can
       open any port in the ephemeral port range
   ephemeral port is a random high port used to communicate with a known server port
@@ -33,7 +33,7 @@
           22 is the standard ssh port on the remote server, and 37852 is the ephemeral port
           on my local machine
 
-21. why is 1970-1-1 the epoch time?
+# why is 1970-1-1 the epoch time?
 
   the unix system time increment every second, a 32-bit unsigned integer could only represent 
       around 136 years. for this reason, the time represented by 0 (called the epoch) is set 
@@ -41,18 +41,18 @@
   note that a 32-bit integer can represent dates up to 2038-1-19, on which date it will wrap 
       around to 1901-12-13.
 
-# what is kernel?
+# kernel
   kernel is the unix operating system which controls computer resources. it starts up a separate,
       interactive program, called shell, for each user
 
-# what is shell?
+# shell
   shell acts as an interface between the user and the system. it is an command interpreter that
       takes commands and set them up for execution
 
-# what is a directory?
+# directory
   a directory is specialized form of file that maintains a list of files
 
-# what are the differences of library functions, system calls, and UNIX commands?
+# differences of library functions, system calls, and UNIX commands
   library functions: at run-time user's executable code calls a function linked to a shared 
       library code (the library path is looked up at run-time to determine the location of
       the function to call)
@@ -72,7 +72,7 @@
         |                     |
         |--------------> system calls ----> OS kernel ----> computer hardware
 
-# what are static, shared dynamic, and loadable libraries?
+# static, shared dynamic, and loadable libraries
   library: group together multiple object code files into one single file, which simplies the
     multiple use and sharing of software components between applications
     ex. C++ STL can be linked with your code
@@ -136,8 +136,8 @@
         if (pid == 0) { ... } // do child's task
         else { ... } // do parent's task
 
-# directory permssion:
-  read permission: can list the content of the directory but cannot traverse the directory
+# directory permssions
+  read: can list the content of the directory but cannot traverse the directory
     (i.e. ls can view the filename in the, but cannot cat files in the directory)
     ex. mkdir read_only
         touch read_only/filename
@@ -146,7 +146,8 @@
           ls: filename: Permission denied
         cat read_only/filename
           cat: read_only/filename: Permission denied
-  execute permission: can traverse the directory but cannot list the content of the directory
+  write: need write permission to remove the directory
+  execute: can traverse the directory but cannot list the content of the directory
     ex. mkdir exe_only
         touch exe_only/filename
         echo content > exe_only/filename
@@ -154,7 +155,6 @@
           ls: : Permission denied
         cat exe_only/filename
           content
-  write permission: need write permission to remove the directory
   therefore, a normal directory requires read/write/execute permissions to view its content,
     traverse its files, and remove itself
 
@@ -188,7 +188,7 @@
     chmod 6755 filename ==> set SUID and SGID of the program
     chmod 1755 directory ==> set sticky bit of the directory
 
-# what is the difference between threads and processes?
+# threads vs. processes
   linux uses a 1-1 threading model (there is no distinction between processes and threads, and
     everything is simply a runnable task)
   on linux, system call clone() clones a task, with a configurable level of sharing between tasks

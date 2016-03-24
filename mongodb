@@ -1,0 +1,8 @@
+# what is MongoDB
+  1) NoSQL database
+  2) document-oriented: JSON-like documents with dynamic schemas
+  
+# namespace
+  namespace = database_name.collection_name
+
+# differences between MySQL and MongoDB

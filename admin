@@ -1,33 +1,7 @@
-# why is LVM required?
-  LVM: Logical Volume Manager, used to resize filesystem's size online. size of LVM partition
-       create logical partitions that can span across one or more physical hard drives
-    can be extended and reduced using lvextend and lvreduce commands.
-    ex. (extend)
-        lvextend -L +100M /dev/<name_lvm_partition> (extend the size by 100MB)
-        resize2fs /dev/<name_lvm_partition>
-        df -h (check the size of partition)
-        (reduce)
-        umount filesystem
-        resize2fs /dev/mapper/<name_lvm_partition> 10G
-        lvreduce -L 10G /dev/mapper<name_lvm_partition>
-
-# how to check memory and cpu stats?
-  memory: free and vmstat commands
-    ex. free, free -k, free -m, free -g (in bytes, kilo bytes, mega bytes, giga bytes)
-  cpu: sar command
-
-# how to create partition from a raw disk?
-  fdisk /dev/hd* (IDE) or fdisk /dev/sd* (SCSI)
-  type n (create a new partition)
-  type w (write changes to partition table)
-
-  used to manage hard disk partition: create/delete/change a partition
-  1. fdisk -l: list all existing disk partitions
-  2. fdisk /dev/sda (interactive): delete a hard disk partition, create a new disk partition,
-
-# where are the kernel modules located?
-  /lib/modules/<kernel-version>: all kernel modules or compiled drivers
-  use command lsmod to view all installed kernel modules
+# three admin rules
+  1. backup everything (and validate the backup) regularly
+  2. master the command line (avoid UI if possible)
+  3. automate everything
 
 # what is umask?
   umask: user file creation mask, which controls the file permissions when file or directory
@@ -41,7 +15,10 @@
       directory permission 750 (rwxr-x---), file permission 644 (rw-r-----)
     umask 077 ==> severe
       directory permission 700 (rwx------), file permission 600 (rw-------)
+  default umask: 022
+    i.e. files created users by default are of permissions: 755 (cf. /etc/login.defs)
 
+<<<<<<< HEAD
 # how to change the default run level in linux?
   init: command that temporarily change run level, ex. init 3 (default level is 5)
   edit: /etc/inittab
@@ -172,32 +149,17 @@
     rsync -avz --max-size='10K' /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
 
 # 2 steps to setup passwordless login
+=======
+# two steps to setup passwordless login
+>>>>>>> 902a80f1f4b8eaf3bc496cd117112f268a40ddf0
   login remote host without password
-  1. ssh-keygen: creates public and private keys
-  2. ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72
-    (appends the keys to remote host's .ssh/authorized_key)
+  1. ssh-keygen: creates public and private keys (local host)
+  2. ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72 (remote host)
+     (appends the keys to remote host's ~/.ssh/authorized_key)
+     or manually, copy public key to ~/.ssh/authorized_key
+     (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
 
-# 5 steps to setup user and group disk quota
-  - hard limit: if set to 2GB, user cannot create new files after using 2GB
-  - soft limit: if set to 1GB, user will receive warning but can still create files before reaching
-    hard limit
-  - grace period: if set to 10 days, user can create new files in additional 10 days
-  1. enable quota check
-    edit /etc/fstab
-    LABEL=/home /home ext2 defaults,usrquota,grpquota 1 2
-  2. initial quota check
-    quotacheck -avug
-    (-a: check all quota-enabled filesystems, -v: verbose, -u: check user disk quota,
-     -g: check group disk quota)
-  3. assign disk quota to a user
-    edquota username
-  4. report disk quota usage
-    repquota /home
-  5. add quotacheck to daily cron job
-    add file /etc/cron.daily/quotacheck (quotacheck -avug)
-    (this will send the output of the quotacheck command to root email address)
-
-# troubleshooting using dmesg:
+# troubleshooting using dmesg
   when system boots up, kernel gets loaded into the memory and then kernel controls the entire
     system. the messages about the hardware devices are printed out on the screen and can be
     viewed using dmesg command
@@ -228,57 +190,6 @@
   3. sudo modprobe vmhgfs: install new module vmhgfs into linux kernel
   4. modprobe -r vmhgfs: remove currently loaded module (-r: unload module)
 
-# ethtool: view and change ethernet device parameters
-  1. ethtool eth0: list ethernet device properties
-  2. ethtool -s eth0 autoneg off: turn off auto-negotiation
-
-# nfs mouting
-  1. exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
-  2. exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
-  3. edit /etc/exports ==> make export permanent
-     ex. /path/to/local/folder 10.1.168.72
-  4. mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
-     to a local folder
-  5. edit /etc/fstab ==> make mount permanent
-     ex. 10.1.168.72:/path/to/remote/folder /path/to/local/folder ext3 defaults 0 0
-  5. umount /path/to/local/folder ==> umount a remote filesystem
-
-# setup squid to control internet access
-  squid is a proxy caching server used to control network access at your work environment
-  1. restrict access to specific websites
-     ex. www.google.com/www.facebook.com
-  2. restrict access to particular network
-     ex. 192.168.1.0/24
-  3. use regular expression to allow or deny websites
-
-# 2 ways to add swap space using dd, mkswap, and swapon
-  free -k/-m/-g/-h: show the swap space currently used by the system
-  1. use a hard disk partition as swap space
-     mkswap /dev/sdc1, swapon /dev/sdc1
-     (edit /etc/fstab: make the swap space permanent
-      /dev/sdc1 swap swap defaults 0 0)
-  2. use a file as swap space
-     dd if=/dev/zero of=/path/to/local/file bs=1M count=1024 ==> create a zeroed, 1024MB file
-     chmod 600 /path/to/local/file
-     mkswap /path/to/local/file, swapon /path/to/local/file
-
-# snort
-  a free lightweight network intrusion detection system for both Unix/Windows systems
-
-# view and delete iptable rules
-  1. view all iptable rules: iptables --list
-  2. delete iptable rules: iptables --flush
-
-# disable ping replies
-  to avoid network flooding or network congestion
-  1. echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
-  2. edit sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
-
-# create linux user
-  1. useradd username ==> create users with default configurations
-  2. adduser username ==> create users interactively
-  3. newusers filename ==> create bulk users from file (the same format as /etc/passwd)
-
 # mount and view ISO files
   ISO: International Organization for Standardization
   ISO files, typically used to distribute operating systems
@@ -286,18 +197,7 @@
 
 # chage
   used to manage password expiration and aging
-
-# ifconfig
-  used to initialize network interfaces and to enable/disable network interfaces
-  promiscuous mode: a network card never drops a packet
-  MTU(maximun transmission unit): the maximun number of octects the interface can handle in
-    one transaction (default: 1500)
-  1. ifconfig eth0
-  2. ifconfig -a
-  3. ifconfig eth0 up (ifup eth0)
-  4. ifconfig eth0 down (ifdown eth0)
-  5. ifconfig eth0 192.168.2.2 ==> assign the IP address to an interface
-  6. ifconfig eth0 promisc, ifconfig eth0 -promisc
+  ex. chage -l username (list the info of password parameters of a user)
 
 # WOL (WakeOnLan): power up server remotely
   1. NIC needs to support WOL feature
@@ -308,10 +208,6 @@
 
 # lshw: list hardware spec
   supports html and xml format (lshw -html, lshw -xml)
-
-# disable SELinux (Security-Enhanced Linux)
-  1. echo "0" > /selinux/enforce ==> disable temporarily
-  2. edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
 
 # ipcs
   IPC (Inter-Process Communication)
@@ -325,17 +221,47 @@
      resource. no data is passed with a semaphore, it simply coordinates access to shared resources
   ipcs -a: list all the IPC facilities which has read access for the current process
 
-# fdisk: manage hard disk partition
-  create a partition, delete a partition, or change a partition
-  1. fdisk -l: list all existing disk partitions
-  2. fdisk /dev/sda (interactive): delete a hard disk partition, create a new disk partition,
-     
 # logrotate: manage log files
   rotate the log files, compress the rotated log files, log files with date filenames,
     remove old log files
   edit /etc/logrotate.conf
 
-# 3 admin rules
-  1. backup everything (and validate the backup) regularly
-  2. master the command line (avoid UI if possible)
-  3. automate everything
+# ssh
+  options -T: Disable pseudo-tty allocation
+    do ssh test connection with -T, because some server could abort the transaction entirely
+    if a text-terminal (tty) is requested. -T avoids requesting said terminal, since GitHub
+    has no intention of giving you an interactive secure shell, where you could type command.
+    GitHub only wants to reply to your ssh request, in order to ascertain that the ssh command
+    does work (have the right public/private keys, and the public one registered to GitHub)
+
+# print subdirectories recursively
+  find /path/to/folder -type d -print
+
+# mv
+  mv -fv /path/to/file /path/to/folder/
+  options:
+    -f: do not prompt for confirmation before overwriting the destination path
+    -v: be verbose, showing files after they are moved
+
+# rm
+  mv -rf /path/to/folder
+  options:
+    -f: do not prompt for confirmation before removing files
+    -r: be recursive
+
+# skeleton files for bash environment: (.bash_profile and .bashrc)
+  /etc/skel/.bash_profile
+  /etc/skel/.bashrc
+  /etc/skel/.bash_logout
+
+# locale: Get locale-specific information
+
+# configure, make, make install
+ 1) configure: preparation of building the software on your specific system, making sure
+    that all the dependencies for the rest of the build and install process are available, and
+    finding out whatever it needs to know to use those dependencies
+ 2) make: runs a series of tasks defined in a Makefile to build the program from its source code
+ 3) make install: once the software is built and ready to run, the files need to be copied to
+    their final destination, so make install will copy the built program and its libraries and
+    documentations to the correct locations
+

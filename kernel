@@ -1,0 +1,7 @@
+# where are the kernel modules located?
+  /lib/modules/<kernel-version>: all kernel modules or compiled drivers
+  use command lsmod to view all installed kernel modules
+
+# how to change kernel parameters?
+  edit: /etc/sysctl.conf
+  sysctl -p (make the changes permanently without rebooting)

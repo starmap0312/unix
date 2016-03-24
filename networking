@@ -1,16 +1,71 @@
-1. hostname: display the machine's hostname
-   hostname -d: display the domain name the machine belongs to
-   hostname -f: display the fully qualified host and domain name
-   hostname -i: display the IP address for the current machine
+# ifconfig
+  used to initialize network interfaces and to enable/disable network interfaces
+  promiscuous mode: a network card never drops a packet
+  MTU(maximun transmission unit): the maximun number of octects the interface can handle in
+    one transaction (default: 1500)
+  1. ifconfig eth0
+  2. ifconfig -a
+  3. ifconfig eth0 up (ifup eth0)
+  4. ifconfig eth0 down (ifdown eth0)
+  5. ifconfig eth0 192.168.2.2 ==> assign the IP address to an interface
+  6. ifconfig eth0 promisc, ifconfig eth0 -promisc
 
-2. ping: send packets to destination device, the destination device will send packets back
-   once recevied
-   two purposes: 1. ensure network connection can be established
-                 2. timing information such as the speed of the connection
+# ethtool: view and change ethernet device parameters
+  1. ethtool eth0: list ethernet device properties
+  2. ethtool -s eth0 autoneg off: turn off auto-negotiation
 
-3. ifconfig: network configuration (current network adapter configuration)
+# default ports:
+  SMTP: 25
+  DNS: 53
+  FTP: 20 (data transfer), 21 (connection established)
+  DHCP: 67 (UDP, DHCP server), 63 (UDP, DHCP client)
+  SSH: 22
+  Squid: 3128
+
+# what is network bonding?
+  the aggregation of multiple LAN cards into a single bonded interface to provide fault
+    tolerance and high performance (a.k.a NIC teaming)
+
+# how to check default route and routing table?
+  netstat -nr: default route
+  route -n: routing table (-n: not resolve names)
+  ex.
+    Destination     Gateway         Genmask         Flags Metric Ref    Use Iface
+    10.240.80.0     0.0.0.0         255.255.254.0   U     0      0        0 eth0
+    169.254.0.0     0.0.0.0         255.255.0.0     U     1002   0        0 eth0
+    0.0.0.0         10.240.80.1     0.0.0.0         UG    0      0        0 eth0
+  (10.240.80.0: host's network, 10.240.80.1: destination, Flags: U (Up), G (Gateway))
+
+# how to check which port are listening in my system?
+  netstat --listen
+  lsof -i
+
+# hostname: display the machine's hostname
+  hostname -d: display the domain name the machine belongs to
+  hostname -f: display the fully qualified host and domain name
+  hostname -i: display the IP address for the current machine
+
+# ping: send packets to destination device, the destination device will send packets back
+  two purposes: 1. ensure network connection can be established (Layer 3 health check: IP)
+                2. timing information such as the speed of the connection
+  ex. ping [hostname/host_ip]
  
-4. netstat: finding information of connection to and from the host
+  ping -c 5 gmail.com ==> ping a remote host by sending only 5 packets
+
+# telnet: used to communicate with a host through the TELNET protocol 
+  - often used to check if a host is listening on a port (Layer 7 health check: TELNET)
+    ex. telnet [hostname/host_ip] 80
+  - send commands to the host, ex. HELO/GET
+  - press Ctrl + ] to go back to the interactive mode, then type quit to exit
+ 
+# nc: arbitrary TCP and UDP connections and listens
+  - often used to check if a host is listening on a port (Layer 4 health check: TCP/UDP)
+    options:
+     -w: timeout, if connection/stdin are idle for timeout seconds, then connection is closed
+     -v: verbose output
+    ex. nc -w 1 [hostname/host_ip] 4080 -v
+
+# netstat: finding information of connection to and from the host
    netstat -a: display all connections including TCP and UDP connections
    netstat -t: display only TCP connection
    netstat -u: display only UDP connection
@@ -18,45 +73,68 @@
    ex. how to find which remote hosts are connecting to you on a particular port, ex. 10123?
        command: netstat -a | grep "10123"
 
-5. nslookup: ip address <-> hostname
-   find all IP addresses for a given domain name
-   ex. nslookup www.google.com
+# nslookup: query Internet name servers interactively
+  1. find the hostname in your network using an IP address, or vice versa?
+    nslookup [host_ip]
+    nslookup [hostname]
+  2. find all IP addresses for a given domain name
+    nslookup www.google.com
 
-6. traceroute: view the number of hops and response time to get to a remote system
+# traceroute: view the number of hops and response time to get to a remote system
 
-7. finger: view user information such as user's login name, real time, terminal name, and
-       write status
+# finger: view user information such as user login name/real time/terminal name/write status
  
-8. telnet: connect destination host via telnet protocol
-   telnet "hostname" "port"
+# what is private IP?
+  there are 3 IP ranges reserved for private address that are not valid for internet use
+  class A: 10.0.0.0 - 10.255.255.255 (256 * 256 * 256)
+  class B: 172.16.0.0 - 172.31.255.255 (16 * 256 * 256)
+  class C: 198.168.0.0 - 192.168.255.255 (256 * 256)
 
-9. what is private IP?
-   there are 3 IP ranges reserved for private address that are not valid for internet use
-   class A: 10.0.0.0 - 10.255.255.255 (256 * 256 * 256)
-   class B: 172.16.0.0 - 172.31.255.255 (16 * 256 * 256)
-   class C: 198.168.0.0 - 192.168.255.255 (256 * 256)
+# what is the benefit of subnetting?
+  provide a way to secure network traffic by isolating it from the rest of network
+  reduce network traffic (broadcast traffic can be isolated within a single logical network)
+  reduce the size of routing table
 
-10. what is the benefit of subnetting?
-   provide a way to secure network traffic by isolating it from the rest of network
-   reduce network traffic (broadcast traffic can be isolated within a single logical network)
-   reduce the size of routing table
+# what is the difference between static and dynamic IPs?
+  static IP: IP address is configured to the same IP address
+  dynamic IP: IP address may change periodically and is managed by a centralized network device
 
-11. what is the difference between static and dynamic IPs?
-   static IP: IP address is configured to the same IP address
-   dynamic IP: IP address may change periodically and is managed by a centralized network device
+# what is DHCP scope?
+  a range or pool of IP addresses that can be leased to DHCP clients on a given subnet
 
-12. what is DHCP scope?
-   a range or pool of IP addresses that can be leased to DHCP clients on a given subnet
+# what is FQDN?
+  fully qualified domain name which contains both hostname and domain name
+  it uniquely identifies a host within a DNS hierarchy
 
-13. what is FQDN?
-   fully qualified domain name which contains both hostname and domain name
-   it uniquely identifies a host within a DNS hierarchy
+# what is the DNS forwarder?
+  DNS servers often need to communicate with DNS servers outside of the local network
+  when a DNS server receives DNS queries that it cannot resolve locally, it then forwards
+  the queries to external DNS servers for resolution
 
-14. what is the DNS forwarder?
-   DNS servers often need to communicate with DNS servers outside of the local network
-   when a DNS server receives DNS queries that it cannot resolve locally, it then forwards
-   the queries to external DNS servers for resolution
+# Differentiated Services Code Point (DSCP)
+  a field in IP packet used to differenticate services
 
-15. 
-yahho
-yahoo
+# ip: show / manipulate routing, devices, policy routing and tunnels
+  combine ifconfig + route commands
+  ip -s: statistics
+  ip route show / ip r: list routes
+  (displays the contents of the routing tables or the route(s) selected by some criteria)
+  ex.
+    10.240.80.0/23 dev eth0  proto kernel  scope link  src 10.240.80.73 
+    169.254.0.0/16 dev eth0  scope link  metric 1002
+
+# arp: manipulate the system ARP cache (ARP: Address Resolution Protocol)
+  a local host sends arp packages to all the hosts in the subnet to obtain their MAC addresses
+  (which will be written into the arp table)
+  commands:
+    arp
+      Address                  HWtype  HWaddress           Flags Mask            Iface
+      ha1.vl-144.bas-1-prd.sg  ether   00:00:0c:9f:f0:01   C                     eth0
+
+    arp -n: get the IP/MAC mapping info from the arp table (-n: not resolve name)
+      Address                  HWtype  HWaddress           Flags Mask            Iface
+      10.240.80.1              ether   00:00:0c:9f:f0:01   C                     eth0
+
+# change MAC address
+  sudo ifconfig en0 lladdr ac:bc:32:c3:cc:c3
+

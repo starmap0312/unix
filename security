@@ -1,0 +1,82 @@
+# TCP wrappers: used to grant or deny access to services on your machine
+  install tcp_wrappers package: it uses simple Access List Rules
+  1. /etc/hosts.allow: allow connections in this list
+    ex. ALL : 192.168.0.1/255.255.255.0
+        in.telnetd: .ntu.edu.tw: Allow
+  2. /etc/hosts.deny: if no match in item 1, deny connections in this list
+    ex. sshd: ALL
+
+# view and delete iptable rules
+  1. view all iptable rules: iptables --list
+  2. delete iptable rules: iptables --flush
+
+# disable ping replies
+  to avoid network flooding or network congestion
+  1. echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
+  2. edit sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
+
+# ssh-agent
+
+  bypass entering passphrase if you set up a passphrase while creating the public/private
+    key pairs
+  (MAC: ssh-agent is by default running, Centos: need to run ssh-agent + ssh-add)
+
+  usage: keeps your private key in memory and use it in order to passwordlessly ssh to a host
+  ex.
+  basic usage
+    localhost (MAC/CentOS) --> Remote Hosts
+    (bypass entering the passphrase as long as ssh-agent is launched and localhost's private 
+     key is added to Remote Hosts authorized_keys)
+  advanced usage
+    localhost (MAC/CentOS) --> Server --> Remote Hosts
+    (you can add a new line in ~.ssh/config: ForwardAgent yes, so that localhost's private key 
+     will be forwarded when Server is making connections with Remote Hosts)
+
+  need to launch ssh-agent whenever you launch a new shell, or
+  edit .bash_profile (no need to do this on MAC)
+
+.bash_profile:
+
+SSH_ENV=$HOME/.ssh/environment
+function start_agent {
+     echo "Initializing new SSH agent…"
+     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > ${SSH_ENV}
+     echo succeeded
+     chmod 600 ${SSH_ENV}
+     . ${SSH_ENV} > /dev/null
+     /usr/bin/ssh-add;
+}
+
+if [ -f "${SSH_ENV}" ]; then
+     . ${SSH_ENV} > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+         start_agent;
+     }
+else
+     start_agent;
+fi
+
+# check if ssh forwarding is enabled
+ 1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
+    is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
+ 2) ssh-add -L: list the keys added on the local machine's agent
+ 3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
+    env | grep SSH_AUTH_SOCK
+
+# disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
+  add a new line in .ssh/config: StrictHostKeyChecking no
+
+# disable SELinux (Security-Enhanced Linux)
+  1. echo "0" > /selinux/enforce ==> disable temporarily
+  2. edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
+
+# setup squid to control internet access
+  squid is a proxy caching server used to control network access at your work environment
+  1. restrict access to specific websites
+     ex. www.google.com/www.facebook.com
+  2. restrict access to particular network
+     ex. 192.168.1.0/24
+  3. use regular expression to allow or deny websites
+
+# snort
+  a free lightweight network intrusion detection system for both Unix/Windows systems
