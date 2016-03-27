@@ -1,3 +1,7 @@
+# shebang: #!/bin/bash"
+  the script is to be executed by /bin/bash
+  ("#" is called hash and "!" is called bang)
+
 # two types of variables
   1) environment variables (system-defined variables):
      ex. echo $PATH
@@ -70,11 +74,11 @@
   ex.
   x=10              <==== there cannot be spaces surrounding = (i.e. no x_=_10)
   y=20              <==== there cannot be spaces surrounding = (i.e. no y_=_10)
-  if [ $x -gt $y ]  <==== use $variable_name to access variable
+  if [ $x -gt $y ];  <==== use $variable_name to access variable
   then
-      echo "x > y"
+      echo "x > y";
   else
-      echo "x <= y"
+      echo "x <= y";
   fi
 
 # perform arithmetic operation
@@ -109,7 +113,7 @@
     test if the non-empty filename exists; otherwise, print error message and exit with 1
 
 # how to define function?
-  function_name ()
+  function_name()
   {
       commands
   }
@@ -120,38 +124,38 @@
       read -p "input a number: " var
       echo "the input number is $var"
   }
-  func
+  func  <== execute func
 
 # nested if statement
   if [ condition ];  <==== [_condition_] must have spaces surrounding condition
   then              <==== must be put in a distinct line (cannot be put after the if-statement)
-      command1
-      command2
+      command1;
+      command2;
   else              <==== must be put in a distinct line
-      if [ condition ]
+      if [ condition ];
       then
-          command3
+          command3;
       else
-          command4
+          command4;
       fi
   fi                <==== must be put in a distinct line
 
 # the while-loop statement
   while [ condition ];
   do
-      command
+      command;
   done
 
 # the for-loop statement
   for var in value1 value2 value3;
   do
-      command
+      command;
   done
 
   ex.
-  for a in dog cat tiger
+  for a in dog cat tiger;
   do
-      echo "$a"
+      echo "$a";
   done
 
 # the switch statement
@@ -182,8 +186,4 @@
       echo "$a != 1 and $a != 2"
       ;;
   esac
-
-# what is the use of "#!/bin/bash"?
-  known as shebang, where # is called hash and ! is called bang
-  indicates that the script is to be executed by /bin/bash
 
