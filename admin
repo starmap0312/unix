@@ -18,6 +18,143 @@
   default umask: 022
     i.e. files created users by default are of permissions: 755 (cf. /etc/login.defs)
 
+# how to change the default run level in linux?
+  init: command that temporarily change run level, ex. init 3 (default level is 5)
+  edit: /etc/inittab
+
+# how to list or enable services that are enabled at a particular run level?
+  list service: chkconfig --list | grep 5:on
+  enable service: chkconfig <name_service> on --level 3
+
+# how to share a directory using nfs?
+  edit file: /etc/exports
+  add a entry: /<name_directory> <ip or network>(options)
+  restart nfs service
+
+# how to check nfs share?
+  showmount -e <ip_nfs>
+
+# default ports:
+  SMTP: 25
+  DNS: 53
+  FTP: 20 (data transfer), 21 (connection established)
+  DHCP: 67 (UDP, DHCP server), 63 (UDP, DHCP client)
+  SSH: 22
+  Squid: 3128
+
+# what is network bonding?
+  the aggregation of multiple LAN cards into a single bonded interface to provide fault
+    tolerance and high performance (a.k.a NIC teaming)
+
+# how to check default route and routing table?
+  netstat -nr: default route
+  route -n: routing table
+
+# how to check which port are listening in my system?
+  netstat --listen
+  lsof -i
+
+# how to change kernel parameters?
+  edit: /etc/sysctl.conf
+  sysctl -p (make the changes permanently without rebooting)
+
+# what is load average in a linux?
+  the average sum of the number of process waiting in the run queue and the number of process
+    currently executing over the period of 1, 5, and 15 minutes
+  use top and uptime command to find out the load average
+
+# what is GRUB?
+  a multiboot boot loader (boot loader is the first software program that runs when a
+    computer starts; it loads and transfer control to OS kernel software)
+
+# explain linux boot process
+  there are 6 high-level stages
+  1) BIOS: basic input/output system
+  2) MBR: master boot record
+  3) GRUB: grand unified bootloader
+  4) Kernel: kernel
+  5) Init: init
+  6) Runlevel: runlevel programs are executed from /etc/rc.d/rc[0-6].d/
+
+# what is user profile file?
+  $HOME/.bash_profile, $HOME/.bash_bashrc
+
+# how to show user info?
+  finger <username>
+
+# how to lock user password
+  usermod -L username
+  passwd -d username (remove user's password, user can login without password)
+
+# dd: a useful backup command
+  used by linux kernel makefiles to make boot images, need to be run as superuser
+  ex.
+  1) disk to disk backup
+     dd if=/dev/sda of=/dev/sdb
+     (backup an entire hard disk to another hard disk connected to the same system)
+     (if: inputfile, of: output file)
+     dd if=/dev/sda of=/dev/sdb conv=noerror,sync
+     (conv=noerror: continue to copy if there are read errors, sync: copy via synchronized I/O)
+  2) create an image of a hard disk
+     dd if=/dev/hda of=/path/to/folder/hda.img
+     (create and save the disk image file in other storage devices, allowing quick data restoring)
+  3) restore disk using hard disk image
+     dd if=/path/to/folder/hdadisk.img of=/dev/hdb
+     (continuing 2, the above command restores /dev/hda to /dev/hdb)
+  4) create a floppy image
+     dd if=/dev/fd0 of=floppy.img
+  5) backup a partition
+     dd if=/dev/hda1 of=/path/to/folder/hda_partition1.img
+  6) CDROM backup
+     dd if=/dev/cdrom of=/path/to/folder/cdrom.iso bs=2048
+     (if CD is auto mounted, unmount the CD device before creating the iso image)
+     (bs=2048: specify the block size)
+
+# rsync: remote sync, synchronize the files and directories from one location to another
+  replicate the whole content between source and destination (local or remote) directories
+  - speed: transfers only the changed blocks or bytes
+  - security: allows encryption of data using ssh protocol
+  - less bandwidth: uses compression and decompression of data
+  ex.
+  1) sync two local folders
+    rsync -zvr /path/to/local/folder1/ /path/to/local/folder2/
+    (-z: enable compression, -v: verbose, -r: recursive mode)
+    (rsync does not preserve timestamps)
+  2) sync with preservation of timestamps, symbolic links, and permissions, etc.
+    rsync -avz /path/to/local/folder1/ /path/to/local/folder2/
+    (-a: recursive mode, preserves symbolic links, permissions, timestamps, and owners and groups)
+  3) sync only one file
+    rsync -v /path/to/local/file /path/to/local/folder/
+  4) sync to remote system, and vice versa
+    rsync -avz /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+    rsync -avz username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folder/
+    Password: xxxxx (password required)
+    (you can set up passwordless login to bypass the entering of passwords)
+  5) enable the secured remote connection
+    rsync -avz -e ssh username@10.1.168.72:/path/to/remote/folder/ /path/to/local/folder/
+  6) do not overwrite the modified files at the destination
+    rsync -avzu /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  7) sync only the directory tree structure (not the files)
+    rsync -v -d /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  8) delete the target file at the destination if the file not present in the source
+    rsync -avz --delete /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+  9) do not create new files at the destination (sync only existing files at the destination)
+    rsync -avz --existing /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+ 10) include and exclude file patterns
+    rsync -avz --include '*.cpp' --exclude '*' /path/to/local/folder/ \
+      username@10.1.168.72:/path/to/remote/folder/
+    (include files and directories ending with .cpp and exclude all other files)
+ 11) do not transfer large files
+    rsync -avz --max-size='10K' /path/to/local/folder/ username@10.1.168.72:/path/to/remote/folder/
+
+# two steps to setup passwordless login
+  login remote host without password
+  1) ssh-keygen: creates public and private keys (local host)
+  2) ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72 (remote host)
+     (appends the keys to remote host's ~/.ssh/authorized_key)
+     or manually, copy public key to ~/.ssh/authorized_key
+     (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
+
 # troubleshooting using dmesg
   when system boots up, kernel gets loaded into the memory and then kernel controls the entire
     system. the messages about the hardware devices are printed out on the screen and can be

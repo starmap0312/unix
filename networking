@@ -135,3 +135,12 @@
       Address                  HWtype  HWaddress           Flags Mask            Iface
       10.240.80.1              ether   00:00:0c:9f:f0:01   C                     eth0
 
+# change MAC address
+  1) MacOS
+    sudo ifconfig en0 lladdr ac:bc:32:c3:cc:c3
+  2) CentOS/RHEL
+    2.1) add the following line to /etc/sysconfig/network-scripts/ifcfg-eth0
+        MACADDR=ac:bc:32:c3:cc:c3
+    2.1) restart the network service
+        service network restart
+        ifconfig eth0
