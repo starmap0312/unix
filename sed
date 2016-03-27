@@ -1,5 +1,5 @@
-# sed command: (sed often handles rows, whereas awk handles the fields of a row)
-
+# sed command
+  sed often handles rows, whereas awk handles the fields of a row
   ex.
   sed -n '3,5p' filename: print 3rd to 5th rows 
       -n: no echoed to STDOUT
@@ -13,3 +13,10 @@
           sed -e 's/#.*//' filename ==> remove comments
           sed -e 's/.$//' filename ==> convert DOS newlines ('\r\n') with Unix format
 
+# replace all the keywords of a file row by row 
+  sed 's/word1/word2/g' filename
+
+# print the 10th line of a file
+  sed -n '10p' filename
+  awk 'NR == 10' filename
+  head -n 10 filename | tail -n 1

@@ -1,75 +1,21 @@
 # list all the links from a directory: ls -lrt | grep "^l"
-  ls -l => list long format
-  ls -t => sort by modified time (new to old)
-  ls -rt => sort by reversed modified time (old to new)
+  options:
+    -l: list long format
+    -t: sort by modified time (new to old)
+    -rt: sort by reversed modified time (old to new)
   grep "^l" => grep lines that begins with l (which represents link files)
 
-# create a read-only file
-  touch filename; chmod 400 filename
-
-# copy file from one host to other
+# scp: copy file from one host to other
   scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
   scp username@xx.xx.xx.xx:/remote_filepath local_folder_path
   rsync -a local_folder_path1 local_folder_path2
   rsync -a -e ssh username@xx.xx.xx.xx:/remote_folder_path local_folder_path
   sftp username@xx.xx.xx.xx (login ftp and operate, ex. cd/ls/mkdir/rmdir/rm/pwd/put/get/exit)
 
-# how to find cpu information os the system?
-  cat /proc/cpuinfo
-
-# how to set environment variable?
-  export var_name=1
-
-# how to find out whether the system is 32 or 64 bit? command: uname -a
-  find out which operating system is running on in UNIX
-
 # what is nohup in UNIX?
   nohup is a command used to run process in background, but unlike & the process started with
-      nohup will not stop even if the user who started the process log off the system
-      in contrast, use & the process will terminate as soon as the user log off the system
-
-# how to replace all the keywords of a file with another?
-  sed 's/word1/word2/g' filename
-
-# how to print the 3rd column of a tab separated file?
-  awk -F "\t" '{print $3}' filename
-  cut -f3 filename (cut 3rd column using default separator "\t")
-  cut -d " " -f1 filename (cut 1st column using separator " ")
-
-# how to print the 10th line of a file?
-  head -n 10 filename | tail -n 1
-  sed -n '10p' filename
-  awk 'NR == 10' filename
-
-# what is command substitution?
-  backquotes: command enclosed in backquotes are executed by shell and its stdout is viewed
-      as arguments in the command line
-  ex. sudo chown `id -u` /folder_name (id -u == 1000 is your user id), so the command is equal to
-      sudo chown 1000 /folder_name
-
-# how to run a process in background? command: ./prog1 &
-  how to bring a background process into foreground? command: fg "JobId"
-  how to kill a process? command: kill -9 PID
-      signals: 9  ==> KILL, non-catchable, non-ignorable kill
-               15 ==> TERM, software termination signal (default)
-
-# how to see command line history in UNIX?
-  history & grep
-
-# execute previous commands:
-  1. !"cmd": execute last command of cmd
-  2. !!: execute last command
-  3. CRTL + r and type command initials
-  4. history | grep command
-  ex. ls -lrt ==> !ls executes last ls command
-      vim filename ==> !vim executes last vim command
-
-# move across directories:
-  1. cd ~ (move to home directory)
-  2. cd - (move to previous directory)
-
-# suspend process:
-  CTRL + z to suspend running process and fg 1, fg 2 to bring it on foreground
+    nohup will not stop even if the user who started the process log off the system
+    in contrast, use & the process will terminate as soon as the user log off the system
 
 # tar:
   tar cvf archive_name.tar dirname/
@@ -78,6 +24,14 @@
 # diff:
   diff -w filename1 filename2: ignore white spaces when comparing
   ("Ilov eyo u" == "I love you")
+
+# vimdiff
+  vimdiff filename1 filename2
+  Ctrl + w, then leftArrow / rightArrow ==> jump to the left / right window
+  :qa ==> quit all
+  :wa ==> write all
+  :wqa ==> write and then quit all
+  :qa! ==> force to quit all
 
 # sort:
   sort filename: sort a file in an ascending order
@@ -170,3 +124,32 @@
 # ldd: print shared library dependencies
   ldd filename ==> list all dynamic libraries used by an executable
   (use pmap to view the libraries used by a running process)
+
+# zcat/zmore/zless
+  uncompress .gz file and write the uncompressed data on standard output
+
+# tee: direct to both stdout and a file
+  echo helloworld | tee filename
+
+# strip command
+  discard symbols from object files
+
+# mktemp commnad
+  mktemp: make temporary file (unique)
+  mktemp -d: make temporary directory (unique)
+
+# expand: convert tabs to spaces
+  ex.
+    yum --showduplicates list docker-engine | expand
+
+# echo
+  options:
+    -n: do not output the trailing newline (no newlines)
+    -e: enable interpretation of backslash escapes
+  ex.
+    echo name\taddress   ==> nametaddress
+    echo "name\taddress" ==> name       address
+    for i in filename0[0-5];
+      do echo -e $i"\t";
+    done
+    (-e: enable "\t", i.e. tab escape)

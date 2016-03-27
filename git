@@ -60,6 +60,8 @@
 
 # create a local branch that tracks a remote branch
   git branch --track branch-name origin/branch-name
+  git checkout -b branch-name origin/branch-name
+  (create a local branch that tracks a remote branch, and then switch to the local branch)
 
 # delete a local branch
   git branch -d the_local_branch

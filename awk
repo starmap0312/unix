@@ -12,6 +12,11 @@
   tail -n 3 filename | awk '{print $1 "\t" $3}' ==> print column 1 and column 3 of last 3 lines
   awk -F ':' '$3==$4' /etc/passwd
 
+# example: print the 3rd column of a tab separated file
+  awk -F "\t" '{print $3}' filename (default delimiter: "\t", " ", "\n")
+  cut -f3 filename (default delimiter: "\t")
+  cut -d " " -f3 filename (cut 3rd column using delimiter: " ")
+
 # gawk: pattern scanning and processing language (GNU awk)
   gawk '/pattern/ {action}' filename
   ex. content in filename

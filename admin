@@ -1,7 +1,7 @@
 # three admin rules
-  1. backup everything (and validate the backup) regularly
-  2. master the command line (avoid UI if possible)
-  3. automate everything
+  1) backup everything (and validate the backup) regularly
+  2) master the command line (avoid UI if possible)
+  3) automate everything
 
 # what is umask?
   umask: user file creation mask, which controls the file permissions when file or directory
@@ -18,36 +18,30 @@
   default umask: 022
     i.e. files created users by default are of permissions: 755 (cf. /etc/login.defs)
 
-# two steps to setup passwordless login
-  login remote host without password
-  1. ssh-keygen: creates public and private keys (local host)
-  2. ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72 (remote host)
-     (appends the keys to remote host's ~/.ssh/authorized_key)
-     or manually, copy public key to ~/.ssh/authorized_key
-     (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
-
 # troubleshooting using dmesg
   when system boots up, kernel gets loaded into the memory and then kernel controls the entire
     system. the messages about the hardware devices are printed out on the screen and can be
     viewed using dmesg command
-  1. view the boot messages: dmesg | more
-  2. view avaiable system memory message: dmesg | grep Memory
-  3. view Ethernet link status (UP/DOWN): dmesg | grep eth
-  4. change the dmesg buffer size: edit /boot/config (change CONFIG_LOG_BUF_SHIFT=18)
-  5. clear messages in dmesg buffer: dmesg -c
+  1) view the boot messages: dmesg | more
+  2) view avaiable system memory message: dmesg | grep Memory
+  3) view Ethernet link status (UP/DOWN): dmesg | grep eth
+  4) change the dmesg buffer size: edit /boot/config (change CONFIG_LOG_BUF_SHIFT=18)
+  5) clear messages in dmesg buffer: dmesg -c
 
 # rpm package management (Redhat/CentOS)
   rpm: Redhat Package Manager
-  1. install an rpm package: rpm -ivh MySQL-client-3.23.57-1.i386.rpm
+  1) install an rpm package: rpm -ivh MySQL-client-3.23.57-1.i386.rpm
     (-i: install, -v: verbose, -h: print hash marks when the package is unpacked)
-  2. query all rpm packages: rpm -qa
+  2) query all rpm packages: rpm -qa
     (-q: query, -a: all installed packages)
-  3. upgrade an rpm package: rpm -Uvh MySQL-client-3.23.57-1.i386.rpm
+  3) upgrade an rpm package: rpm -Uvh MySQL-client-3.23.57-1.i386.rpm
     (like installing, but automatically uninstalling existing version before installing)
-  4. uninstall an rpm package: rpm -ev MySQL-client
+  4) uninstall an rpm package: rpm -ev MySQL-client
     (-e: uninstall)
-  5. verify all rpm packages: rpm -Va
+  5) verify all rpm packages: rpm -Va
     (-V: verify, -a: all installed packages)
+  6) rebuild corrupted database indices:
+     rm /var/lib/rpm/__db*; rpm --rebuilddb
 
 # modprobe: used to add loadable modules to linux kernel, view and remove modules
   linux maintains modules in /lib/modules/$(uname -r)
@@ -131,4 +125,43 @@
  3) make install: once the software is built and ready to run, the files need to be copied to
     their final destination, so make install will copy the built program and its libraries and
     documentations to the correct locations
+
+# make
+  make -C [dir] [target]
+  options:
+    -C: change to directory dir before reading the makefiles or doing  anything
+  ex. make -C dir html ==> cd dir; make html
+
+# uname -a: find out whether the system is 32 or 64 bit
+  find out which operating system is running on in UNIX
+
+# /proc/cpuinfo: find cpu information os the system
+  cat /proc/cpuinfo
+
+# run a process in background, foreground, and kill it 
+  ./prog1 &     ==> run in background
+  fg [JobId]    ==> bring to foreground
+  kill -9 [PID] ==> kill a process
+    signals: 9  ==> KILL, non-catchable, non-ignorable kill
+             15 ==> TERM, software termination signal (default)
+
+# suspend process:
+  CTRL + z to suspend running process and fg 1, fg 2 to bring it on foreground
+
+# execute previous commands:
+  1) !"cmd": execute last command of cmd
+  ex.
+    vim filename
+    !vim     ==> executes last vim command
+  ex.
+    ls -lrt
+    !ls      ==> executes last ls command
+  2) !!: execute last command
+  3) CRTL + r and type command initials
+  4) history | grep command
+
+# move across directories:
+  ex.
+    cd ~       ==> move to home directory
+    cd -       ==> move to previous directory
 

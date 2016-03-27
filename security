@@ -15,6 +15,14 @@
   1. echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
   2. edit sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
 
+# two steps to setup passwordless login
+  login remote host without password
+  1) ssh-keygen: creates public and private keys (local host)
+  2) ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72 (remote host)
+     (appends the keys to remote host's ~/.ssh/authorized_key)
+     or manually, copy public key to ~/.ssh/authorized_key
+     (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
+
 # ssh-agent
 
   bypass entering passphrase if you set up a passphrase while creating the public/private
