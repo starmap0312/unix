@@ -198,10 +198,10 @@
   ex. chage -l username (list the info of password parameters of a user)
 
 # WOL (WakeOnLan): power up server remotely
-  1. NIC needs to support WOL feature
-  2. enable wakeonlan of NIC: ethtool -s eth0 wol g
-  3. install wakeonlan package on another machine: sudo apt-get install wakeonlan
-  3. wake up from another machine connected to the same LAN (requires the mac address of NIC)
+  1) NIC needs to support WOL feature
+  2) enable wakeonlan of NIC: ethtool -s eth0 wol g
+  3) install wakeonlan package on another machine: sudo apt-get install wakeonlan
+  4) wake up from another machine connected to the same LAN (requires the mac address of NIC)
      wakeonlan 00:16:k5:64:A9:68
 
 # lshw: list hardware spec
@@ -301,4 +301,15 @@
   ex.
     cd ~       ==> move to home directory
     cd -       ==> move to previous directory
+
+# list files in order of reversed modified time
+  ls -lrt
+
+# switch to other user
+  su - [username]
+  options:
+    -: use login-shell, which resets most environment variables and provides a clean base
+       without -, it provides a normal shell with an environment nearly same as the old user
+    [username]: if not provided, it will switch to root
+  (always use su - [username] instead of su [username] for security reason)
 

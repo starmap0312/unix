@@ -6,6 +6,7 @@
     -q: quiet, run without output
   4. yum --showduplicates list docker-engine | expand
     yum list: list all available and installed packages
+    (available packages based on repos)
   5. yum repolist
     roduces a list of configured repositories (default: list all enabled repo)
     config files at: /etc/yum.repos.d/

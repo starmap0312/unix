@@ -54,6 +54,7 @@
 # redirect both stdout and stderr to the same location
   method 1: 2>&1
       ex. ls -l > output 2>&1
+          yum install [pkg_name] 2>&1 > inst.log (redirect stdout/stderr message to a file)
   method 2: &>
       ex. ls -l &> output
   (handle 0: stdin, 1: stdout, 2: stderr)
@@ -156,6 +157,12 @@
   for a in dog cat tiger;
   do
       echo "$a";
+  done
+
+  ex.
+  for i in `seq 1 10`;
+  do
+      echo $i;
   done
 
 # the switch statement

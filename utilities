@@ -153,3 +153,22 @@
       do echo -e $i"\t";
     done
     (-e: enable "\t", i.e. tab escape)
+
+# curl
+  options:
+    -H, --header: specify the header (overwrite the default header) when getting a web page
+    -v: verbose
+    -s, --slient: quiet mode. do not show progress meter or error messages
+  ex.
+    curl -v -H "Host:www.yahoo.com" http://www.google.com
+
+# diff
+  diff filename1 filename2
+  diff -qr dir1 dir2
+    options:
+    -q: quick
+    -r: recursive
+
+# strace
+
+# dig

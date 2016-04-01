@@ -71,9 +71,6 @@ fi
  3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
     env | grep SSH_AUTH_SOCK
 
-# disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
-  add a new line in .ssh/config: StrictHostKeyChecking no
-
 # disable SELinux (Security-Enhanced Linux)
   1. echo "0" > /selinux/enforce ==> disable temporarily
   2. edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
@@ -88,3 +85,12 @@ fi
 
 # snort
   a free lightweight network intrusion detection system for both Unix/Windows systems
+
+# disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
+  add a new line in .ssh/config: StrictHostKeyChecking no
+
+# /etc/ssh/sshd_config: PasswordAuthentication
+  disable password authentication
+    edit /etc/ssh/sshd_config: PasswordAuthentication no
+    users listed in /etc/passwd can no longer login using password, and can only login by
+      passwordless login, i.e. adding user's public key to server ~/.ssh/authorized_key
