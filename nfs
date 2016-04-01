@@ -1,18 +1,42 @@
-# how to share a directory using nfs?
+# share a directory using nfs
   edit file: /etc/exports
   add a entry: /<name_directory> <ip or network>(options)
   restart nfs service
 
-# how to check nfs share?
-  showmount -e <ip_nfs>
+# display nfs share info, i.e. /etc/exports
+  showmount -e [ip_nfs_server]
+  showmount -e == showmount -e localhost
 
 # nfs mouting
-  1. exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
-  2. exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
+  1) exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
+  2) exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
   3. edit /etc/exports ==> make export permanent
      ex. /path/to/local/folder 10.1.168.72
-  4. mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
+  4) mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
      to a local folder
-  5. edit /etc/fstab ==> make mount permanent
+  5) edit /etc/fstab ==> make mount permanent
      ex. 10.1.168.72:/path/to/remote/folder /path/to/local/folder ext3 defaults 0 0
-  5. umount /path/to/local/folder ==> umount a remote filesystem
+  6) umount /path/to/local/folder ==> umount a remote filesystem
+
+# /etc/fstab
+  the way the nfs client handles a server crash or network outage (ex. handle gracefully)
+  options:
+    1) soft/hard (soft vs. hard mounting)
+      a) soft mounting:
+         if a file request fails, the nfs client will report an error to the process on the
+         clinet machine (not recommended)
+      b) hard mounting: 
+         the program accessing a file on a nfs mounted file system will hang when the server
+         crashes (the process cannot be interrupted or killed, except by a "sure kill")
+         when the nfs server is back online, the program will continue undisturbed from where it was
+         ex. remote.host.come:/home /mnt/home nfs rw,hard,intr 0 0
+         (hard,intr is recommend, as soft option may cause data corruption and data loss)
+    2) intr/nointr (allows nfs requests to be interrupted or not)
+       if the nfs server goes down or cannot be reached, intr option allows the nfs requests to
+       be interrupted
+    3) rsize=32768,wsize=32768 
+       defines the maximum number bytes in each READ/WRITE request that the nfs client can
+       receive/send when communicating with a nfs server
+    4) tcp
+       specifies the NFS mount to use the TCP protocol.
+    5) 

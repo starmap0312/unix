@@ -17,13 +17,16 @@
   2) set up the upstream of a forked repo
     git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
     git remote -v: view all remote repos
-    git fetch upstream (fetch upstream repo)
-    git checkout master (checkout local master branch)
-    git merge upstream/master (merge upstream/master to local master branch)
-    git push origin master (push local master branch to forked personal GitHub)
+
+# update/sync with upstream branch
+  git fetch upstream (fetch upstream repo)
+  git checkout master (checkout local master branch)
+  git merge upstream/master (merge upstream/master to local master branch)
+  git push origin master (push local master branch to forked personal GitHub)
 
 # git push
-  git push origin branch_name (push local branch_name)
+  git push origin branch_name (push local branch_name to remote repo)
+  git push == git push origin master
   
 # git branch
   git branch -a 
