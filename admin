@@ -297,15 +297,15 @@
   3) CRTL + r and type command initials
   4) history | grep command
 
-# move across directories:
+# cd: move across directories
   ex.
     cd ~       ==> move to home directory
     cd -       ==> move to previous directory
 
-# list files in order of reversed modified time
+# ls -t: list files in order of reversed modified time
   ls -lrt
 
-# switch to other user
+# su: switch to other user
   su - [username]
   options:
     -: use login-shell, which resets most environment variables and provides a clean base
@@ -313,3 +313,10 @@
     [username]: if not provided, it will switch to root
   (always use su - [username] instead of su [username] for security reason)
 
+# id: list UID/GID information
+  id: list your UID/GID information
+  id [username]: list username's UID/GID information
+
+# finger: list user's information
+  finger: list your user information
+  finger [username]: list username's information
