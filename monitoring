@@ -124,15 +124,6 @@
   ss -o state established: display only established connections
   ss -s: display socket summary statistics
 
-# strace: display the system calls used by a process and the signals received by the process
-  strace: System-calls Trace
-  used for debugging and troubleshooting the execution of an executable
-  useful when you do not have the source code but would like to debug a program
-  ex.
-  strace ls
-  strace -e open ls: display only a specifical system call
-    -e open: display only system call open
-
 # lsof: list open files
   find out which processes are using a particular file
   lsof: list down PID of all the process which is using a particular file
@@ -147,5 +138,5 @@
 
 # /proc: virtual filesystem
   numbered directories: information about processes of particular PIDs
-    (sub-directories: cmd ()
+  (sub-directories: cmd)
   system information files: ex. cpuinfo, meminfo, loadavg, etc.

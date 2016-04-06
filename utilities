@@ -33,6 +33,11 @@
   :wqa ==> write and then quit all
   :qa! ==> force to quit all
 
+# vim
+  vim -O filename1 filename2
+  option -O: open a window for each file
+  Ctrl + w: jump to the left / right window
+
 # sort:
   sort filename: sort a file in an ascending order
   sort -r filename: sort a file in a descending order
@@ -169,6 +174,16 @@
     -q: quick
     -r: recursive
 
-# strace
+# strace: System-calls Trace
+  1) display the system calls used by a process and the signals received by the process
+  2) used for debugging and troubleshooting the execution of an executable
+  3) useful when you do not have the source code but would like to debug a program
+  ex.
+    strace ls
+    strace -e open ls: display only a specifical system call
+  options
+    -e open: display only system call open
+    -o filename: write the output to filename
+    -c: display the time, count, and errors of each system
 
 # dig

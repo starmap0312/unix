@@ -3,25 +3,34 @@
   add a entry: /<name_directory> <ip or network>(options)
   restart nfs service
 
+# start nfs service (server-side)
+  1) sudo service rpcbind start
+  2) sudo service nfs start
+  3) sudo service nfslock start
+
 # display nfs share info, i.e. /etc/exports
-  showmount -e [ip_nfs_server]
   showmount -e == showmount -e localhost
+  showmount -e [remote_nfs_server_ip]
 
 # nfs mouting
   1) exportfs 10.1.168.72:/path/to/local/folder ==> export a directory to a remote system
   2) exportfs -u 10.1.168.72:/path/to/local/folder ==> unexport a directory to a remote system
-  3. edit /etc/exports ==> make export permanent
+  3) edit /etc/exports            ==> make export permanent
      ex. /path/to/local/folder 10.1.168.72
-  4) mount 10.1.168.72:/path/to/remote/folder /path/to/local/folder ==> mount a remote folder
-     to a local folder
-  5) edit /etc/fstab ==> make mount permanent
+  4) mount 10.1.168.72:/remote/folder /local/folder
+                                  ==> mount a remote folder to a local folder
+     mount -o rw,hard,nointr,rsize=32768,wsize=32768,tcp,noac,nfsvers=3,timeo=600 -t nfs \
+     [server_fqdn]:/remote/folder /local/folder
+  5) edit /etc/fstab              ==> make mount permanent
      ex. 10.1.168.72:/path/to/remote/folder /path/to/local/folder ext3 defaults 0 0
   6) umount /path/to/local/folder ==> umount a remote filesystem
+  7) mount -a                     ==> mount all filesystems mentioned in fstab
 
 # /etc/fstab
-  the way the nfs client handles a server crash or network outage (ex. handle gracefully)
   options:
     1) soft/hard (soft vs. hard mounting)
+      specify the way the nfs client handles a server crash or network outage
+      ex. handle gracefully
       a) soft mounting:
          if a file request fails, the nfs client will report an error to the process on the
          clinet machine (not recommended)
@@ -39,4 +48,62 @@
        receive/send when communicating with a nfs server
     4) tcp
        specifies the NFS mount to use the TCP protocol.
-    5) 
+
+# /etc/exports
+  example 1)
+    /tmp  *(rw,no_root_squash)
+    *(rw): anyone have the read/write permissions
+    no_root_squash: the client logining as root will have root privilege in the mounting folder
+
+  example 2)
+    /home/public  192.168.100.0/24(rw)    *(ro)
+    192.168.100.0/24(rw): hosts in the subnet have read/write permissions
+    *(ro): hosts not in the above subnet are read-only
+
+# nfs service startup message
+  command: tail /var/log/messages
+  kernel: RPC: Registered named UNIX socket transport module.
+  kernel: RPC: Registered udp transport module.
+  Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+  rpc.mountd[11303]: Version 1.2.3 starting
+  NFSD: Using /var/lib/nfs/v4recovery as the NFSv4 state recovery directory
+  NFSD: starting 90-second grace period
+
+# check the status of the established nfs connection 
+  command: netstat -a | grep -E "(rpc|nfs)"
+  (server-side)
+  tcp        0      0 server_fqdn:nfs client_fqdn:822 ESTABLISHED 
+  (cleint-side)
+  tcp        0      0 client_fqdn:822 server_fqdn:nfs ESTABLISHED
+
+# iostat -n
+  options:
+  -n: display the network filesystem (NFS) report using iostat
+
+# nfsstat
+  displays statistics kept about NFS client and server activity
+
+# nfsiostat
+
+# (device busy)
+  fuser /mnt: identify the process currently using the mounted /mnt folder
+  fuser -km /mnt
+    -k: kill processes accessing the file
+    -m: name specifies a file on a mounted file system or a block device that is mounted
+        i.e. /mnt
+
+# /etc/mtab, /proc/mounts
+  a list of all mounts in use by the system (/proc: virtual filesystem)
+  1) /etc/mtab is based only on the mount command options
+     the file shows more information, such as the mount options used
+  2) /etc/mounts also depends on the kernel and others settings (e.g. remote NFS server)
+     a list of all mounts in use by the system (/proc: virtual filesystem)
+  3) /etc/mtab and /proc/mounts may not match
+     the mount command may reports unreliable information about a NFS mount point and 
+     the /proc/mounts file usually contains more reliable information
+     /proc/mounts is more up-to-date than /etc/mtab
+
+  mount -n (--no-mtab)
+    mount without writing in /etc/mtab
+    (necessary for example when /etc is on a read-only filesystem)
+

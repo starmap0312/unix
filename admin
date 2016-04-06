@@ -26,14 +26,6 @@
   list service: chkconfig --list | grep 5:on
   enable service: chkconfig <name_service> on --level 3
 
-# how to share a directory using nfs?
-  edit file: /etc/exports
-  add a entry: /<name_directory> <ip or network>(options)
-  restart nfs service
-
-# how to check nfs share?
-  showmount -e <ip_nfs>
-
 # default ports:
   SMTP: 25
   DNS: 53
@@ -320,3 +312,7 @@
 # finger: list user's information
   finger: list your user information
   finger [username]: list username's information
+
+# fuser: identify processes using files or sockets
+  ex.
+    fuser /mnt  ==> identify process that is using the mounted folder

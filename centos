@@ -20,9 +20,9 @@
   hostnamectl set-hostname new_name 
 
 # systemctl (replacement of chkconfig)
-  1. systemctl start vsftpd (start a service)
-  2. systemctl stop vsftpd (stop a service)
-  3. systemctl restart vsftpd (restart a service)
-  4. systemctl enable vsftpd (start service at boot)
-  5. systemctl disable vsftpd (disable start of service at boot)
+  1) systemctl start vsftpd (start a service)
+  2) systemctl stop vsftpd (stop a service)
+  3) systemctl restart vsftpd (restart a service)
+  4) systemctl enable vsftpd (start service at boot)
+  5) systemctl disable vsftpd (disable start of service at boot)
 

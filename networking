@@ -74,11 +74,11 @@
        command: netstat -a | grep "10123"
 
 # nslookup: query Internet name servers interactively
-  1. find the hostname in your network using an IP address, or vice versa?
-    nslookup [host_ip]
-    nslookup [hostname]
-  2. find all IP addresses for a given domain name
-    nslookup www.google.com
+  1) find the hostname in your network using an IP address, or vice versa?
+     nslookup [host_ip]
+     nslookup [hostname]
+  2) find all IP addresses for a given domain name
+     nslookup www.google.com
 
 # traceroute: view the number of hops and response time to get to a remote system
 
