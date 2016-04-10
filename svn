@@ -1,0 +1,7 @@
+# fecth, modify, and commit changes
+  1) svn update
+  2) edit [filename]
+  3) svn diff {filename}
+  4) svn ci -m ‘commit message’
+
+

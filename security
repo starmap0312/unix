@@ -12,8 +12,8 @@
 
 # disable ping replies
   to avoid network flooding or network congestion
-  1. echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
-  2. edit sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
+  1) echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
+  2) edit /etc/sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
 
 # two steps to setup passwordless login
   login remote host without password
@@ -65,23 +65,23 @@ else
 fi
 
 # check if ssh forwarding is enabled
- 1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
-    is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
- 2) ssh-add -L: list the keys added on the local machine's agent
- 3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
-    env | grep SSH_AUTH_SOCK
+  1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
+     is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
+  2) ssh-add -L: list the keys added on the local machine's agent
+  3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist. 
+     env | grep SSH_AUTH_SOCK
 
 # disable SELinux (Security-Enhanced Linux)
-  1. echo "0" > /selinux/enforce ==> disable temporarily
-  2. edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
+  1) echo "0" > /selinux/enforce ==> disable temporarily
+  2) edit /etc/selinux/config: SELINUX=disabled ==> disable permanently
 
 # setup squid to control internet access
   squid is a proxy caching server used to control network access at your work environment
-  1. restrict access to specific websites
+  1) restrict access to specific websites
      ex. www.google.com/www.facebook.com
-  2. restrict access to particular network
+  2) restrict access to particular network
      ex. 192.168.1.0/24
-  3. use regular expression to allow or deny websites
+  3) use regular expression to allow or deny websites
 
 # snort
   a free lightweight network intrusion detection system for both Unix/Windows systems
@@ -94,3 +94,44 @@ fi
     edit /etc/ssh/sshd_config: PasswordAuthentication no
     users listed in /etc/passwd can no longer login using password, and can only login by
       passwordless login, i.e. adding user's public key to server ~/.ssh/authorized_key
+
+# POM: Pluggable Authentication Modules for Linux
+  /etc/security/pamkeys/
+  1) Linux-PAM is a system of libraries that handle the authentication tasks of applications
+     (services) on the system
+  2) the library provides a stable general interface (Application Programming Interface - API) 
+     that privilege granting programs (such as login(1) and su(1)) defer to to perform standard authentication
+       tasks.
+  /etc/security/pamkeys/
+
+# SSH Local Port Forwarding
+  set up [local_port] forwarding to [dest_host]:[dest_port] via connecting to a [remote_host]
+
+  (Method 1) ssh -L [local_port]:[dest_host]:[dest_port] [remote_host]
+    1) specifies that the given port on the local (client) host is to be forwarded to the
+       given host and port on the remote side
+    2) works by allocating a socket to listen to port on the local side, optionally bound
+       to the specified bind_address
+    3) port forwardings can also be specified in the configuration file
+
+  (Method 2) ssh -F /path/to/config [host] [command]
+
+  (example)
+    1) ssh -L 3631:dest_host.yahoo.com:1521 remote_host.yahoo.com \
+      'while true; do echo -n .; sleep 200; done'
+    2) ssh -F /path/to/config remote_host.yahoo.com \
+      'while true; do echo -n .; sleep 200; done'  
+    echo -n . : print out . and do not output the trailing newline
+    specify [local_port], [dest_host], and [dest_port] in file /path/to/config:
+      Host remote_host.yahoo.com
+      LocalForward  3631 dest_host.yahoo.com:1521
+
+# ssh -o ServerAliveInterval
+  ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 [remote_host]
+  options:
+    -o ServerAliveInterval
+    (prevent Linux SSH client from disconnecting using ServerAliveInterval)
+    (sometimes the server may terminate the ssh session, so it becomes unresponsive to the client)
+    -o ServerAliveCountMax=3
+    (if the server becomes unresponsive, ssh will disconnect after approximately 15 *3 = 45 seconds)
+

@@ -5,3 +5,23 @@
 # how to change kernel parameters?
   edit: /etc/sysctl.conf
   sysctl -p (make the changes permanently without rebooting)
+
+# file handle limits
+  limits on the number of open files
+  kernel has built-in limits on the number of files that a process can open
+    1) current limit: cat /proc/sys/fs/file-max
+    2) raise the limit at run-time: sysctl -w fs.file-max=100000 (need root privilege)
+    3) make the change permanantly
+       edit /etc/sysctl.conf ==> fs.file-max = 100000
+       sysctl -p             ==> let the change take effect
+
+# socket tuning
+   set up the numbers of concurent sessions of a server
+   ex. with a large number of clients comnunicating with your server,
+       the server may have a 20,000 open sockets or more
+       one can increase that range by editing /etc/sysctl.conf
+  1) the maximum number of "backlogged sockets"
+     edit /etc/sysctl.conf
+     net.core.somaxconn = 1024 (default: 128)
+     (trade-off: slow connections)
+     sysctl -p                ==> let the change take effect
