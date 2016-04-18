@@ -70,8 +70,15 @@
    netstat -t: display only TCP connection
    netstat -u: display only UDP connection
    netstat -g: display all multicast network subscribed by this host
+   netstat -anp: not resolve name, show PID/Program
    ex. how to find which remote hosts are connecting to you on a particular port, ex. 10123?
        command: netstat -a | grep "10123"
+
+# ss: another utility to investigate sockets
+  options:
+    -n: numeric
+    -a: display all sockets
+    -p: show process using socket
 
 # nslookup: query Internet name servers interactively
   1) find the hostname in your network using an IP address, or vice versa?
@@ -146,5 +153,17 @@
         ifconfig eth0
 
 # dig
-  dig [options] FQDN
-  
+  dig [options] <fqdn>: resolve ip from fqdn
+  dig -x <ip>: resolve fqdn from ip
+
+# ATS: Apache Traffic Server
+  1) a modular, high-performance reverse proxy and forward proxy server
+     forward proxy: an intermediary for its associated clients to contact any server
+     reverse proxy: an intermediary for its associated servers to be contacted by any client
+       clients  <-> forward proxy -> internet <-> reverse proxy <-> servers
+  2) comparable to Nginx and Squid
+     Squid: a caching, forwarding, and reverse web proxy
+       (caching repeated requests, caching network lookups: ex. DNS, filtering traffic)
+     Nginx: a reverse proxy server for HTTP, HTTPS, SMTP, POP3, and IMAP protocols, and
+            a load balancer and an HTTP cache
+

@@ -1,0 +1,6 @@
+# crontab file location
+  1) CentOS: /var/spool/cron/
+     by default cron searches its spool area /var/spool/cron/ directory for crontab files
+     ex. file /var/spool/cron/kuanyu is user kuanyu's crontab file
+  2) Ubuntu: /var/spool/cron/crontabs/
+

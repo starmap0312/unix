@@ -28,13 +28,23 @@
   git push origin branch_name (push local branch_name to remote repo)
   git push == git push origin master
   
-# git branch
+# create local branch and push to remote
+  git checkout -b branch_name
+  (create a local branch which is a duplicate of the master branch)
+  git push -u origin branch_name
+  (create a local and isolated branch)
+  git checkout --orphan branch_name
+  (push local branch to remote)
   git branch -a 
   (-a, --all: list both remote-tracking and local branches)
 
-# create local branch and push to remote
-  git checkout -b branch_name
-  git push -u origin branch_name
+# create a local branch that tracks a remote branch
+  git branch --track branch_name origin/branch_name
+  git checkout -b branch_name origin/branch_name
+  (create a local branch that tracks a remote branch, and then switch to the local branch)
+
+# delete a local branch
+  git branch -d local_branch
 
 # git fetch: download objects and refs from another repository
   git fetch upstream: fetch original remote repo
@@ -72,14 +82,6 @@
          |                             |
          ------> Local (master) <-------
 
-# create a local branch that tracks a remote branch
-  git branch --track branch-name origin/branch-name
-  git checkout -b branch-name origin/branch-name
-  (create a local branch that tracks a remote branch, and then switch to the local branch)
-
-# delete a local branch
-  git branch -d the_local_branch
-
 # answering a pull request: merge devel branch into master branch
   Step 1)
     git fetch origin
@@ -87,5 +89,9 @@
     git merge master
   Step 2)
     git checkout master
-    git merge --no-ff devel
+    git merge --no-ff devel (no fast-forward when merging)
     git push origin master (update on GitHub)
+
+# show git log graph
+  git log --graph --abbrev-commit --decorate
+

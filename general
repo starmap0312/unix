@@ -206,3 +206,19 @@
     performance because synchronizing shared memory while each task runs on a different processor
     is expensive
 
+# C-style regular expressions
+  1) anchors and assertions: 
+     ^: field starts with, ex. [^abc]
+     $: field ends with
+  2) character groups: any one character from the group
+     [a-f], [0-9]: any hex character
+  3) counts: apply to previous element
+     +: 1 or more
+     *: 0 or more
+     ?: 0 or 1
+     {4}: exactly 4
+     {4,8}: between 4 and 8
+  4) alternation:
+     |: either or
+  5) grouping:
+     (): group for count and save to variable

@@ -187,3 +187,41 @@
     -c: display the time, count, and errors of each system
 
 # dig
+  1) find out how the ip address of a host is resolved by its <fqdn>
+  2) dig [options] <fqdn> [@server]
+  options:
+    @server: specify the dns server ip address (default: dns configured in /etc/resolv.conf)
+  ex. dig yahoo.search.com
+  sections:
+    QUESTION: ask the ip address of <fqdn>
+    ANSWER: the return ip address of <fqdn>
+    AUTHORITY: one can see which dns server provides the answer
+    (the number at 2nd column indicates the seconds allowed for the user to cache this record)
+
+  options:
+    -x: reverse query of <ip> to its <fqdn>
+  ex. dig -x 64.30.228.118
+  (note: the ip address in QUESTION section is reversed: 118.228.30.64.in-addr.arpa
+   this is because for domain name: yahoo < search < com, whereas for ip: 64 > 30 > 228 > 118)
+
+# tmpwatch
+  1) removes files which haven’t been accessed for a period of time
+  2) daily cron job: /etc/cron.daily/tmpwatch
+  3) tmpwatch [options] <hours-untouched> <dirs>
+    ex. tmpwatch -x /path/to/exclude -X '/folder/pattern_*' 240 /path/to/watch
+        (remove files under /path/to/watch that are not accessed in 240 hours)
+  options:
+    -u, --atime: access time (ex. cat filename)
+    -c, --ctime: status change time (ex. chmod g+w filename)
+    -m, --mtime: modified time (ex. echo "new" >> filename)
+    -x, --exclude=[path]: exclude files under [path]
+    -X, --exclude-pattern=[pattern]: exclude files matches [pattern]
+    -d, --nodirs: do not remove directories
+    -U, --exclude-user=[username]: do not remove [username] files
+
+# date
+  options:
+    -d, --date=<STRING>: display time described by <STRING>
+    ex. date                  ==> Tue Apr 12 19:48:25 PDT 2016
+    ex. date -d '1 days ago'  ==> Mon Apr 11 19:49:52 PDT 2016
+

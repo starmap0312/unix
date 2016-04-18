@@ -313,6 +313,10 @@
   finger: list your user information
   finger [username]: list username's information
 
+# last: show listing of last logged in users
+
+# who: show who is logged on
+
 # fuser: identify processes using files or sockets
   ex.
     fuser /mnt  ==> identify process that is using the mounted folder
