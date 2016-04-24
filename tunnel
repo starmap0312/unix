@@ -1,0 +1,65 @@
+# local port forwarding
+  ssh -L 9999:<dest_host>:3306 <username>@<jump_host>
+
+  <localhost>:9999 -- (secure tunnel) --> <jump_host> --> <dest_host>:3306
+  
+  <localhost>:9999 -------------------------------------> <dest_host>:3306
+
+  the packets sent to <localhost>:9999 are forwarded by <jump_host> to <dest_host>:3306
+
+# remote port forwarding
+  ssh -R 9999:<dest_host>:3306 <remote_host>
+
+  <dest_host>:3306 <-- <localhost> <-- (secure tunnel) -- <remote_host>:9999
+
+  <dest_host>:3306 <------------------------------------- <remote_host>:9999
+
+  the packets sent to <remote_host>:9999 are forwarded by <localhost> to <dest_host>:3306
+    i.e. <localhost> behaves as a jump server for <remote_host>
+
+# dynamic port forwarding (SOCKS proxy)
+  1) construct a SOCKS proxy
+     ssh -D 9999 <username>@<jump_host>
+     ssh -v -N -D 9999 <jump_host> &
+     (-v: verbose, -N: do not execute a remote command)
+  2) configure ssh connection to use the SOCKS proxy, i.e. localhost:9999
+     edit .ssh/config
+     HostName <dest_host>
+     ProxyCommand nc -X 5 -x localhost:9999 %h %p
+     (-X 5: protocol version, Socks v.5)
+     (nc connects to <dest_host>:<dest_port> using the SOCKS proxy, i.e. localhost:9999)
+  3) the ssh connection is transparently tunnelized
+     ssh <dest_host>:<dest_port>
+
+  (Steps 2 and 3 can be combined:
+     ssh -o ProxyCommand="nc -X 5 -x localhost:9999 %h %p" <dest_host>)
+
+       <localhost>                          <jump_host>
+     SOCKS proxy:9999 <----(encrypted)---->   sshd:22   <----> <dest_host>:<dest_port>
+            |
+   browser/skype/ssh client (need to be configured to use the SOCKS proxy)
+
+# ssh: three ways to connects to <dest_host> via <jump_host>
+  (Method 1)
+    1) ssh -tt <jump_host> ssh -tt <dest_host>
+    2) ssh -tt <username1>@<jump_host> ssh -tt <username2>@<dest_host>
+       -t: force pseudo-tty allocation
+       -tt: force tty allocation, even if ssh has no local tty
+  (Method 2)
+    ssh -o ProxyCommand='ssh <username1>@<jump_host> nc <dest_host> 22' <username2>@<dest_host>
+    the nc commnad establish a TCP pipe between <jump_host> and <dest_host>, which is for
+      reading and writing network connections directly
+  (Method 3)
+    1) edit: .ssh/config
+       HostName <dest_host> 
+       ProxyCommand ssh <username1>@<jump_host> nc %h 22
+    2) ssh <username2>@<dest_host>
+       when connect to <dest_host>, the ssh will set the ProxyCommand defined in .ssh/config
+
+    <localhost> -- (ssh) --> <jump_host> -- (netcat) --> <dest_host>
+
+    <localhost> ------ (ssh-over-netcat-tunnel) -------> <dest_host>
+
+    - localhost establish a ssh connection to jump_host
+    - jump_host runs netcat to establish a connection to dest_host
+

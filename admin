@@ -175,10 +175,10 @@
 # modprobe: used to add loadable modules to linux kernel, view and remove modules
   linux maintains modules in /lib/modules/$(uname -r)
     the configuration files: /etc/modprobe.conf and /etc/modprobe.d
-  1. modprobe -l: list avaiable kernel modules
-  2. lsmod: list currently loaded modules
-  3. sudo modprobe vmhgfs: install new module vmhgfs into linux kernel
-  4. modprobe -r vmhgfs: remove currently loaded module (-r: unload module)
+  1) modprobe -l: list avaiable kernel modules
+  2) lsmod: list currently loaded modules
+  3) sudo modprobe vmhgfs: install new module vmhgfs into linux kernel
+  4) modprobe -r vmhgfs: remove currently loaded module (-r: unload module)
 
 # mount and view ISO files
   ISO: International Organization for Standardization
@@ -201,13 +201,13 @@
 
 # ipcs
   IPC (Inter-Process Communication)
-  1. pipes: named pipes provide a way for processes running on different computer systems to
+  1) pipes: named pipes provide a way for processes running on different computer systems to
      communicate over the network
-  2. shared memory: exchange messages in shared memory. one process can create a portion of
+  2) shared memory: exchange messages in shared memory. one process can create a portion of
      memory which other process can access
-  3. message queue: a structured and ordered list of memory segments where processes store or
+  3) message queue: a structured and ordered list of memory segments where processes store or
      retrieve data
-  4. semaphores: provide a synchronizing mechanism for processes that are accessing the same
+  4) semaphores: provide a synchronizing mechanism for processes that are accessing the same
      resource. no data is passed with a semaphore, it simply coordinates access to shared resources
   ipcs -a: list all the IPC facilities which has read access for the current process
 
@@ -226,6 +226,10 @@
 
 # print subdirectories recursively
   find /path/to/folder -type d -print
+
+# ls: show only directories
+  ex.
+    ls -d /var/log/*/
 
 # mv
   mv -fv /path/to/file /path/to/folder/
@@ -298,7 +302,7 @@
   ls -lrt
 
 # su: switch to other user
-  su - [username]
+  sudo su - [username] (if no sudo, then need to enter username's password)
   options:
     -: use login-shell, which resets most environment variables and provides a clean base
        without -, it provides a normal shell with an environment nearly same as the old user
@@ -326,3 +330,14 @@
     -a: display all values currently available
     -w:
   sysctl -w kernel.hostname=new_fqdn
+
+# pgrep: look up or signal processes based on name and other attributes
+  pgrep [options] pattern: display the currently running processes PIDs matching the criteria
+  1) pgrep -u root ssh
+     list the processes that are called sshd and are owned by root
+  2) pgrep -u root,daemon
+     list the processes owned by root OR daemon
+  3) pgrep -f <pattern>: match full command line
+     ex. pgrep -f "pattern1|pattern2"
+  
+# pkill: look up or signal processes based on name and other attributes

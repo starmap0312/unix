@@ -1,0 +1,100 @@
+# SSH Local Port Forwarding
+  set up [local_port] forwarding to [dest_host]:[dest_port] via connecting to a [jump_host]
+
+  (Method 1) ssh -L [local_port]:[dest_host]:[dest_port] [jump_host]
+    1) specifies that the given port on the local (client) host is to be forwarded to the
+       given host and port on the remote side
+    2) works by allocating a socket to listen to port on the local side, optionally bound
+       to the specified bind_address
+    3) port forwardings can also be specified in the configuration file
+
+  (Method 2) ssh -F /path/to/config [host] [command]
+
+  (example)
+    1) ssh -L 3631:dest_host.yahoo.com:1521 jump_host.yahoo.com \
+      'while true; do echo -n .; sleep 200; done'
+    2) ssh -F /path/to/config jump_host.yahoo.com \
+      'while true; do echo -n .; sleep 200; done'
+    echo -n . : print out . and do not output the trailing newline
+    specify [local_port], [dest_host], and [dest_port] in file /path/to/config:
+      Host jump_host.yahoo.com
+      LocalForward  3631 dest_host.yahoo.com:1521
+
+# check if ssh forwarding is enabled
+  1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
+     is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
+  2) ssh-add -L: list the keys added on the local machine's agent
+  3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist.
+     env | grep SSH_AUTH_SOCK
+
+# ssh <host> -p <port>: connects to a different port on a remote host
+  -p: port to connect to on the remote host
+  ex. ssh <username>@<hostname> -p 5566
+
+# ssh -o ServerAliveInterval
+  ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 [jump_host]
+  options:
+    -o ServerAliveInterval
+    (prevent Linux SSH client from disconnecting using ServerAliveInterval)
+    (sometimes the server may terminate the ssh session, so it becomes unresponsive to the client)
+    -o ServerAliveCountMax=3
+    (if the server becomes unresponsive, ssh will disconnect after approximately 15 *3 = 45 seconds)
+
+# /etc/ssh/sshd_config: PasswordAuthentication
+  disable password authentication
+    edit /etc/ssh/sshd_config: PasswordAuthentication no
+    users listed in /etc/passwd can no longer login using password, and can only login by
+      passwordless login, i.e. adding user's public key to server ~/.ssh/authorized_key
+
+# disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
+  add a new line in .ssh/config: StrictHostKeyChecking no
+
+# ssh-agent
+
+  bypass entering passphrase if you set up a passphrase while creating the public/private
+    key pairs
+  (MAC: ssh-agent is by default running, Centos: need to run ssh-agent + ssh-add)
+
+  usage: keeps your private key in memory and use it in order to passwordlessly ssh to a host
+  ex.
+  basic usage
+    localhost (MAC/CentOS) --> Remote Hosts
+    (bypass entering the passphrase as long as ssh-agent is launched and localhost's private
+     key is added to Remote Hosts authorized_keys)
+  advanced usage
+    localhost (MAC/CentOS) --> Server --> Remote Hosts
+    (you can add a new line in ~.ssh/config: ForwardAgent yes, so that localhost's private key
+     will be forwarded when Server is making connections with Remote Hosts)
+
+  need to launch ssh-agent whenever you launch a new shell, or
+  edit .bash_profile (no need to do this on MAC)
+
+.bash_profile:
+
+SSH_ENV=$HOME/.ssh/environment
+function start_agent {
+     echo "Initializing new SSH agent…"
+     /usr/bin/ssh-agent | sed 's/^echo/#echo/' > ${SSH_ENV}
+     echo succeeded
+     chmod 600 ${SSH_ENV}
+     . ${SSH_ENV} > /dev/null
+     /usr/bin/ssh-add;
+}
+
+if [ -f "${SSH_ENV}" ]; then
+     . ${SSH_ENV} > /dev/null
+     ps -ef | grep ${SSH_AGENT_PID} | grep ssh-agent$ > /dev/null || {
+         start_agent;
+     }
+else
+     start_agent;
+fi
+
+# two steps to setup passwordless login
+  login remote host without password
+  1) ssh-keygen: creates public and private keys (local host)
+  2) ssh-copy-id -i ~/.ssh/id_rsa.pub 10.1.168.72 (remote host)
+     (appends the keys to remote host's ~/.ssh/authorized_key)
+     or manually, copy public key to ~/.ssh/authorized_key
+     (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
+

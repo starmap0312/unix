@@ -119,8 +119,17 @@
   mysql -u user_name -p -h 10.1.168.72 ==> connect to a remote mysql server
 
 # date
-  date ==> show the system date
-  date -s "01/31/2012 23:59:53" ==> set the system date
+  date [OPTION]... [+FORMAT]
+  date                            ==> show the current system date
+  options:
+    -s: set time specified 
+    -d: display date specified
+    %s: day of month (e.g, 01) 
+  ex.
+    date -s "01/31/2012 23:59:53" ==> set the system date
+    date -d yesterday             ==> show yesterday's system date
+    date +%d                      ==> display only day of month information
+    date +%d -d yesterday         ==> show yesterday's system date with only day of month info
 
 # wget
   wget http://www.google.com ==> download file from the internet

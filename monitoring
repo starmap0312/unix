@@ -9,14 +9,17 @@
   cpu: sar command
 
 # sar: System Activity Reporter, part of the sysstat package (sar/iosstat/pidstat/nfsiostat...)
-  1. monitor system real teim performance (cpu, memory, i/o, etc.)
-  2. collect performance data in the background and do analysis on the historical data 
+  1) monitor system real time performance (cpu, memory, i/o, etc.)
+  2) collect performance data in the background and do analysis on the historical data 
      for bottlenecks
+  3) logs are kept in /var/log/sysstat/ or /var/log/sa/ with filenames such as /var/log/sa/sa[dd]
+     [dd]: day of month, i.e. 01-30
   ex.
-  sar -u 1 3 ==> system cpu statistics 3 times with 1 second interval
-  sar -b 1 3 ==> i/o statistics 3 times with 1 second interval
-  sar -r 1 3 ==> memory statistics 3 times with 1 second interval
-  sar -n DEV 1 3 ==> network statistics (DEV: network devices such as eth0, eth1, etc.)
+    sar -u 1 3          ==> system cpu statistics 3 times with 1 second interval
+    sar -b 1 3          ==> i/o statistics 3 times with 1 second interval
+    sar -r 1 3          ==> memory statistics 3 times with 1 second interval
+    sar -n <DEVICE> 1 3 ==> network statistics (DEVICE: network devices such as eth0, eth1, etc.)
+    sar -f /var/log/sa/sa$(date +%d -d yesterday) ==> display yesterday's statistics
 
 # tcpdump: a network packet analyzer
   allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
