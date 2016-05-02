@@ -1,19 +1,9 @@
-# TCP wrappers: used to grant or deny access to services on your machine
-  install tcp_wrappers package: it uses simple Access List Rules
-  1) /etc/hosts.allow: allow connections in this list
-     ex. ALL : 192.168.0.1/255.255.255.0
-         in.telnetd: .ntu.edu.tw: Allow
-  2) /etc/hosts.deny: if no match in item 1, deny connections in this list
-     ex. sshd: ALL
-
-# view and delete iptable rules
-  1. view all iptable rules: iptables --list
-  2. delete iptable rules: iptables --flush
-
 # disable ping replies
   to avoid network flooding or network congestion
-  1) echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all ==> disable temporarily
-  2) edit /etc/sysctl.conf: net.ipv4.icmp_echo_ignore_all=1 ==> disable permanently
+  1) echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_all        ==> temporarily disable all replies
+     echo "1" > /proc/sys/net/ipv4/icmp_echo_ignore_broadcasts ==> temporarily disable only ping
+                                                                   broadcast replies
+  2) edit /etc/sysctl.conf: net.ipv4.icmp_echo_ignore_all=1    ==> permanently disable replies
 
 # disable SELinux (Security-Enhanced Linux)
   1) echo "0" > /selinux/enforce ==> disable temporarily

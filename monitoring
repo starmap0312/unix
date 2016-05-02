@@ -23,10 +23,10 @@
 
 # tcpdump: a network packet analyzer
   allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
-  1. tcpdump -i eth0 (-i: interface): capture packets from an interface
-  2. tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
-  3. tcpdump -w filename.pcap -i eth0: write captured packets to a file
-  3. tcpdump -tttt -r filename.pcap: read captured packets from a saved file
+  1) tcpdump -i eth0 (-i: interface): capture packets from an interface
+  2) tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
+  3) tcpdump -w filename.pcap -i eth0: write captured packets to a file
+  4) tcpdump -tttt -r filename.pcap: read captured packets from a saved file
      (-tttt: proper readable timestamp)
 
 # ntop: display network usage, a top-like utility for monitoring network traffic
@@ -90,6 +90,9 @@
   ps -f -u username
      -u: display processes belonging to a specific username
   ps -e -o pid,args --forest: list all processes in a hierarchy
+  -w: wide output (-ww: unlimited width)
+
+# pstree
   pstree: display all processes in hierarchical structure
 
 # top: display processes in order of cpu usage
@@ -99,33 +102,6 @@
 
 # pmap: display the memory map of a given process
   pmap 1309: display the memory map of process with PID 1309
-
-# netstat: display network related information
-  display network connections, routing tables, interface statistics, multicast memberships,
-    masquerade connections, etc.
-  netstat -a: list all ports
-  netstat -at: list all tcp ports
-  netstat -au: list all udp ports
-    (port state: LISTEN/ESTABLISHED/CLOSE_WAIT)
-  netstat -l: list all listening ports
-  netstat -lt: list all tcp listening ports
-  netstat -lu: list all udp listening ports
-  netstat -s: show statistics for each protocol
-    (protocol: TCP/IP/ICMP/UDP)
-  netstat -p: show PID/program names: netstat -pt
-    -p: display PID/program names
-     ex. netstat -ap | grep ssh (find out which port a program is using)
-         netstat -an | grep ':80' (find out which process is using port 80)
-  netstat -an: don't resolve hostnames, portnames, and usernames
-    -n: no hostnames resolved
-  netstat -r: display the kernel routing information
-    -r: routing information
-  netstat -i: display the list of network interfaces
-
-# ss: socket statistics, display information similar to netstat
-  ss -l: display all listening ports
-  ss -o state established: display only established connections
-  ss -s: display socket summary statistics
 
 # lsof: list open files
   find out which processes are using a particular file

@@ -59,3 +59,20 @@
 # DNS
   uses both TCP and UDP. DNS uses TCP for zone exchanges between servers and uses UDP when 
     a client is trying to resolve a hostname to an IP address
+
+# differences between ip, tcp, and http
+  ip:
+     data communication across internet
+     deliver packets from source host to destination host based on their addresses
+     ip defines addressing methods and structures for the encapsulation of the packets
+  tcp:
+     provides communication between two systems: ex. web browser (application) and web server (ip)
+     supports size control, flow control, data exchange rate, network traffic congestion
+     program sends a large piece of data across internet using IP, instead of breaking
+       the data into sizes that will fit the IP 
+     the protocol handles the details of the ip transfer, ex. retransmission of packets,
+       rearrangement of the order of packets, minimization of network congestion
+  http:
+     has sessions: a sequence of request/response transactions that occur on the network
+     (i.e. http requests and responses)
+

@@ -4,3 +4,5 @@
      ex. file /var/spool/cron/kuanyu is user kuanyu's crontab file
   2) Ubuntu: /var/spool/cron/crontabs/
 
+# check user's cron job
+  crontab -l -u username OR cat /var/spool/cron/crontabs/username

@@ -6,8 +6,20 @@
   5) find . -iname "pattern" ==> find filenames containing case insensitive pattern
   6) find . -name "*.txt" | xargs grep "keyword" ==> find *.txt files containing "keyword"
   7) find . -size +1000c -exec ls -l {} \; ==> find files of size larger than 1000 bytes
-    (use c in +1000c for bytes; otherwise, the size is in disk blocks)
+     (use c in +1000c for bytes; otherwise, the size is in disk blocks)
   8) find . -empty    ==> find empty files
+  9) find . -mtime +15 -type f -regex ".*[0-9]$"
+     (find files whose filename ends with a digit)
+
+options:
+  -mtime: modify time, ex. +15: 15 days ago, -5: within 5 days
+  -type f: find files, -type d: find directories
+  -name *pattern*: find filename containing pattern
+  ! -name suffix*: find filename not ending with suffix
+  ex.
+    find . -mtime +15 -type f -name *log* ! -name *log
+    (find filenames like: /path/to/access.log.20160410100424)
+
 
 # list files in order of reversed modified time
   ls -lrt

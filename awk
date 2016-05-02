@@ -16,6 +16,7 @@
   awk -F "\t" '{print $3}' filename (default delimiter: "\t", " ", "\n")
   cut -f3 filename (default delimiter: "\t")
   cut -d " " -f3 filename (cut 3rd column using delimiter: " ")
+  cut -d : -f 1 /etc/passwd (cut -d":" -f1 /etc/passwd)
 
 # gawk: pattern scanning and processing language (GNU awk)
   gawk '/pattern/ {action}' filename

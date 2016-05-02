@@ -72,12 +72,26 @@
     nc -w 1 <host> 4080 -v
     nc -X 5 -x localhost:9999 (ex. used for local forwarding)
 
+# check if a host is listening on a port
+  1) telnet (Layer 7: TELNET health check)
+     ex. telnet <fqdn> 4080
+  2) nc (Layer 4: TCP/UDP health check)
+     ex. nc -w 1 <fqdn> 4080 -v
+
 # netstat: finding information of connection to and from the host
+  display network connections, routing tables, interface statistics, multicast memberships,
+    masquerade connections, etc.
    netstat -a: display all connections including TCP and UDP connections
-   netstat -t: display only TCP connection
-   netstat -u: display only UDP connection
+   netstat -t: display only TCP connection (netstat -at: list all tcp ports including LISTEN)
+   netstat -u: display only UDP connection (netstat -lu: list all udp LISTEN ports)
    netstat -g: display all multicast network subscribed by this host
-   netstat -anp: not resolve name, show PID/Program
+   netstat -s: show statistics for each protocol (protocol: TCP/IP/ICMP/UDP)
+   netstat -p: show PID/program names (netstat -pt: show tcp connections)
+     ex. netstat -ap | grep ssh (find out which port a program is using)
+         netstat -an | grep ':80' (find out which process is using port 80)
+   netstat -r: display the kernel routing information
+   netstat -i: display the list of network interfaces
+   netstat -anp: not resolve hostnames/portnames/usernames, show PID/Program
    ex. how to find which remote hosts are connecting to you on a particular port, ex. 10123?
        command: netstat -a | grep "10123"
 
@@ -86,6 +100,10 @@
     -n: numeric
     -a: display all sockets
     -p: show process using socket
+  ss -l: display all listening ports
+  ss -o state established: display only established connections
+  ss -s: display socket summary statistics
+  ss -r: resolve address and port 
 
 # nslookup: query Internet name servers interactively
   1) find the hostname in your network using an IP address, or vice versa?
@@ -163,7 +181,7 @@
   dig [options] <fqdn>: resolve ip from fqdn
   dig -x <ip>: resolve fqdn from ip
 
-# ATS: Apache Traffic Server
+# ATS: Apache traffic server
   1) a modular, high-performance reverse proxy and forward proxy server
      forward proxy: an intermediary for its associated clients to contact any server
      reverse proxy: an intermediary for its associated servers to be contacted by any client

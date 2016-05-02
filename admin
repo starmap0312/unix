@@ -341,3 +341,7 @@
      ex. pgrep -f "pattern1|pattern2"
   
 # pkill: look up or signal processes based on name and other attributes
+
+# less
+  less -S filename
+  (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)
