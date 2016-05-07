@@ -22,3 +22,39 @@
   4) SELECT ... FROM ... WHERE col_name REGEXP '^...$'
      SELECT ... FROM ... WHERE col_name REGEXP '^.{3}$'
     (find col_name with exactly three characters)
+
+# fact table vs. dimension table
+  fact table works with dimension tables
+  differences
+    dimension table:
+      stores data about the ways in which the data in the fact table can be analyzed
+      1) could have a parent table
+      2) not aggregated
+      3) not supposed to be updated in place
+    fact table: 
+      holds the data to be analyzed (quantitative information and is often denormalized)
+      1) always has a dimension table (or more) as a parent
+      2) may be aggregated
+      3) could be updated in place in some cases
+      consists of two types of columns:
+        the foreign keys column allows joins with dimension tables
+        the measures columns contain the data that is being analyzed
+  examples
+    a company sells products to customers
+
+    fact table: every sale is a fact that happens
+
+    TimeID	ProductID	CustomerID	Unit
+    4		17		2		1
+    8		21		3		2
+    8		4		1		1
+
+    dimension table (info about customers)
+
+    CustomerID	Name	Gender	Income
+    1		Brian	M	2
+    2		Fred	M	3
+    3		Sally	F	1
+
+    customerID column in fact table is the foreign key that joins with the dimension table
+

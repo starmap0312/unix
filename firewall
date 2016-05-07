@@ -63,9 +63,9 @@
   commands:
     iptables -t filter -L -n (-L: list all rules, -n: numeric, avoid long reverse dns lookups)
       Chain INPUT (policy ACCEPT)
-      target prot opt source               destination
-      ACCEPT all  --  0.0.0.0/0  0.0.0.0/0 state RELATED,ESTABLISHED <= (a)
-      ACCEPT icmp --  0.0.0.0/0  0.0.0.0/0                           <= (b)
+      target prot opt source     destination
+      ACCEPT all  --  0.0.0.0/0  0.0.0.0/0   state RELATED,ESTABLISHED <= (a)
+      ACCEPT icmp --  0.0.0.0/0  0.0.0.0/0                             <= (b)
       (a) accept all protocol packets from any source address, to any destination address
           as long as the state of the packets is either RELATED or ESTABLISHED
       (b) accept all icmp packets from all source and destination
@@ -101,3 +101,27 @@
     d) write the changes to config file
     /etc/init.d/iptables save
 
+# ipset: administration tool for IP sets
+  an extension to iptables that allows you to create firewall rules that match entire "sets" of
+    addresses at once
+  unlike normal iptables chains: stored and traversed linearly (slow)
+    IP sets are stored in indexed data structures (lookups very efficient)
+  ex1.
+    ipset -N myset iphash
+    ipset -A myset 1.1.1.1
+    ipset -A myset 2.2.2.2
+
+    create a new set (myset of type iphash) with two addresses (1.1.1.1 and 2.2.2.2)
+
+    iptables -A INPUT -m set --set myset src -j DROP
+    
+    -m set --set myset src: match packets whose source header matches (i.e. contained within)
+      the set named myset
+      (dst: match on destination)
+
+  ex2.
+    ipset create myset hash:net,port ==> create a set based on subnets
+    ipset add myset 192.168.0/24,25
+    ipset add myset 10.1.0.0/16,80
+    ipset test myset 192.168.0/24,25
+    (hash:ip,port ==> create a set based on ips)

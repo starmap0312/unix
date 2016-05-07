@@ -110,6 +110,7 @@
   lsof -u username: display open files of a particular user
   lsof filename: display users currently using filename
     (ex. /usr/bin/vim ==> display users currently using vim)
+  lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
 
 # uptime, w
   w: who is logged on the system

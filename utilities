@@ -52,6 +52,8 @@
   find . -name "*.bak" -type f -print | xargs rm -f
   ls *.jpg | xargs -n1 -i cp {} /path/to/folder ==> copy all jpg files to /path/to/folder
   find . -name *.jpg -type f -print | xargs tar -zxvf archive.tar.gz ==> compress all jpg files
+  xargs -P 20 -I{} <cmd> {}
+    -P max-procs: run up to max-procs processes at a time (default 1)
 
 # gzip and bzip2:
   gzip filename ==> create a filename.gz compressed file
@@ -238,4 +240,7 @@
     -d, --date=<STRING>: display time described by <STRING>
     ex. date                  ==> Tue Apr 12 19:48:25 PDT 2016
     ex. date -d '1 days ago'  ==> Mon Apr 11 19:49:52 PDT 2016
+
+# watch: execute a program periodically, showing output fullscreen
+  -n, --interval to specify a different interval (default: 2 secs)
 

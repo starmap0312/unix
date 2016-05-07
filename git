@@ -13,7 +13,9 @@
 # git remote add
   1) add the remote repo & push master up to that repo
     git remote add origin git@github.com:username/repo_name.git
-    git push origin master
+    git push origin master (git push -u origin master)
+      -u, --set-upstream: for every branch pushed, add upstream (tracking) reference
+                          used by argument-less git-pull
   2) set up the upstream of a forked repo
     git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
     git remote -v: view all remote repos

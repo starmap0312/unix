@@ -14,5 +14,11 @@
   passwd -d username (remove user's password, user can login without password)
 
 # add users to sudoers
-  1. visudo (need to login as root or su)
-  2. add a line: username ALL=(ALL:ALL) ALL
+  1) visudo (need to login as root or su)
+  2) add a line: username ALL=(ALL:ALL) ALL
+
+# sudo
+  sudo -v: validate, sudo will update the user’s cached credentials, authenticating the user’s
+           password if necessary
+           for the sudoers plugin, this extends the sudo timeout for another 5 minutes but 
+           does not run a command

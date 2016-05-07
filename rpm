@@ -1,2 +1,11 @@
+# rpm queries
+  rpm -qa | grep <pkg_name>
+    list all rpm packages and grep a <pkg_name>
+  rpm -qf <filename>
+    -f, --file <filename>: query package owning <filename>
+    ex. rpm -qr /path/to/folder/*
+  rpm -ql <pkg_name>
+    -l, --list: list files belonging <pkg_name>
 # rpm build spec file
+
 

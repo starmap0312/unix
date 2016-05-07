@@ -76,13 +76,19 @@
      chmod 600 /path/to/local/file
      mkswap /path/to/local/file, swapon /path/to/local/file
 
-# du:
-  options:
+# du: disk usage
+  du -h /path/to/folder
     -h: human readable
-    -s: display only a total for each argument (--summarize), list only depth 0 == -d 0
-  ex.
-  du -h dirname (display disk usage of dirname and all its subdirectories)
-  du -sh dirname (display only the disk usage of dirname)
+    display disk usage of all subdirectories of /path/to/folder
+  du -h --max-depth=1 /path/to/folder
+    display disk usage of all subdirectories of /path/to/folder with depth 1
+  du -sh /path/to/folder
+    -s: display only a total for each argument (--summarize), list only depth 0
+    display only a total the disk usage of path/to/folder
+    i.e. du -h --max-depth=0 /path/to/folder
+  du -sh * | sort -h -r (display the sorted disk usage of current folder)
+    sort -h, --human-numeric-sort: compare human readable numbers (e.g., 2K 1G)
+    sort -r, --reverse: reverse the result of comparisons
 
 # check how much space left in current drive:
   df -h

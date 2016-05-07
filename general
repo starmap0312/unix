@@ -222,3 +222,8 @@
      |: either or
   5) grouping:
      (): group for count and save to variable
+
+# encoding
+  base62: [A-Z], [a-z], [0-9] ==> 26 + 26 + 10 = 62
+  base64: [A-Z], [a-z], [0-9], +, / (append = if the encoded string cannot be divided by 3)
+

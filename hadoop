@@ -5,8 +5,11 @@
   hadoop fs -get /path/to/folder
 
 # upload a local folder to hadoop
-  hadoop fs -put /path/to/local/folder/ /pat/to/hadoop/folder
+  hadoop fs -put /path/to/local/folder/ /path/to/hadoop/folder
 
 # cat a hadoop file
   hadoop fs -cat /path/to/filename
 
+#
+  hadoop fs -count -q /path/to/hadoop/folder
+/projects/CommerceOnGrid

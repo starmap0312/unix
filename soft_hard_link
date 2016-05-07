@@ -40,14 +40,15 @@
       the source file, whereas a hard link uses the same inode number as the source file
   how to create soft and hard links?
       ln -s /path/to/original/filename softlink_filename
+      ln -s /path/to/original/folder softlink_folder
       ln /path/to/original/filename hardlink_filename
       (the softlink points to the location of the original file. if the original file is
        moved, then the softlink is broken, whereas the hardlink still works)
   how to find all soft links? command: find /etc -type l -exec ls -li {} \;
-      find ... -type l ==> find only symbolic links (-type f ==> find files)
-      find ... -exec ls -li {} \; ==> continues to execute ls -li for the listed files
+      find . -type l ==> find only symbolic links (-type f ==> find files)
+      find . -exec ls -li {} \; ==> continues to execute ls -li for the listed files
           (find ... -exec "utility" {} \; must be terminated by backslash and semicolon \;)
           ("utility" is executed from current directory, and {} is replaced by current
            pathname for each invocation of utility)
   how to find all hard links? command: find /etc -links +1 -type f -exec ls -li {} \;
-      find ... -links 2 ==> find all files having 2 links
+      find . -links 2 ==> find all files having 2 links

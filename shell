@@ -194,3 +194,15 @@
       ;;
   esac
 
+# debugging bash scripts
+  bash -x /path/to/script
+    -x: run the entire script in debug mode. traces of each command plus its arguments are
+        printed to stdout
+
+# xargs: build and execute command lines from standard input
+  find /path/to/folder -perm -700 | xargs ls -l
+    (find files with permissions at least 700 and perform ls -l to them)
+  find . -mtime +15 -type f | xargs -i <cmd> {}
+  find . -mtime +15 -type f | xargs -i ls -alh {}
+    -i[replace-str]: i.e. -I{} (default)
+  
