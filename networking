@@ -192,3 +192,18 @@
      Nginx: a reverse proxy server for HTTP, HTTPS, SMTP, POP3, and IMAP protocols, and
             a load balancer and an HTTP cache
 
+# nmap: network exploration tool and security / port scanner
+  1) nmap -sS -p 80 <fqdn>
+    -sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon scans ==> SCAN TECHNIQUES
+    -p <port ranges>: only scan specific ports, ex. -p22; -p1-65535
+    result:
+    Host is up (0.036s latency).
+    PORT     STATE    SERVICE
+    9090/tcp filtered unknown     ==> STATE: open (the server is listening on the port)
+  2) nmap -sN 192.168.2.0/24 OR nmap -sN 192.168.2.1-200
+    network ip range scan, find out which servers and devices are up and running
+    -sN; -sF; -sX (TCP NULL, FIN, and Xmas scans)
+    -sN: does not set any bits (TCP flag header is 0)
+  3) nmap -F 192.168.1.1
+    -F: fast mode, can fewer ports than the default scan
+

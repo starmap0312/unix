@@ -99,7 +99,8 @@
   test $str1 == $str2 && echo "str1 equals str2"
 
 # test files
-  test -e filename: does filename exist?
+  test -e filename: does filename exist? i.e. [ -f filename ]
+    ex. [ -f /etc/hosts ] && echo "Found" || echo "Not found"
   test -f filename: is a file?
   test -d filename: is a directory?
   test -r filename: readable?

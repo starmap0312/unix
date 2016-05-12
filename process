@@ -1,0 +1,49 @@
+# ps: process monitoring, help to identify performance bottlenecks
+  PID: each process is assigned a unique process, PPID: parent PID
+  ps -ef: view current running process
+     -e: display all processes
+     -f: display full listing (UID/PID/PPID/C/STIME/TTY/TIME/CMD)
+         UID: user id
+         PID: process id
+         PPID: parent pid
+         C: CPU usage
+         STIME: start time
+         TTY: controlling tty
+         TIME: elapsed CPU usage
+         CMD: associated command
+  ps aux: view current running process (BSD machines)
+    USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+    (ps -ef omits process with long command line, whereas ps auxww list all command lines)
+  ps -f -u username
+     -u: display processes belonging to a specific username
+  ps -e -o pid,args --forest: list all processes in a hierarchy
+  ps -ww <PID>
+    -w: wide output (-ww: unlimited width)
+  ps -o "%p %r %y %x %c" <PID>
+    -o format: user-defined format
+    used to find process group id
+    (%p: PID, %r: PGID, %y: TTY, %x: TIME, %c: COMMAND)
+    kill -TERM -5112: kill every process in group 5112
+
+# pgrep: look up or signal processes based on name and other attributes
+  pgrep [options] pattern: display the currently running processes PIDs matching the criteria
+  1) pgrep -u root ssh
+     list the processes that are called sshd and are owned by root
+  2) pgrep -u root,daemon
+     list the processes owned by root OR daemon
+  3) pgrep -f <pattern>: match full command line
+     ex. pgrep -f "pattern1|pattern2"
+ 
+# pkill: look up or signal processes based on name and other attributes
+  pkill -f -o <keyword>
+  pkill -f -<signal> <keyword>
+    -<signal>: by default SIGTERM
+    -SIGTERM: -15, can be blocked, handled, and ignored, the normal way to politely to terminate
+    -SIGKILL: -9, cannot be handled or ignored, cause immediate program termination
+  pkill -u <username>
+
+# pstree
+  pstree: display all processes in hierarchical structure
+
+# pmap: display the memory map of a given process
+  pmap 1309: display the memory map of process with PID 1309

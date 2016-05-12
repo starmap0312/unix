@@ -6,6 +6,11 @@
     ex. rpm -qr /path/to/folder/*
   rpm -ql <pkg_name>
     -l, --list: list files belonging <pkg_name>
+  sudo rpm remove <pkg_name>
+
 # rpm build spec file
 
+# remove corrupted db files
+  sudo rm -f /var/lib/rpm/__db.00? OR sudo rm -f /var/lib/rpm/__db*
+  sudo rpm --rebuilddb ==> rebuild the db files
 

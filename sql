@@ -58,3 +58,17 @@
 
     customerID column in fact table is the foreign key that joins with the dimension table
 
+# Oracle
+  dba_tables: describes all relational tables in the database
+  all_tables: describes the relational tables accessible to the current user
+  user_tables: describes the relational tables owned by the current user
+
+  1) list all tables in a database:
+     SELECT tablespace_name, table_name FROM dba_tables;
+  2) list all tables accessible to the current user
+     SELECT tablespace_name, table_name FROM all_tables;
+  3) list all tables owned by the current user
+     SELECT tablespace_name, table_name FROM user_tables;
+  4) find table owner
+     SELECT * FROM dba_tables WHERE table_name='XXX';
+  5) desc table_name;

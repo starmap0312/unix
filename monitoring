@@ -79,29 +79,10 @@
     - buffers/cache: 2643 (actual used RAM) = 4377 (used RAM) - 103 (buffers) - 1630 (cached)
     + buffers/cache: 5384 (actual available RAM) = 8027 (total RAM) - 2643 (actual used RAM)
 
-# ps: process monitoring, help to identify performance bottlenecks
-  PID: each process is assigned a unique process, PPID: parent PID
-  ps -ef: view current running process
-     -e: display all processes
-     -f: display full listing (uid/pid/parent pid(PPID)/CPU usage/start time/controlling tty/
-         elapsed CPU usage(TIME)/associated command(CMD))
-  ps -aux: view current running process (BSD machines)
-  (ps -ef omits process with long command line, whereas ps -auxwww list all command lines)
-  ps -f -u username
-     -u: display processes belonging to a specific username
-  ps -e -o pid,args --forest: list all processes in a hierarchy
-  -w: wide output (-ww: unlimited width)
-
-# pstree
-  pstree: display all processes in hierarchical structure
-
 # top: display processes in order of cpu usage
   press M: sorted by memory usage
   top -u username: display processes belonging to username
   top -p 1309,1882: display processes of particular PIDs
-
-# pmap: display the memory map of a given process
-  pmap 1309: display the memory map of process with PID 1309
 
 # lsof: list open files
   find out which processes are using a particular file

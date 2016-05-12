@@ -1,7 +1,12 @@
 # fecth, modify, and commit changes
-  1) svn update
-  2) edit [filename]
-  3) svn diff {filename}
-  4) svn ci -m ‘commit message’
-
-
+  1) svn checkout/co URL PATH
+     ex. svn co http://path/to/svn/repo working-copies 
+         svn checkout file://path/to/svn/repo working-copies
+  2) svn ci -m ‘commit message’
+  3) svn diff <filename>
+  4) svn add <filename>
+     add the file into svn repository
+  5) svn delete <filename>
+  6) svn move <src> <dest>
+     rename file or directory
+  7) svn update

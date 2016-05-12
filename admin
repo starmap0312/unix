@@ -331,17 +331,6 @@
     -w:
   sysctl -w kernel.hostname=new_fqdn
 
-# pgrep: look up or signal processes based on name and other attributes
-  pgrep [options] pattern: display the currently running processes PIDs matching the criteria
-  1) pgrep -u root ssh
-     list the processes that are called sshd and are owned by root
-  2) pgrep -u root,daemon
-     list the processes owned by root OR daemon
-  3) pgrep -f <pattern>: match full command line
-     ex. pgrep -f "pattern1|pattern2"
-  
-# pkill: look up or signal processes based on name and other attributes
-
 # less
   less -S filename
   (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)

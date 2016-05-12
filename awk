@@ -8,9 +8,11 @@
   FILENAME: the input filename
 
   ex.
-  awk '{print $1 "\t" $3}' filename ==> print column 1 and column 3
+  awk '{print $1 "\t" $3}' filename   ==> print column 1 and column 3
   tail -n 3 filename | awk '{print $1 "\t" $3}' ==> print column 1 and column 3 of last 3 lines
   awk -F ':' '$3==$4' /etc/passwd
+  echo $HOME | awk -F= '{print $NF}'  ==> print the last column of each row
+    HOME=/home/kuanyu ($NF == $1, print $NF == /home/kuanyu)
 
 # example: print the 3rd column of a tab separated file
   awk -F "\t" '{print $3}' filename (default delimiter: "\t", " ", "\n")

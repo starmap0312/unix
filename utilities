@@ -47,13 +47,23 @@
   export VAR_NAME=xxxxxxxxxxxxxxx (export an environment variable)
 
 # xargs: read items from STDIN or pipes, delimited by blanks or newlines, and executes command
-  ex.
-  echo 1 2 3 4 | xargs echo
-  find . -name "*.bak" -type f -print | xargs rm -f
-  ls *.jpg | xargs -n1 -i cp {} /path/to/folder ==> copy all jpg files to /path/to/folder
-  find . -name *.jpg -type f -print | xargs tar -zxvf archive.tar.gz ==> compress all jpg files
-  xargs -P 20 -I{} <cmd> {}
-    -P max-procs: run up to max-procs processes at a time (default 1)
+  1) find . -name "*.bak" -type f -print | xargs rm -f
+  2) find . -name '*.py' | xargs wc -l
+     recursively find all Python files and count the number of lines
+  3) find . -name '*.py' | xargs grep 'import'
+     recursively find all Python files and search them for the word ‘import’
+  4) ls *.jpg | xargs -n1 -i cp {} /path/to/folder
+     copy all jpg files to /path/to/folder
+  5) find . -name *.jpg -type f -print | xargs tar -zxvf archive.tar.gz
+     compress all jpg files
+  6) <STDOUT PIPE> | xargs -P 20 -I{} <cmd> {} == xargs -P 20 <cmd> {}
+     -P max-procs: run up to max-procs processes at a time (default 1)
+  7) echo {0..3} | xargs -n 2
+     0 1
+     2 3
+  8) echo {11..14} | xargs -n 1 | xargs -I{} -P 4 ping -c 1 int{}.img.search.gq1.yahoo.com
+     -n 1: specifies how many arguments at a time to supply to the given command
+     -P 4: run up to 4 processes at a time (default 1)
 
 # gzip and bzip2:
   gzip filename ==> create a filename.gz compressed file
@@ -134,8 +144,11 @@
   ex.
     date -s "01/31/2012 23:59:53" ==> set the system date
     date -d yesterday             ==> show yesterday's system date
+      Mon May  9 01:09:50 PDT 2016
     date +%d                      ==> display only day of month information
     date +%d -d yesterday         ==> show yesterday's system date with only day of month info
+    date -d @1462867742.066994    ==> convert integer to date
+      Tue May 10 01:09:02 PDT 2016
 
 # wget
   wget http://www.google.com ==> download file from the internet

@@ -101,6 +101,16 @@
     d) write the changes to config file
     /etc/init.d/iptables save
 
+# turn on iptable
+  chkconfig iptables on
+  service iptables start   ==> restart the firewall
+  service iptables restart ==> restart the firewall
+  service iptables stop    ==> stop the firewall
+
+# display the iptable status
+  sudo iptables -Lnv --line-numbers
+    -v, --verbose: show the interface name, the rule options (if any), and the TOS masks
+
 # ipset: administration tool for IP sets
   an extension to iptables that allows you to create firewall rules that match entire "sets" of
     addresses at once
@@ -125,3 +135,7 @@
     ipset add myset 10.1.0.0/16,80
     ipset test myset 192.168.0/24,25
     (hash:ip,port ==> create a set based on ips)
+
+  ipset list                     ==> view the sets
+  ipset destroy myset            ==> delete the set named myset
+  ipset destroy                  ==> delete all sets
