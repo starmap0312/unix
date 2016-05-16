@@ -25,3 +25,22 @@
      net.core.somaxconn = 1024 (default: 128)
      (trade-off: slow connections)
      sysctl -p                ==> let the change take effect
+
+# segfault: dmesg (kernel log message)
+
+  ex.
+    MyProcess[9755]: segfault at 7f1fd68fab50 ip 00007f1fcf3a4285 \
+                     sp 00007fff3001bbc0 error 4 in libc-2.12.so[7f1fcf32e000+18b000]
+    9755: PID
+    ip: instruction pointer
+    sp: stack pointer
+    error code: architecture-specific flags (see arch/*/mm/fault.c for your platform)
+      error 0: kernel-mode read resulting in no page being found
+      error 1: kernel-mode read resulting in a protection fault
+      error 2: kernel-mode write resulting in no page being found
+      error 3: kernel-mode write resulting in a protection fault
+      error 4: user-mode read resulting in no page being found
+      error 5: user-mode read resulting in a protection fault
+      error 6: user-mode write resulting in no page being found
+      error 7: user-mode write resulting in a protection fault
+

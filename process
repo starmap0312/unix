@@ -42,8 +42,14 @@
     -SIGKILL: -9, cannot be handled or ignored, cause immediate program termination
   pkill -u <username>
 
-# pstree
-  pstree: display all processes in hierarchical structure
+# pstree: display all processes in hierarchical structure
+  pstree [options] [pid/username]
+  useful when terminating a series of related processes
+    i.e., all of the descendants of a particular process
+  pstree -np
+    -p: show PIDs
+    -n: sort in the order of the PIDs (default: alphabetic order)
+  pstree root: display processes initiated by root
 
 # pmap: display the memory map of a given process
   pmap 1309: display the memory map of process with PID 1309

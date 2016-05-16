@@ -1,3 +1,20 @@
+# MySQL client
+  mysql -u[username] -p[password] -h [hostname] -D [database_name]
+
+# MySQL queries
+
+  SELECT DATE(a.col_time), c.`col_name`, count(*) FROM \
+  table1 a JOIN table2 b ON a.id = b.col1_id JOIN table3 c ON b.col2_id = c.id \
+  WHERE DATE(a.col_time)>'2015-12-27' GROUP BY DATE(a.col_time), c.`col_name`;
+
+# MySQL backquotes/backticks
+  allow spaces and other special characters in table/column names
+
+# MySQL function DATE(expr)
+  extracts the date part of the date or datetime expression expr
+  ex.
+    SELECT DATE('2003-12-31 01:02:03');  ==> '2003-12-31'
+
 # WHERE col_name IN ('val1', 'val2', ...)
   ex.
   SELECT * FROM table_name WHERE col_name IN ('7105', '8105') ORDER BY job_id DESC;

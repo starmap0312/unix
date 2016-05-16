@@ -11,6 +11,13 @@
   ("set" can display all shell local variables and environment variables, whereas "env" cannot)
   (use "export" to export var to environment variables)
 
+# set
+  set -e: enables checking of all commands
+    if a command exits with an error and the caller does not check such error, then the scripts 
+    aborts immediately
+  set -x: trace the execution of all commands
+    make the interpreter print each command right before it is executed
+
 # variable substitution
   var=value  ==> set var to a value (note: no spaces are allowed before and after "=")
     ex.
@@ -80,6 +87,12 @@
       echo "x > y";
   else
       echo "x <= y";
+  fi
+
+  ex.
+  if [ $? -ne 0 ];
+  then
+      echo last command failed
   fi
 
 # perform arithmetic operation

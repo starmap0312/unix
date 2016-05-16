@@ -38,10 +38,27 @@
 
 # iostat: reports cpu, disk i/o, nfs statistics, part of sar utility
   ex.
+  iostat
+    avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+               1.14    0.00    0.38    0.25    0.49   97.74
+
+    Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn
+    vda               5.71       128.90       126.36    2703210    2649832
+    vdb               0.02         0.17         0.00       3642          0
+
   iostat -c ==> display only cpu usage
   iostat -d ==> display only disk i/o statistics
   iostat -n ==> display only network statistics
   iostat -p sda ==> display i/o statistics for only a device (/dev/sda)
+
+# dstat
+  ex. dstat
+    ----total-cpu-usage---- -dsk/total- -net/total- ---paging-- ---system--
+    usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw 
+      1   0  98   0   0   0|  63k   64k|   0     0 |   0     0 | 317   109 
+      0   0 100   0   0   0|   0     0 | 468B  106B|   0     0 |  55    50 
+      0   0 100   0   0   0|   0     0 |1771B  826B|   0     0 |  30    27 
+
 
 # vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
   ex.
@@ -95,7 +112,9 @@
 
 # uptime, w
   w: who is logged on the system
-  uptime: how long the system has been up, total number of users logged on, load average
+  uptime: how long the system has been up, total number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
+    ex.
+      08:32:51 up 76 days, 20:39,  7 users,  load average: 39.72, 38.29, 35.46
 
 # /proc: virtual filesystem
   numbered directories: information about processes of particular PIDs
