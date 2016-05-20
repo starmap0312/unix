@@ -1,0 +1,56 @@
+# SSL: Secure Socket Layer
+  1) a protocol which secures communication between the client browser and the web server
+  2  SSL channel is encrypted and authenticated
+     a) server authentication is MANDATORY (ex. client browser MUST authenticate the web server to 
+        which it is talking)
+     b) Client-side authentication is OPTIONAL
+  3) enabling SSL on the server side involves compiling the mod_ssl module into apache,
+     configuring apache to start SSL and configuring a server-side certificate for apache
+  2) SSL certificate contains a public key and certificate issuer
+  3) clients use the certificate to communicate with a server
+  4) clients can verify the certificate was signed by an official Certificate Authority
+  5) clients can communicate with the server they expect and the network traffic are encrypted
+
+# Differences between SSL and HTTPS
+  1) SSL (Secure Socket Layer) or TLS (Transport Layer Security) works on top of
+     transport layer (i.e. TCP)
+  2) TLS can be used for HTTPS
+  3) stack
+     HTTP:  HTTP              -- TCP -- IP -- Ethernet
+     HTTPS: HTTP -- TLS (SSL) -- TCP -- IP -- Ethernet
+
+# openssl: OpenSSL command line tool
+  1) a cryptography toolkit implementing the Secure Sockets Layer (SSL v2/v3) and
+       Transport Layer Security (TLS v1) network protocols
+  2) used for:
+       a) Creation and management of private keys, public keys and parameters
+       b) Public key cryptographic operations
+       c) Creation of X.509 certificates, CSRs and CRLs
+       d) Calculation of Message Digests
+       e) Encryption and Decryption with Ciphers
+       f) SSL/TLS Client and Server Tests
+       g) Handling of S/MIME signed or encrypted mail
+       h) Time Stamp requests, generation and verification
+
+  openssl command [ command_opts ] [ command_args ]
+
+  example:
+    Generate a CSR with OpenSSL
+    a) Generate the RSA key
+       openssl genrsa: generation of RSA Private Key (default: 1024 bit long modulus)
+       openssl genrsa -out server.key 2048
+         generation of 2048-bit RSA private key
+         the private key file for that server, need to install it on web server with the .crt file
+    b) Create a CSR
+       openssl req: PKCS#10 X.509 Certificate Signing Request (CSR) Management
+       openssl req -new -sha256 -key server.key -out file.csr
+         need to enter a Distinguished Name (DN): information to be displayed in the certificate
+         .csr (Certificate Signing Request) file: is sent to the CA (Certificate Authority)
+         so that they can process the request and send back a .crt (certificate) file
+    c) Verify your CS
+       openssl req -noout -text -in csr_file
+         Subject, Subject Public Key Info, etc.
+    d) Submit your CSR
+       submit your CSR to a certificate authority (ex. Verisign, Thawte and RapidSSL)
+       when CA approves the certificate, the person who requested the certificate gets a .crt file
+       this is the actual certificate that needs to be installed on the web server

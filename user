@@ -1,7 +1,7 @@
 # create linux user
-  1. useradd username ==> create users with default configurations
-  2. adduser username ==> create users interactively
-  3. newusers filename ==> create bulk users from file (the same format as /etc/passwd)
+  1) useradd username ==> create users with default configurations
+  2) adduser username ==> create users interactively
+  3) newusers filename ==> create bulk users from file (the same format as /etc/passwd)
 
 # what is user profile file?
   $HOME/.bash_profile, $HOME/.bash_bashrc
@@ -22,3 +22,12 @@
            password if necessary
            for the sudoers plugin, this extends the sudo timeout for another 5 minutes but 
            does not run a command
+
+# wheel: groupname
+  1) Mac OS X and BSD UNIX
+  2) for a group of trusted people that could become superuser by using the su command
+  3) only allow people in wheel group to become superuser using su. They chose the groupname 'wheel', supposedly reference to other systems that had WHEEL, possibly a reference to being a 'big wheel'
+
+It's less important now that you have the GUI authorization popups and sudo. You can use sudo without being in wheel group I believe.
+
+As far as how to change to wheel, chgrp should be your friend, once you're root.
