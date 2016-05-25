@@ -1,5 +1,7 @@
 # create linux user
-  1) useradd username ==> create users with default configurations
+  1) useradd username    ==> create user with default configurations
+     userdel -r username ==> delete user
+       -r, --remove: user home directory and mail spool will be removed (default is to keep)
   2) adduser username ==> create users interactively
   3) newusers filename ==> create bulk users from file (the same format as /etc/passwd)
 
@@ -19,9 +21,27 @@
 
 # sudo
   sudo -v: validate, sudo will update the user’s cached credentials, authenticating the user’s
-           password if necessary
-           for the sudoers plugin, this extends the sudo timeout for another 5 minutes but 
+           password if necessary; this extends the sudo timeout for another 5 minutes but 
            does not run a command
+  sudo -su <username> -H [command]
+    -u user: run the specified command as a user other than root
+    -H: HOME, set the HOME environment variable to the home directory of the target user (default)
+    -s [command]: runs the shell specified by the SHELL environment variable (i.e. /etc/passwd)
+                  if no command is specified, an interactive shell is executed
+  sudo -iu <username>
+    -i: simulate initial login, source file .profile will be read
+  sudo sh -c "<command>": runs the commands in a sub-shell
+  sudo -u <username> <command>
+
+# su: substitute user identity
+  by default only users in the admin / wheel groups can switch to UID 0 (root)
+  sudo su / sudo su -    ==> switch to root by entering your password (need to be a sudoer)
+  su - username          ==> switch to another username (need to enter username's password)
+  sudo su - username     ==> enter the superuser's (sudoer) password
+  sudo -iu username      ==> -i: simulate initial login, i.e. runs the shell specified in the
+                                /etc/passwd entry of the target user as a login shell
+                            -u: let sudo run the specified command as username other than root
+  su - username -c 'ls'  ==> execute only one command 'ls' as username
 
 # wheel: groupname
   1) Mac OS X and BSD UNIX

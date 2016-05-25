@@ -220,3 +220,9 @@
   find . -mtime +15 -type f | xargs -i ls -alh {}
     -i[replace-str]: i.e. -I{} (default)
   
+# double-dash
+  a double dash (--) is used in bash built-in commands to signify the end of command options
+    after which only positional parameters are accepted
+  ex.
+    grep -- -v filename ==> grep keyword "-v" (-- signify that -v is not an option for grep)
+    

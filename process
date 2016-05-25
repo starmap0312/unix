@@ -53,3 +53,37 @@
 
 # pmap: display the memory map of a given process
   pmap 1309: display the memory map of process with PID 1309
+
+# daemon: a computer program that runs as a background process
+  System V (SysV) init management
+    the first process called by kernel at boot is init
+    1) /etc/init.d/: where all the services are located and written as bash shell scripts
+       a) /etc/init.d/daemon start
+       b) /etc/init.d/daemon stop
+       c) /etc/init.d/daemon restart
+       d) /etc/init.d/daemon status
+       ex. /etc/init.d/network start ==> start the networking
+           /etc/init.d/sshd start    ==> start the sshd
+    2) two types of daemons
+       a) stand-alone: loaded to memory and providing services
+       b) super-daemon:
+          use of xinetd / inetd to provide socket and port management
+            sockets and ports will be open only when users request the service
+          xinetd: a super daemon which listens for incoming requests over a network and
+            launches the service for that request
+    3) run-levels of daemons: 7 run-levels
+       a) support different modes: 
+          single-user mode: runlevel 1
+          multi-user mode: runlevel 2
+          text mode (multi-user with network): runlevel 3
+          graphics mode (GUI): runlevel 5
+       b) configuration of runlevels:
+          use the linking of /etc/rc.d/rc[0-6]/SXXdaemon to /etc/init.d/daemon
+          [0-6]: run-levels
+          XX: order of the initilization (the numbers are for dependencies) 
+       c) chkconfig: command used to configure daemon's run-level
+          chconfig [--level levels] daemon <on|off|reset>
+          chkconfig daemon on (will create the links of the runlevel for you)
+          chkconfig daemon off
+          chkconfig --list daemon
+          

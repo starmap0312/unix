@@ -18,6 +18,29 @@
   default umask: 022
     i.e. files created users by default are of permissions: 755 (cf. /etc/login.defs)
 
+# chattr, lsattr
+  lsattr: list file attributes on a Linux second extended file system
+    ex.
+      lsattr /etc/sudoers  ==> ----i--------e- /etc/sudoers
+      i: immutable, even root cannot edit or delete the file, visudo will not work
+  chattr: change file attributes on a Linux file system
+    ex. chattr -i /etc/sudoers
+
+  attributes: acdeijstuADST
+    a: append only
+    c: compressed
+    d: no dump
+    e: extent format
+    i: immutable
+    j: data  journalling
+    s: secure  deletion
+    t: no tail-merging
+    u: undeletable
+    A: no atime updates
+    D: synchronous directory updates
+    S: synchronous updates
+    T: top of directory hierarchy
+
 # how to change the default run level in linux?
   init: command that temporarily change run level, ex. init 3 (default level is 5)
   edit: /etc/inittab

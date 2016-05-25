@@ -127,16 +127,6 @@
   tail -n 5 filename ==> print the last 5 lines of file
   tail -f log_file ==> view the content of log_file in real-time, press ctrl-c to exit
 
-# su: substitute user identity
-  by default only users in the admin / wheel groups can switch to UID 0 (root)
-  sudo su / sudo su -   ==> switch to root by entering your password (need to be a sudoer)
-  su - username         ==> switch to another username (need to enter username's password)
-  sudo su - username    ==> enter the superuser's (sudoer) password
-  sudo -iu username     ==> -i: simulate initial login, i.e. runs the shell specified in the
-                                /etc/passwd entry of the target user as a login shell 
-                            -u: let sudo run the specified command as username other than root
-  su - username -c 'ls' ==> execute only one command 'ls' as username
-
 # mysql
   mysql -u username -p ==> connect to the local mysql server
   mysql -u username -p -h 10.1.168.72 ==> connect to a remote mysql server

@@ -34,9 +34,9 @@
   git checkout -b branch_name
   (create a local branch which is a duplicate of the master branch)
   git push -u origin branch_name
-  (create a local and isolated branch)
-  git checkout --orphan branch_name
   (push local branch to remote)
+  git checkout --orphan branch_name
+  (create a local and isolated branch)
   git branch -a 
   (-a, --all: list both remote-tracking and local branches)
 

@@ -10,14 +10,28 @@
 # MySQL backquotes/backticks
   allow spaces and other special characters in table/column names
 
-# MySQL function DATE(expr)
-  extracts the date part of the date or datetime expression expr
-  ex.
-    SELECT DATE('2003-12-31 01:02:03');  ==> '2003-12-31'
+# MySQL dates:
+  1) function DATE(expr):
+     extracts the date part of the date or datetime expression expr
+     ex.
+       SELECT DATE('2003-12-31 01:02:03');  ==> '2003-12-31'
+
+  2) sysdate: system's current date
+     ex.
+       INSERT INTO table_name(COL1, COL2) VALUES('abc', sysdate);
+       (COL2 must be of DATE type)
 
 # WHERE col_name IN ('val1', 'val2', ...)
   ex.
   SELECT * FROM table_name WHERE col_name IN ('7105', '8105') ORDER BY job_id DESC;
+
+# UNION: used to combine the result-set of two or more SELECT statements
+  ex.
+  SELECT column_name(s) FROM table1 UNION SELECT column_name(s) FROM table2;
+  (selects only distinct values)
+
+  SELECT column_name(s) FROM table1 UNION ALL SELECT column_name(s) FROM table2;
+  (allow duplicate values)
 
 # LIKE
   ex.
@@ -39,6 +53,22 @@
   4) SELECT ... FROM ... WHERE col_name REGEXP '^...$'
      SELECT ... FROM ... WHERE col_name REGEXP '^.{3}$'
     (find col_name with exactly three characters)
+
+# TRUNC function
+  TRUNC(n1, n2): returns n1 truncated to n2 decimal places
+  ex.
+    SELECT TRUNC(15.79,1) "Truncate" FROM dual;
+      Truncate
+    ----------
+          15.7
+
+    SELECT TRUNC(15.79,-1) "Truncate" FROM dual;
+      Truncate
+    ----------
+            10
+
+    dual: a dummy table with a single record used for selecting
+    ex. SELECT sysdate FROM dual;
 
 # fact table vs. dimension table
   fact table works with dimension tables
