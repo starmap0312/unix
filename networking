@@ -155,17 +155,44 @@
     10.240.80.0/23 dev eth0  proto kernel  scope link  src 10.240.80.73 
     169.254.0.0/16 dev eth0  scope link  metric 1002
 
-# arp: manipulate the system ARP cache (ARP: Address Resolution Protocol)
-  a local host sends arp packages to all the hosts in the subnet to obtain their MAC addresses
-  (which will be written into the arp table)
+# arp: Address Resolution Protocol 
+  1) manipulate the system ARP cache
+  2) local host sends arp packages to all the hosts in the subnet to obtain their MAC addresses
+    which will be written into the arp table
+
   commands:
-    arp
+    arp: prints content of the ARP table 
       Address                  HWtype  HWaddress           Flags Mask            Iface
       ha1.vl-144.bas-1-prd.sg  ether   00:00:0c:9f:f0:01   C                     eth0
 
-    arp -n: get the IP/MAC mapping info from the arp table (-n: not resolve name)
+    arp -n: not resolve name, get the IP/MAC mapping info from the arp table
       Address                  HWtype  HWaddress           Flags Mask            Iface
       10.240.80.1              ether   00:00:0c:9f:f0:01   C                     eth0
+
+    arp -s <ip address> <hardware address>: add new ARP entry
+
+    arp -d <ip address> / <hardware address>: delete ARP entry
+
+# arping: send ARP REQUEST to a neighbour host
+  1) arping utility performs an action similar to ping, but at the Ethernet layer
+  2) ping tests the reachability of an IP address
+     arping reports the reachability and round-trip time of an IP address hosted on local network
+
+  example:
+    arping -I eth0 -c 2 192.168.100.17
+
+    ARPING 192.168.100.17 from 192.168.100.254 eth0
+    Unicast reply from 192.168.100.17 [00:80:C8:E8:4B:8E]  8.419ms
+    Unicast reply from 192.168.100.17 [00:80:C8:E8:4B:8E]  2.095ms
+    Sent 2 probes (1 broadcast(s))
+    Received 2 response(s)
+
+    -c 2: 2 times
+    -I <interface>: name of network device where to send ARP REQUEST packets (required)
+    -U: send a broadcast arp
+        unsolicited ARP mode to update neighbours' ARP caches (no replies expected)
+    -A: send a gratuitous reply
+        same as -U, but ARP REPLY packets used instead of ARP REQUEST
 
 # change MAC address
   1) MacOS

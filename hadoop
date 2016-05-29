@@ -1,15 +1,16 @@
-# list a folder
-  hadoop fs -ls /path/to/hadoop/folder
+# hadoop fs <args> / hdfs dfs <args>
+  1) list a folder
+     ex. hadoop fs -ls /path/to/hadoop/folder
+  2) download a hadoop folder
+     ex. hadoop fs -get /path/to/folder
+  3) upload a local folder to hadoop
+     ex. hadoop fs -put /path/to/local/folder/ /path/to/hadoop/folder
+  4) cat a hadoop file
+     ex. hadoop fs -cat /path/to/filename
+  5) count the number of directories, files and bytes under the path
+     ex. hadoop fs -count -q /path/to/hadoop/folder
+         hdfs dfs -count -q hdfs://nn1.example.com/file1
 
-# download a hadoop folder
-  hadoop fs -get /path/to/folder
-
-# upload a local folder to hadoop
-  hadoop fs -put /path/to/local/folder/ /path/to/hadoop/folder
-
-# cat a hadoop file
-  hadoop fs -cat /path/to/filename
-
-#
-  hadoop fs -count -q /path/to/hadoop/folder
-/projects/CommerceOnGrid
+# hadoop fsck: runs a HDFS filesystem checking utility
+  hadoop fsck <path>: start checking from this path
+  ex. hadoop fsck /

@@ -24,6 +24,12 @@
     used to find process group id
     (%p: PID, %r: PGID, %y: TTY, %x: TIME, %c: COMMAND)
     kill -TERM -5112: kill every process in group 5112
+  ps aux --sort -rss: prints the ps output with the largest RSS size at the top
+  ps aux --sort rss: prints the ps output with the largest RSS size at the buttom
+  ps aux --sort -pid: prints output sorted by PID from the largest to the smallest
+  ps aux --sort -%cpu: sorted by CPU time used divided by the time the process has been running
+                       (cputime/realtime ratio)
+  ps aux --sort -time: sorted by cumulative CPU time (alias cputime)
 
 # pgrep: look up or signal processes based on name and other attributes
   pgrep [options] pattern: display the currently running processes PIDs matching the criteria

@@ -227,3 +227,15 @@
   base62: [A-Z], [a-z], [0-9] ==> 26 + 26 + 10 = 62
   base64: [A-Z], [a-z], [0-9], +, / (append = if the encoded string cannot be divided by 3)
 
+# Apache Solr
+  1) open-source, written in JAVA
+  2) full-text search, hit highlighting, faceted search, real-time indexing,
+     dynamic clustering, database integration, NoSQL features and
+     rich document (e.g., Word, PDF) handling 
+  3) providing distributed search and index replication
+  4) designed for scalability and Fault tolerance
+  5) second-most popular enterprise search engine after Elasticsearch
+  6) runs as a standalone full-text search server
+  7) uses the Lucene Java search library at its core for full-text indexing and
+     search, and has REST-like HTTP/XML and JSON APIs
+

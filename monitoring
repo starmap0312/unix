@@ -110,11 +110,21 @@
     (ex. /usr/bin/vim ==> display users currently using vim)
   lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
 
-# uptime, w
-  w: who is logged on the system
-  uptime: how long the system has been up, total number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
+# w: who is logged on the system
+
+# uptime
+  system uptime, number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
     ex.
       08:32:51 up 76 days, 20:39,  7 users,  load average: 39.72, 38.29, 35.46
+
+  /proc/loadavg: system's workload for last 15 minutes
+
+    ex. 0.14 0.22 0.19 1/342 32096
+
+      0.14 0.22 0.19: averaged cpu load over 1, 5, and 15 minutes
+      1/342: ratio for the number of executing kernel scheduling entities (processes, threads)
+             currently executing / currently exist on the system 
+      32096: PID of the process that was most recently created on the system 
 
 # /proc: virtual filesystem
   numbered directories: information about processes of particular PIDs

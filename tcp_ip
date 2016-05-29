@@ -76,3 +76,7 @@
      has sessions: a sequence of request/response transactions that occur on the network
      (i.e. http requests and responses)
 
+# HTTP status code
+  403: Forbidden
+    server can be reached and understood the request, but refuses to take any further action
+    ex. the web server is configured to deny access to the requested resource by the client

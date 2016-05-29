@@ -20,34 +20,38 @@
   2) add a line: username ALL=(ALL:ALL) ALL
 
 # sudo
-  sudo -v: validate, sudo will update the user’s cached credentials, authenticating the user’s
-           password if necessary; this extends the sudo timeout for another 5 minutes but 
-           does not run a command
-  sudo -su <username> -H [command]
-    -u user: run the specified command as a user other than root
-    -H: HOME, set the HOME environment variable to the home directory of the target user (default)
-    -s [command]: runs the shell specified by the SHELL environment variable (i.e. /etc/passwd)
-                  if no command is specified, an interactive shell is executed
-  sudo -iu <username>
-    -i: simulate initial login, source file .profile will be read
-  sudo sh -c "<command>": runs the commands in a sub-shell
-  sudo -u <username> <command>
-
-# su: substitute user identity
-  by default only users in the admin / wheel groups can switch to UID 0 (root)
-  sudo su / sudo su -    ==> switch to root by entering your password (need to be a sudoer)
-  su - username          ==> switch to another username (need to enter username's password)
-  sudo su - username     ==> enter the superuser's (sudoer) password
-  sudo -iu username      ==> -i: simulate initial login, i.e. runs the shell specified in the
-                                /etc/passwd entry of the target user as a login shell
-                            -u: let sudo run the specified command as username other than root
-  su - username -c 'ls'  ==> execute only one command 'ls' as username
+  1) validate:
+    sudo -v: validate, sudo will update the user’s cached credentials, authenticating the user’s
+             password if necessary; this extends the sudo timeout for another 5 minutes but 
+             does not run a command
+  2) run command as <username>
+    sudo -su <username> -H [command]
+      -u user: run the specified command as a user other than root
+      -H: HOME, set the HOME environment variable to the home directory of the target user (default)
+      -s [command]: runs the shell specified by the SHELL environment variable (i.e. /etc/passwd)
+                    if no command is specified, an interactive shell is executed
+    sudo sh -c "<command>": runs the commands in a sub-shell
+    su - <username> -c '<command>': execute only one command as username
+    sudo -u <username> <command>
+  3) switch to <username>
+    a) sudo:
+      sudo -iu <username> OR sudo su - <username>
+        -i: simulate initial login, source file .profile will be read (NOT .bashrc), start at $HOME folder
+            runs the shell specified in the /etc/passwd entry of the target user as a login shell
+        -u: let sudo run the specified command as username other than root
+      sudo -su <username> 
+        -s: runs the shell, source file .bashrc will be read (NOT .profile), does not start at $HOME folder
+    b) su: substitute user identity
+      su - username
+        switch to username by entering username's password
+      sudo su - username
+        switch to username by entering the superuser's (sudoer) password
+      sudo su -
+        switch to root by entering the superuser's (sudoer) password
+        by default, only users in the admin / wheel / sudoer groups can switch to UID 0 (root)
 
 # wheel: groupname
   1) Mac OS X and BSD UNIX
   2) for a group of trusted people that could become superuser by using the su command
-  3) only allow people in wheel group to become superuser using su. They chose the groupname 'wheel', supposedly reference to other systems that had WHEEL, possibly a reference to being a 'big wheel'
+  3) only allow people in wheel group to become superuser using su
 
-It's less important now that you have the GUI authorization popups and sudo. You can use sudo without being in wheel group I believe.
-
-As far as how to change to wheel, chgrp should be your friend, once you're root.
