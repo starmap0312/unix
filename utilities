@@ -22,8 +22,12 @@
   tar xvf archive_name.tar
 
 # diff:
+  diff filename1 filename2
   diff -w filename1 filename2: ignore white spaces when comparing
-  ("Ilov eyo u" == "I love you")
+    -w, --ignore-all-space: i.e. "Ilov eyo u" == "I love you"
+  diff -qr dir1 dir2
+    -q: quick
+    -r: recursive
 
 # vimdiff
   vimdiff filename1 filename2
@@ -37,6 +41,7 @@
   vim -O filename1 filename2
   option -O: open a window for each file
   Ctrl + w: jump to the left / right window
+  typing :set list in vim will show whitespace, end of lines ($), and carriage returns (^M)
 
 # sort:
   sort filename: sort a file in an ascending order
@@ -195,13 +200,6 @@
   ex.
     curl -v -H "Host:www.yahoo.com" http://www.google.com
 
-# diff
-  diff filename1 filename2
-  diff -qr dir1 dir2
-    options:
-    -q: quick
-    -r: recursive
-
 # strace: System-calls Trace
   1) display the system calls used by a process and the signals received by the process
   2) used for debugging and troubleshooting the execution of an executable
@@ -256,3 +254,24 @@
 # watch: execute a program periodically, showing output fullscreen
   -n, --interval to specify a different interval (default: 2 secs)
 
+# tr: translate or delete characters
+  tr [OPTION] SET1 [SET2]
+  1) convert lower case to upper case
+     tr abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ
+     tr [:lower:] [:upper:] < inputfile > outputfile
+  2) translate braces into parenthesis
+     tr '{}' '()' < inputfile > outputfile
+  3) translate white-space to tabs
+     echo "This is for testing" | tr [:space:] '\t'
+  4) delete specified characters using -d option
+     echo "the geek stuff" | tr -d 't'
+  5) squeeze repetition of characters using -s
+     option: -s, --squeeze-repeats: replace a repeated character with a single character
+     echo "This   is   for testing" | tr -s [:space:] '\t'
+     echo "This  is  for testing" | tr -s [:space:] ' '
+  5) join all the lines in a file into a single line
+     tr -s '\n' ' ' < inputfile
+
+# dos2unix: DOS/MAC to UNIX text file format converter
+  when vim a filename, if it shows [dos], it means the filename is interpreted as DOS format
+  running dos2unix filename converts the file into UNIX format

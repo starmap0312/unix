@@ -1,18 +1,20 @@
 # grep (global regular expression print) command:
-  grep -v pattern (invert match, exclude pattern)
-  grep -c pattern (return count of matched lines)
-  grep -A "number of lines" pattern (after context)
-  grep -B "number of lines" pattern (before context)
-  grep -C "number of lines" pattern (surround context)
-      ex. grep -C 2 pattern ==> print two lines of context around each matching line
-  grep -i pattern (case insensitive): ex. grep -i error ==> match Error, erROr, ERROR
-  grep -w keyword filename (search whole word in a file) ==> grep '\<keyword\>' filename
-  grep -n keyword filename (display line number)
-  grep --color keyword filename (highlight matching with colors)
-  grep -l keyword *.txt (display filenames containing keyword)
-  grep -R keyword * (recursively grep files in current directory)
-  grep -e pattern ==> echo "-A" | grep -e "-A" (not adding -e, the minus char will not be escaped)
-  grep -E "^pattern1|^pattern2" (or egrep "^pattern1|^pattern2")
+  grep -v pattern: invert match / exclude pattern
+  grep -c pattern: return count of matched lines
+  grep -A 3 pattern: output 3 lines after matched context
+  grep -B 3 pattern: output 3 lines before matched context
+  grep -C 3 pattern: output 3 lines surround matched context
+  grep -i pattern: case insensitive,  ex. grep -i error, matching "Error", "erROr", "ERROR"
+  grep -w pattern filename: search whole word in a file, i.e. grep '\<keyword\>' filename
+  grep -n pattern filename: display line number
+  grep --color pattern filename: highlight matching with colors
+  grep -l pattern *.txt: display only filenames with matching pattern
+  grep -R, -r pattern /path/to/folder/: recursively grep files in target directory
+  grep -e pattern: protect a pattern beginning with a hyphen (-); otherwise, it will be escaped
+    ex. echo "-A" | grep -e "-A"
+  grep -E "^pattern1|^pattern2" / egrep "^pattern1|^pattern2": interpret pattern as extended regexp 
+  grep -q "pattern" && <command>: quiet (no output to stdout), used to execute the second command
+    if the pattern is greped
 
 # regular expressions:
   the following characters are of special meaning

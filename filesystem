@@ -1,0 +1,9 @@
+# /var/spool : Spool directories
+  used for machine-local data being spooled to or from UNIX subsystems
+  ex.
+    1) /var/spool/lpd: print jobs are spooled here for delivery to the lineprinter daemon
+    2) /var/spool/smail: out-bound mail is spooled for delivery to remote systems
+    4) /var/spool/mail: In-bound mail and news are spooled here for delivery to users
+    3) /var/spool/uucp: UUCP files are spooled for transmission to UUCP neighbors
+    5) /var/spool/at, /var/spool/cron/:
+         at and cron jobs are spooled for delayed execution by the cron daemon

@@ -130,3 +130,16 @@
   numbered directories: information about processes of particular PIDs
   (sub-directories: cmd)
   system information files: ex. cpuinfo, meminfo, loadavg, etc.
+
+# /usr/lib64/sa/sa2: 
+  write a daily report in the /var/log/sa directory
+    ex. /var/log/sa/sa31
+  read the report file
+    ex. sar -f /var/log/sa/sa31
+  crontab job:
+    /etc/cron.d/sysstat
+      # Run system activity accounting tool every 10 minutes
+      */10 * * * * root /usr/lib64/sa/sa1 1 1
+      # Generate a daily summary of process accounting at 23:53
+      53 23 * * * root /usr/lib64/sa/sa2 -A
+

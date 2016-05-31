@@ -1,8 +1,16 @@
-# crontab file location
+# /var/spool/cron/: individual user crontab file location
+  cron searches the spool area /var/spool/cron/ for crontab files
+  crontab -e: edits the corresponding file in /var/spool/cron
   1) CentOS: /var/spool/cron/
-     by default cron searches its spool area /var/spool/cron/ directory for crontab files
-     ex. file /var/spool/cron/kuanyu is user kuanyu's crontab file
+     ex. /var/spool/cron/username
   2) Ubuntu: /var/spool/cron/crontabs/
 
+# /etc/cron.d: modular crontab file location
+  the cron entries have an additional field for a user to run the cron entries as
+  (same as a systemwide /etc/crontab file)
+  ex. /etc/cron.d/raid-check 
+    # Run system wide raid-check once a week on Sunday at 1am by default (run as root)
+    0 1 * * Sun root /usr/sbin/raid-check
+
 # check user's cron job
-  crontab -l -u username OR cat /var/spool/cron/crontabs/username
+  crontab -l -u username (cat /var/spool/cron/crontabs/username)

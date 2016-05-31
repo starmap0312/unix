@@ -5,6 +5,10 @@
   2) adduser username ==> create users interactively
   3) newusers filename ==> create bulk users from file (the same format as /etc/passwd)
 
+# create linux group
+  1) create a group: sudo groupadd <group_name>
+  2) check if <group_name> exists: egrep -i "^group_name" /etc/group
+
 # what is user profile file?
   $HOME/.bash_profile, $HOME/.bash_bashrc
 

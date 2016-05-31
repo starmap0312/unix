@@ -375,3 +375,4 @@
 # less
   less -S filename
   (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)
+
