@@ -8,6 +8,7 @@
 # scp: copy file from one host to other
   scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
   scp username@xx.xx.xx.xx:/remote_filepath local_folder_path
+  scp -r username@xx.xx.xx.xx:/remote_folder_path/ local_folder_path
   rsync -a local_folder_path1 local_folder_path2
   rsync -a -e ssh username@xx.xx.xx.xx:/remote_folder_path local_folder_path
   sftp username@xx.xx.xx.xx (login ftp and operate, ex. cd/ls/mkdir/rmdir/rm/pwd/put/get/exit)
@@ -18,8 +19,16 @@
     in contrast, use & the process will terminate as soon as the user log off the system
 
 # tar:
-  tar cvf archive_name.tar dirname/
-  tar xvf archive_name.tar
+  backup a directory (ex. /var/spool/cron, /etc, /home, /var, etc.)
+    tar cvf archive_name.tar dirname/
+    tar xvf archive_name.tar
+    tar -zcvf archive-name.tar.gz dirname/
+    tar -zxvf archive-name.tar.gz
+      -z: Compress archive using gzip program
+      -c: Create archive
+      -v: Verbose i.e display progress while creating archive
+      -f: Archive File name
+      -x: Extract files
 
 # diff:
   diff filename1 filename2
@@ -41,7 +50,8 @@
   vim -O filename1 filename2
   option -O: open a window for each file
   Ctrl + w: jump to the left / right window
-  typing :set list in vim will show whitespace, end of lines ($), and carriage returns (^M)
+  :set list  ==> display whitespace, end of lines ($), and carriage returns (^M)
+  /\ckeyword ==> case-insensitive search <keyword>
 
 # sort:
   sort filename: sort a file in an ascending order

@@ -12,7 +12,8 @@
   1) monitor system real time performance (cpu, memory, i/o, etc.)
   2) collect performance data in the background and do analysis on the historical data 
      for bottlenecks
-  3) logs are kept in /var/log/sysstat/ or /var/log/sa/ with filenames such as /var/log/sa/sa[dd]
+  3) logs are kept in /var/log/sysstat/ or /var/log/sa/
+     log filename: /var/log/sa/sa[dd]
      [dd]: day of month, i.e. 01-30
   ex.
     sar -u 1 3          ==> system cpu statistics 3 times with 1 second interval
@@ -131,15 +132,13 @@
   (sub-directories: cmd)
   system information files: ex. cpuinfo, meminfo, loadavg, etc.
 
-# /usr/lib64/sa/sa2: 
-  write a daily report in the /var/log/sa directory
-    ex. /var/log/sa/sa31
-  read the report file
-    ex. sar -f /var/log/sa/sa31
-  crontab job:
-    /etc/cron.d/sysstat
-      # Run system activity accounting tool every 10 minutes
-      */10 * * * * root /usr/lib64/sa/sa1 1 1
-      # Generate a daily summary of process accounting at 23:53
-      53 23 * * * root /usr/lib64/sa/sa2 -A
-
+# /etc/cron.d/: crontab daemon job
+  ex. /etc/cron.d/sysstat
+    # Run system activity accounting tool every 10 minutes
+    */10 * * * * root /usr/lib64/sa/sa1 1 1
+    # Generate a daily summary of process accounting at 23:53
+    53 23 * * * root /usr/lib64/sa/sa2 -A
+  
+    1) logging program: /usr/lib64/sa/sa2
+    2) write a daily report in the /var/log/sa directory, ex. /var/log/sa/sa31
+    3) use sar to read the log file: ex. sar -f /var/log/sa/sa31

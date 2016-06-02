@@ -42,7 +42,8 @@
   $0: name of the script
   $1: 1st argument
   $2: 2nd argument
-  $#: number of arguments
+  $#: number of arguments (ex. script_name 1 2 3, then $# == 3)
+    ex. if [ $# != 3 ]; then echo usage; fi
   $@: an array-like construct of all positional parameters, { $1, $2, $3, ... }
   $*: all arguments separated with spaces, $1 $2 $3 ...
   $$: PID of current shell (not subshell)
@@ -189,6 +190,14 @@
       echo $i;
   done
 
+  ex.
+  START=3
+  END=7
+  for i in $(seq $START $END);
+  do
+      echo $i;
+  done
+
 # the switch statement
   case $var in
   value1)
@@ -236,3 +245,115 @@
   ex.
     grep -- -v filename ==> grep keyword "-v" (-- signify that -v is not an option for grep)
     
+# =~: Equal Tilde operator
+  1) allows the use of regex in an if statement
+     the string to the right of the operator is considered an extended regular expression and matched accordingly
+  2) the return value is 0 if the string matches the pattern, and 1 otherwise
+  ex.
+    [[ $date =~ ^[0-9]{4}(0[0-9]|1[0-2])([0-2][0-9]|3[0-1])$ ]] && echo "yes"
+    #           |^^^^^^^^ ^^^^^^ ^^^^^^  ^^^^^^^^^^ ^^^^^^ |
+    #           |   |         |                   |        |
+    #           | year YYYY   |      either 00-29 or 30,31 |
+    # start of line  either 0X or 10,11,12                end of line
+
+# <<<: here string
+  COMMAND <<<$WORD
+  1) a stripped-down form of a here document
+  2) the value of $WORD is expanded and fed to the stdin of COMMAND
+
+    ex.
+      a) if [[ $VAR = *txt* ]]; then do_something; fi
+      b) if echo "$VAR" | grep -q txt; then do_something; fi
+      c) if grep -q "txt" <<< "$VAR"; then do_something; fi
+
+    ex.
+      wc -w <<< "This is a test."
+      output: 4
+
+    ex. grepping into a shell variable
+      var="Neither in this world nor elsewhere is there any happiness in store for him who always doubts."
+     
+      grep "nor" $var (WRONG)
+      output: grep: Neither: No such file or directory
+
+      grep "nor" <<<$var >/dev/null && echo "Found" || echo "Not found" 
+      output: Found
+
+      alternatively: use shell pipes to grep into $var
+      echo $var | grep -q "nor"  && echo "Found" || echo "Not found"
+
+   ex. Counting network interfaces
+     wc -w <<<$(netstat -i | cut -d" " -f1 | egrep -v "^Kernel|Iface|lo")
+     output: 3
+
+     wc <<< $(cat filename)
+     output: 1    1374    7571
+     i.e. cat filename | wc
+
+# Shell Arrays
+  1) Defining Array Values:
+     array_name[index]=value
+     ex.
+       NAME[0]="Zara"
+       NAME[1]="Qadir"
+       NAME[2]="Mahnaz"
+     in bash: array_name=(value1 ... valuen) 
+     ex.
+       NAME=("Zara" "Qadir" "Mahnaz")
+  2) Accessing Array Values: ${array_name[index]}
+     ex.
+       echo ${NAME[0]}
+       echo ${NAME[1]}
+       echo ${NAME[2]}
+  3) access all the items in an array
+     ${array_name[*]}
+     ${array_name[@]}
+
+# shell options
+  myArray=( "$@" )  ==> assign all positional parameters, { $1, $2, $3, ... }, to an array
+
+  shift command: (in bash)
+    shift [N]: the positional parameters are shifted to the left by N
+    i.e. shift
+         the positional parameters $1 - $# are renamed:
+         before: $1, $2, $3, ..., $#
+         after:      $1, $2, ..., $# ($# is decremented by one)
+
+  ex. read in options by while-loop and shift command:
+
+  while test "$1"; do     ==> if "$1" is not empty
+      case "$1" in
+          --help)         echo "usage"; exit 0;;
+          --version)      echo "version"; exit 0;;
+          --)             shift; break;;
+          *)              break
+      esac
+      shift
+  done
+
+  test "$1" || {
+      echo "need more options"
+      exit 1
+  }
+
+
+  ex. read in options by a for-loop
+
+  for arg in "$@" ; do
+      case "$arg" in
+          http://*|https://*|ftp://*)  => read http://, https://, ftp://
+              do_something;
+              ;;
+          *.[rs]pm)                    => read *.rpm, *.spm
+              do_something;
+              ;;
+          *)
+              do_something;
+      esac
+  done
+  
+# concatenate the values of an array to a string
+  for arg in "${myArray[@]}"; do
+      options="$options $arg"
+  done
+
