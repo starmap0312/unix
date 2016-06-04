@@ -3,8 +3,10 @@
      ex. hadoop fs -ls /path/to/hadoop/folder
   2) download a hadoop folder
      ex. hadoop fs -get /path/to/folder
-  3) upload a local folder to hadoop
+  3) upload a local folder / file to hadoop
      ex. hadoop fs -put /path/to/local/folder/ /path/to/hadoop/folder
+         hadoop fs -put -f /path/to/local/folder/filename /path/to/hadoop/folder/filename
+           -f: force, to overwirte
   4) cat a hadoop file
      ex. hadoop fs -cat /path/to/filename
   5) count the number of directories, files and bytes under the path

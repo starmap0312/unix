@@ -53,6 +53,9 @@
       sudo su -
         switch to root by entering the superuser's (sudoer) password
         by default, only users in the admin / wheel / sudoer groups can switch to UID 0 (root)
+  4) sudo -E <command>
+     -E: preserve environment, user wishes to preserve their existing environment variables
+     ex. sudo -E pip install cx_Oracle
 
 # wheel: groupname
   1) Mac OS X and BSD UNIX

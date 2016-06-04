@@ -122,6 +122,14 @@
   str2="abc"
   test $str1 == $str2 && echo "str1 equals str2"
 
+  ${#str1} ==> get string length, i.e. 3
+
+# extract substring
+  ${string:position:length}
+  ex.
+    var=12345
+    echo ${var:2:2} ==> 34
+
 # test files
   test -e filename: does filename exist? i.e. [ -f filename ]
     ex. [ -f /etc/hosts ] && echo "Found" || echo "Not found"
@@ -131,6 +139,8 @@
   test -w filename: writable?
   test -x filename: executable?
   test -s filename: file not empty?
+
+  if [ -r /path/to/file ]; then do_something; fi
 
 # test command
   test -s filename: test if filename exists and has a size greater than zero

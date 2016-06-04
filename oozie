@@ -1,0 +1,31 @@
+# command-line
+  1) oozie job <OPTIONS>: job operations
+     a) run a job:
+       ex. oozie job -run -config /path/to/coordinator.properties
+           -config: specify the job configuration file '.xml' or '.properties' 
+     b) rerun jobs based on action ids:
+       ex. oozie job -rerun 4046712-150922212940621-oozie_PT-C -action 5545-5664
+           -rerun <coord_id> -action 5545-5664: coordinator rerun on action ids
+     c) rerun jobs based on action dates:
+       ex. oozie job -rerun 7442168-151111002143708-oozie_PT-C date
+           -rerun <coord_id> date <arg>: coordinator/bundle rerun on action dates
+     d) display job info / action info:
+       ex. oozie job -info 4046712-150922212940621-oozie_PT-C
+           oozie job -info 4046712-150922212940621-oozie_PT-C@5545
+           -info <coord_id>[@<action_id>]
+     e) kill a job:
+       ex. oozie job -kill 0686041-160525100548329-oozie_PT-C
+           -kill <coord_id>
+     f) display job definition: (i.e. content of coordinator.xml)
+       ex. oozie job -definition 0686041-160525100548329-oozie_PT-C
+
+  2) oozie jobs <OPTIONS>: job status
+     a) filter
+       ex. oozie jobs -filter user=<username> -verbose
+           oozie jobs -filter user=<username>\;status=RUNNING -verbose
+           -filter <arg>    user=<U>;name=<N>;group=<G>;status=<S>;
+           -verbose: verbose mode
+     b)
+           -jobtype <arg>   job type ('Supported in Oozie-2.0 or later versions ONLY -
+                                  coordinator' or 'wf' (default))
+
