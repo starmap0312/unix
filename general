@@ -77,43 +77,43 @@
     multiple use and sharing of software components between applications
     ex. C++ STL can be linked with your code
   two types of linux C/C++ libraries:
-    1. static libraries(.a): library of object code becomes part of the application
+    1) static libraries(.a): library of object code becomes part of the application
       ex. gcc -c code1.c code2.c # producing code1.o and code2.o
           ar rcs libmylib.a code1.o code2.o # producing libmylib.a
           how to use the library:
-          1. gcc main.c libmylib.a # just like compile with object files
-          2. gcc main.c -L. -lmylib
-            -L: location of library to search
-            -l: name of library to link
-          ./a.out # execute the program
-    2. dynamic linked shared object libraries(.so): used in two ways
-      2.1 dynamically linked at run-time but statically aware:
-        the libraries must be available during compile/link phase. the shared objects are not
-        included into the executable but are dynamically linked during execution
-        ex. gcc -c -fPIC code1.c code2.c
-              -fPIC: position-independent code
-            gcc -shared -WI,-soname,libmylib.so.1 -o libmylib.so.1.0.0 code1.o code2.o
-              -shared: shared library
-              -WI: pass following parameters to linker, i.e. setting soname == libmylib.so.1 
-              (the output library will be libmylib.so.1.0.0 (real name)) 
-            ln -s libmylib.so.1.0.0 libmylib.so
-            ln -s libmylib.so.1.0.0 libmylib.so.1
+          a) gcc main.c libmylib.a # just like compile with object files
+          b) gcc main.c -L. -lmylib
+             -L: location of library to search
+             -l: name of library to link
+             ./a.out # execute the program
+    2) dynamic linked shared object libraries(.so): used in two ways
+       a) dynamically linked at run-time but statically aware:
+          the libraries must be available during compile/link phase. the shared objects are not
+            included into the executable but are dynamically linked during execution
+          ex. gcc -c -fPIC code1.c code2.c
+                -fPIC: position-independent code
+              gcc -shared -WI,-soname,libmylib.so.1 -o libmylib.so.1.0.0 code1.o code2.o
+                -shared: shared library
+                -WI: pass following parameters to linker, i.e. setting soname == libmylib.so.1 
+                (the output library will be libmylib.so.1.0.0 (real name)) 
+              ln -s libmylib.so.1.0.0 libmylib.so
+              ln -s libmylib.so.1.0.0 libmylib.so.1
             how to use the library:
-            gcc main.c libmylib.so # just like static library
-            gcc main.c -L. -lmylib # ldd to view the dependency of executable and shared library
+              gcc main.c libmylib.so # just like static library
+              gcc main.c -L. -lmylib # ldd to view the dependency of executable and shared library
             when execute a.out the libary libmylib.so must be installed in /usr/lib, or
               set the LD_LIBRARY_PATH parameter for the library search
-      2.2 dynamically loaded/unloaded and linked during execution using the dynamic linking
-        loader system functions (ex. windows DLL, browser plug-in)
-        no need to link the library at compile-time, the dynamic loading is achieved by
-        calling the dl functions in the executable source code
-        ex. in main.c:
-            #include <dlfcn.h>
-            handle = dlopen("./libmylib.so", RTLD_LAZY);
-            ...
-            dlclose(handle);
+      b) dynamically loaded/unloaded and linked during execution using the dynamic linking
+         loader system functions (ex. windows DLL, browser plug-in)
+         no need to link the library at compile-time, the dynamic loading is achieved by
+           calling the dl functions in the executable source code
+         ex. in main.c:
+             #include <dlfcn.h>
+             handle = dlopen("./libmylib.so", RTLD_LAZY);
+             ...
+             dlclose(handle);
             
-            gcc main.c -ldl
+             gcc main.c -ldl
 
 # how are devices represented in unix?
   all devices are represented by special files located in /dev
