@@ -248,6 +248,9 @@
   find . -mtime +15 -type f | xargs -i <cmd> {}
   find . -mtime +15 -type f | xargs -i ls -alh {}
     -i[replace-str]: i.e. -I{} (default)
+  rpm -ql yum | xargs -I {} sh -c 'test -f {} && echo {}'
+    (note: rpm -ql yum | xargs -I {} test -f {} && echo {} does not work)
+    sh -c string: commands are read from string (sh: bash)
   
 # double-dash
   a double dash (--) is used in bash built-in commands to signify the end of command options

@@ -69,6 +69,15 @@
   netstat --listen
   lsof -i
 
+# lsof: list open files
+  find out which processes are using a particular file
+  lsof: list down PID of all the process which is using a particular file
+    (COMMAND: process name, NAME: full path of open file, PID, USER, FD: file descriptor)
+  lsof -u username: display open files of a particular user
+  lsof filename: display users currently using filename
+    (ex. /usr/bin/vim ==> display users currently using vim)
+  lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
+
 # change kernel parameters
   edit: /etc/sysctl.conf
   sysctl -p (make the changes permanently without rebooting)
@@ -96,6 +105,8 @@
 
 # how to show user info?
   finger <username>
+
+# w: who is logged on the system
 
 # how to lock user password
   usermod -L username

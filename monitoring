@@ -1,12 +1,31 @@
-# what is load average in a linux?
+### all statistics ###
+
+# uptime: load average
   the average sum of the number of process waiting in the run queue and the number of process
     currently executing over the period of 1, 5, and 15 minutes
-  use top and uptime command to find out the load average
 
-# how to check memory and cpu stats?
-  memory: free and vmstat commands
-    ex. free, free -k, free -m, free -g (in bytes, kilo bytes, mega bytes, giga bytes)
-  cpu: sar command
+  system uptime, number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
+    ex.
+      08:32:51 up 76 days, 20:39,  7 users,  load average: 39.72, 38.29, 35.46
+
+  /proc/loadavg: system's workload for last 15 minutes
+
+    ex. 0.14 0.22 0.19 1/342 32096
+
+      0.14 0.22 0.19: averaged cpu load over 1, 5, and 15 minutes
+      1/342: ratio for the number of executing kernel scheduling entities (processes, threads)
+             currently executing / currently exist on the system
+      32096: PID of the process that was most recently created on the system
+
+# /proc: virtual filesystem
+  numbered directories: information about processes of particular PIDs
+  (sub-directories: cmd)
+  system information files: ex. cpuinfo, meminfo, loadavg, etc.
+
+# top: display processes in order of cpu usage
+  press M: sorted by memory usage
+  top -u username: display processes belonging to username
+  top -p 1309,1882: display processes of particular PIDs
 
 # sar: System Activity Reporter, part of the sysstat package (sar/iosstat/pidstat/nfsiostat...)
   1) monitor system real time performance (cpu, memory, i/o, etc.)
@@ -22,56 +41,38 @@
     sar -n <DEVICE> 1 3 ==> network statistics (DEVICE: network devices such as eth0, eth1, etc.)
     sar -f /var/log/sa/sa$(date +%d -d yesterday) ==> display yesterday's statistics
 
-# tcpdump: a network packet analyzer
-  allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
-  1) tcpdump -i eth0 (-i: interface): capture packets from an interface
-  2) tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
-  3) tcpdump -w filename.pcap -i eth0: write captured packets to a file
-  4) tcpdump -tttt -r filename.pcap: read captured packets from a saved file
-     (-tttt: proper readable timestamp)
+# /etc/cron.d/: crontab daemon job
+  ex. /etc/cron.d/sysstat
+    # Run system activity accounting tool every 10 minutes
+    */10 * * * * root /usr/lib64/sa/sa1 1 1
+    # Generate a daily summary of process accounting at 23:53
+    53 23 * * * root /usr/lib64/sa/sa2 -A
 
-# ntop: display network usage, a top-like utility for monitoring network traffic
-  ntop: display network traffic statistics
-
-# nagios: an open source monitoring tool
-  ex. monitor databases, hardwares (ex. disk partition becomes 80% full), services (ex. nfs),
-      webservers, etc.
-
-# iostat: reports cpu, disk i/o, nfs statistics, part of sar utility
-  ex.
-  iostat
-    avg-cpu:  %user   %nice %system %iowait  %steal   %idle
-               1.14    0.00    0.38    0.25    0.49   97.74
-
-    Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn
-    vda               5.71       128.90       126.36    2703210    2649832
-    vdb               0.02         0.17         0.00       3642          0
-
-  iostat -c ==> display only cpu usage
-  iostat -d ==> display only disk i/o statistics
-  iostat -n ==> display only network statistics
-  iostat -p sda ==> display i/o statistics for only a device (/dev/sda)
+    1) logging program: /usr/lib64/sa/sa2
+    2) write a daily report in the /var/log/sa directory, ex. /var/log/sa/sa31
+    3) use sar to read the log file: ex. sar -f /var/log/sa/sa31
 
 # dstat
   ex. dstat
     ----total-cpu-usage---- -dsk/total- -net/total- ---paging-- ---system--
-    usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw 
-      1   0  98   0   0   0|  63k   64k|   0     0 |   0     0 | 317   109 
-      0   0 100   0   0   0|   0     0 | 468B  106B|   0     0 |  55    50 
-      0   0 100   0   0   0|   0     0 |1771B  826B|   0     0 |  30    27 
+    usr sys idl wai hiq siq| read  writ| recv  send|  in   out | int   csw
+      1   0  98   0   0   0|  63k   64k|   0     0 |   0     0 | 317   109
+      0   0 100   0   0   0|   0     0 | 468B  106B|   0     0 |  55    50
+      0   0 100   0   0   0|   0     0 |1771B  826B|   0     0 |  30    27
 
-
-# vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
-  ex.
-  vmstat ==> display information such as used/free virtual memory, memory swapped from/to disk,
-             interrupts per second, context switches, blocks in/out per second
-  vmstat 2 10 ==> execute 10 times with 2 seconds interval
+### CPU statistics ###
 
 # mpstat: reports processors statistics
   ex.
   mpstat -A ==> display all information
   mpstat -P ALL ==> display statistics of all individual CPUs or cores
   mpstat -P 0 ==> display statistics of a particular CPU
+
+### Memory statistics ###
+
+# memory stats
+  free / vmstat
+    ex. free, free -k, free -m, free -g (in bytes, kilo bytes, mega bytes, giga bytes)
 
 # free: display information of physical and swap memory
   free -m: display the values in MB (default: KB)
@@ -89,7 +90,7 @@
     buffers Mem: RAM space buffered by different applications
       a temporary location to store data for a particular application
       ex. when send burst of data through network, if the network interface is capable of sending
-          less data, it will keep the data in the buffers 
+          less data, it will keep the data in the buffers
     cached Mem: RAM space used for caching of data for future purpose
       a temporary location to store frequently used data for faster access
     (the difference between buffers and cached is that cache can be used multiple times, whereas
@@ -97,48 +98,45 @@
     - buffers/cache: 2643 (actual used RAM) = 4377 (used RAM) - 103 (buffers) - 1630 (cached)
     + buffers/cache: 5384 (actual available RAM) = 8027 (total RAM) - 2643 (actual used RAM)
 
-# top: display processes in order of cpu usage
-  press M: sorted by memory usage
-  top -u username: display processes belonging to username
-  top -p 1309,1882: display processes of particular PIDs
+# vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
+  ex.
+  vmstat ==> display information such as used/free virtual memory, memory swapped from/to disk,
+             interrupts per second, context switches, blocks in/out per second
+  vmstat 2 10 ==> execute 10 times with 2 seconds interval
 
-# lsof: list open files
-  find out which processes are using a particular file
-  lsof: list down PID of all the process which is using a particular file
-    (COMMAND: process name, NAME: full path of open file, PID, USER, FD: file descriptor)
-  lsof -u username: display open files of a particular user
-  lsof filename: display users currently using filename
-    (ex. /usr/bin/vim ==> display users currently using vim)
-  lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
+### disk I/O statistics ###
 
-# w: who is logged on the system
+# iostat: reports cpu, disk i/o, nfs statistics, part of sar utility
+  ex.
+  iostat
+    avg-cpu:  %user   %nice %system %iowait  %steal   %idle
+               1.14    0.00    0.38    0.25    0.49   97.74
 
-# uptime
-  system uptime, number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
-    ex.
-      08:32:51 up 76 days, 20:39,  7 users,  load average: 39.72, 38.29, 35.46
+    Device:            tps   Blk_read/s   Blk_wrtn/s   Blk_read   Blk_wrtn
+    vda               5.71       128.90       126.36    2703210    2649832
+    vdb               0.02         0.17         0.00       3642          0
 
-  /proc/loadavg: system's workload for last 15 minutes
+  iostat -c ==> display only cpu usage
+  iostat -d ==> display only disk i/o statistics
+  iostat -n ==> display only network statistics
+  iostat -p sda ==> display i/o statistics for only a device (/dev/sda)
 
-    ex. 0.14 0.22 0.19 1/342 32096
+### network statistics ###
 
-      0.14 0.22 0.19: averaged cpu load over 1, 5, and 15 minutes
-      1/342: ratio for the number of executing kernel scheduling entities (processes, threads)
-             currently executing / currently exist on the system 
-      32096: PID of the process that was most recently created on the system 
+# tcpdump: a network packet analyzer
+  allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
+  1) tcpdump -i eth0 (-i: interface): capture packets from an interface
+  2) tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
+  3) tcpdump -w filename.pcap -i eth0: write captured packets to a file
+  4) tcpdump -tttt -r filename.pcap: read captured packets from a saved file
+     (-tttt: proper readable timestamp)
 
-# /proc: virtual filesystem
-  numbered directories: information about processes of particular PIDs
-  (sub-directories: cmd)
-  system information files: ex. cpuinfo, meminfo, loadavg, etc.
+# ntop: display network usage, a top-like utility for monitoring network traffic
+  ntop: display network traffic statistics
 
-# /etc/cron.d/: crontab daemon job
-  ex. /etc/cron.d/sysstat
-    # Run system activity accounting tool every 10 minutes
-    */10 * * * * root /usr/lib64/sa/sa1 1 1
-    # Generate a daily summary of process accounting at 23:53
-    53 23 * * * root /usr/lib64/sa/sa2 -A
-  
-    1) logging program: /usr/lib64/sa/sa2
-    2) write a daily report in the /var/log/sa directory, ex. /var/log/sa/sa31
-    3) use sar to read the log file: ex. sar -f /var/log/sa/sa31
+### other information ###
+
+# nagios: an open source monitoring tool
+  ex. monitor databases, hardwares (ex. disk partition becomes 80% full), services (ex. nfs),
+      webservers, etc.
+
