@@ -1,5 +1,6 @@
 # attach to a screen environment
-  screen
+  screen      ==> start a screen session, by default screen launches ordinary (non-login) shells
+  edit .screenrc: shell -$SHELL
 
 # detach from a screen environment
   Ctrl + a, d

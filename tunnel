@@ -1,11 +1,29 @@
 # local port forwarding
-  ssh -L 9999:<dest_host>:3306 <username>@<jump_host>
+  1) ssh -L 9999:<dest_host>:3306 <username>@<jump_host> 'while true; do sleep 30; done'
+  2) ssh -f -N -L 9999:<dest_host>:3306 <username>@<jump_host>
+      -f: puts ssh in background
+      -N: do not execute a remote command (just forwarding ports)
+      -L: [bind_address:]<local_port>:<dest_host>:<dest_port>
+        a) allocating a socket to listen to <local_port>
+        b) whenever a connection is made to this port, the connection is forwarded over the secure channel, and
+           a connection is made to <dest_host> port <dest_port> from the <jump_host> 
+  3) edit .ssh/config
+       Host tunnel
+         HostName <jump_host>
+         LocalForward 9999 <dest_host>:<dest_port>
+         User <username>
+     run command:
+       ssh -f -N tunnel
 
   <localhost>:9999 -- (secure tunnel) --> <jump_host> --> <dest_host>:3306
   
   <localhost>:9999 -------------------------------------> <dest_host>:3306
 
   the packets sent to <localhost>:9999 are forwarded by <jump_host> to <dest_host>:3306
+
+  ex.
+    ssh -f -N -L 9999:127.0.0.1:3306 <username>@<db_server>
+      when db client sends packets to <localhost>:9999 => the packets are forwarded to <db_server>:3306
 
 # remote port forwarding
   ssh -R 9999:<dest_host>:3306 <remote_host>
@@ -25,7 +43,7 @@
   2) configure ssh connection to use the SOCKS proxy, i.e. localhost:9999
      edit .ssh/config
      HostName <dest_host>
-     ProxyCommand nc -X 5 -x localhost:9999 %h %p
+       ProxyCommand nc -X 5 -x localhost:9999 %h %p
      (-X 5: protocol version, Socks v.5)
      (nc connects to <dest_host>:<dest_port> using the SOCKS proxy, i.e. localhost:9999)
   3) the ssh connection is transparently tunnelized

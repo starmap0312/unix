@@ -140,7 +140,11 @@
   test -x filename: executable?
   test -s filename: file not empty?
 
-  if [ -r /path/to/file ]; then do_something; fi
+  ex.
+  if [[ -r /path/to/file ]]; then do_something; fi
+
+  ex.
+  if [[ ! -d /path/to/folder ]]; then mkdir -p /path/to/folder; fi
 
 # test command
   test -s filename: test if filename exists and has a size greater than zero

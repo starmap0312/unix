@@ -5,22 +5,24 @@
     currently executing over the period of 1, 5, and 15 minutes
 
   system uptime, number of users logged on, load average (avg. load of 1 min/5 mins/15 mins)
-    ex.
+  ex.
       08:32:51 up 76 days, 20:39,  7 users,  load average: 39.72, 38.29, 35.46
 
-  /proc/loadavg: system's workload for last 15 minutes
-
-    ex. 0.14 0.22 0.19 1/342 32096
-
-      0.14 0.22 0.19: averaged cpu load over 1, 5, and 15 minutes
-      1/342: ratio for the number of executing kernel scheduling entities (processes, threads)
-             currently executing / currently exist on the system
-      32096: PID of the process that was most recently created on the system
-
 # /proc: virtual filesystem
-  numbered directories: information about processes of particular PIDs
-  (sub-directories: cmd)
-  system information files: ex. cpuinfo, meminfo, loadavg, etc.
+  1) system information files
+     a) /proc/loadavg: system's workload for last 15 minutes
+
+        ex. 0.14 0.22 0.19 1/342 32096
+
+            0.14 0.22 0.19: averaged cpu load over 1, 5, and 15 minutes
+            1/342: ratio for the number of executing kernel scheduling entities (processes, threads)
+                   currently executing / currently exist on the system
+            32096: PID of the process that was most recently created on the system
+     b) /proc/cpuinfo: cpu info
+     c) /proc/meminfo: memory info
+
+  2) /proc/[PID]: numbered directories, information about processes of particular PIDs
+     (sub-directories: cmd)
 
 # top: display processes in order of cpu usage
   press M: sorted by memory usage

@@ -387,3 +387,6 @@
   less -S filename
   (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)
 
+# tree
+  tree -d /path/to/folder  ==> display only directories
+  tree /path/to/folder     ==> display also files

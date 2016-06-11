@@ -71,6 +71,8 @@
   ex.
     nc -w 1 <host> 4080 -v
     nc -X 5 -x localhost:9999 (ex. used for local forwarding)
+    nc -z <host> <port>: check if the port is open, exiting with 0 on success, 1 on failure
+      -z: just scan for listening daemons, without sending any data to them
 
 # check if a host is listening on a port
   1) telnet (Layer 7: TELNET health check)

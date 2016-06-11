@@ -178,6 +178,8 @@
 
 # tee: direct to both stdout and a file
   echo helloworld | tee filename
+  echo helloworld | tee -a filename
+    -a, --append: append to the file end, do not overwrite
 
 # strip command
   discard symbols from object files

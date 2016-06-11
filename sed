@@ -16,6 +16,13 @@
 # replace all the keywords of a file row by row 
   sed 's/word1/word2/g' filename
 
+# replace one line in filename
+  sed -i 'Ns/.*/replaced_content/' filename
+    -i, --in-place: edit files in place
+    N: target line number
+  sed 'Ns/.*/replaced_content/' filename > filename2
+    save the changed text in another file
+
 # print the 10th line of a file
   sed -n '10p' filename
   awk 'NR == 10' filename
