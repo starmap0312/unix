@@ -6,17 +6,91 @@
   1) environment variables (system-defined variables):
      ex. echo $PATH
   2) shell local variables (user-defined variables):
-     ex. var=1
-         echo $var
-  ("set" can display all shell local variables and environment variables, whereas "env" cannot)
-  (use "export" to export var to environment variables)
+     ex.
+       VAR=1
+       echo $VAR
+  3) use "export" to export VAR to environment variables
+     ex.
+       export VAR=1
+  3) "set" can display all shell local variables and environment variables, whereas "env" cannot
 
-# set
-  set -e: enables checking of all commands
-    if a command exits with an error and the caller does not check such error, then the scripts 
-    aborts immediately
-  set -x: trace the execution of all commands
-    make the interpreter print each command right before it is executed
+# debugging bash scripts
+  1) bash -x /path/to/script
+     -x: run the entire script in debug mode
+         traces of each command plus its arguments are printed to stdout
+
+  2) set -e: enables checking of all commands
+     if a command exits with error and caller does not check such error, then the scripts aborts immediately
+     ex.
+       set -e
+       ls /var
+       ls /unknown  ==> exit status of the command is not 0, the scripts aborts here
+       ls /tmp      ==> this command will not be executed
+
+  3) set -x: trace the execution of all commands
+     make the interpreter print each command right before it is executed
+     ex.
+       set -x
+       ls /var &> /dev/null
+       ls /tmp &> /dev/null
+
+       (stdout)
+       + ls /var
+       + ls /tmp
+  4) trap <command> <signal>: error handling for singal
+     trap - <signal>: unset error handling for signal
+     signal:
+       a) INT: Interrupt
+          the signal is sent when someone kills the script by pressing Ctrl-C
+       b) TERM: Terminate
+          the signal is sent when someone sends the TERM signal using the kill command
+          ex. kill PID (kill -SIGTERM PID, kill -15 PID)
+       c) EXIT: Exit (a pseudo-signal and is triggered when your script exits)
+          the signal is sent when
+          i)   reaching the end of the script
+          ii)  an exit command
+          iii) a command failing when using set -e
+
+     ex. implement a scirpt with the critical section using a lock file
+
+       (without error handling)
+
+         if [ ! -e $lockfile ]; then
+             touch $lockfile
+             ... enter critical section and do something ...
+             rm $lockfile
+         else
+             echo "some other task is already running"
+         fi
+         (the problem occurs when the script is interrupted by Ctrl-C, killed, or a failed command when set -e)
+
+       (with error handling)
+
+         if [ ! -e $lockfile ]; then
+             trap "rm -f $lockfile; exit" INT TERM EXIT
+             touch $lockfile
+             ... enter critical section and do something ...
+             rm $lockfile
+             trap - INT TERM EXIT
+         else
+             echo "some other task is already running"
+         fi
+         (delete the lock file when interrupted)
+
+     ex.
+       set -e
+ 
+       clean_exit() {
+           local rc="$?"
+           ... do some clean jobs      ...
+           ...   ex. <command> || true ...  ==> let command do not exit because of set -e when it fails
+           ... do some clean jobs      ...
+          return $rc
+       }
+
+       trap "clean_exit" EXIT
+
+       ... do main tasks ...
 
 # variable substitution
   var=value  ==> set var to a value (note: no spaces are allowed before and after "=")
@@ -24,16 +98,6 @@
       var1=123
       var2=oneTwoThree
   echo ${var:=value} ==> use var if set; use new value if undefined, and redefine
-
-# Makefile variable assignment
-  1) Lazy Set: value is expanded when the variable is used, not when it is declared
-     VARIABLE = value
-  2) Immediate Set: value is expanded when the variable is declared
-     VARIABLE := value
-  3) Set If Absent: set variable only when it is undefined (do nothing if it already has a value)
-     VARIABLE ?= value
-  4) Append: append the value to the existing value (simply set the variable if it is undefined)
-     VARIABLE += value
 
 # default variables 
   $?: whether the previous command is executed successfully (0: successful)
@@ -54,11 +118,11 @@
 
 # how to read input from terminal?
   ex.
-    echo "Input value for variable a"
-    read a
+    echo "Input value for variable A"
+    read A
   or
-    read -p "Input value for variable a: " a
-    echo "variable a is $a"
+    read -p "Input value for variable A: " A
+    echo "variable A is $A"
 
 # quotes in shell
   1) weak quotes: "..."
@@ -70,17 +134,17 @@
     sudo chown `id -u` /folder_name  ==> sudo chown 1000 /folder_name (ex. user id == 1000)
 
 # redirect both stdout and stderr to the same location
-  method 1: 2>&1
+  handle 0: stdin, 1: stdout, 2: stderr
+  1) method 1: 2>&1
       ex. ls -l > output 2>&1
           yum install [pkg_name] 2>&1 > inst.log (redirect stdout/stderr message to a file)
-  method 2: &>
+  2) method 2: &>
       ex. ls -l &> output
-  (handle 0: stdin, 1: stdout, 2: stderr)
 
 # error redirection (file descriptor: 0: stdin, 1: stdout, 2: stderr)
   ex.
-    du -sh 2>err_file
-    du -sh 2>/dev/null (redirect "... Permission denied ..." error to /dev/null)
+    du -sh 2> err_file
+    du -sh 2> /dev/null (redirect "... Permission denied ..." error to /dev/null)
 
 # compare numbers
   -eq: equal
@@ -111,46 +175,58 @@
                                `expr ...` is needed as expr is a command
   a=$[ 16 + 4 ]    ==> $[ expression ] is an alternative way of arithmetic operation
 
-# compare strings
-  test str1 == str2: equal (there must be spaces surrounding _==_)
-  test str1 != str2: not equal (there must be spaces surrounding _!=_)
-  test -z str: empty string
-  test -n str (test str): not empty string (-n can be omitted)
-
-  ex.
-  str1="abc"
-  str2="abc"
-  test $str1 == $str2 && echo "str1 equals str2"
-
-  ${#str1} ==> get string length, i.e. 3
-
 # extract substring
   ${string:position:length}
   ex.
     var=12345
     echo ${var:2:2} ==> 34
 
-# test files
-  test -e filename: does filename exist? i.e. [ -f filename ]
-    ex. [ -f /etc/hosts ] && echo "Found" || echo "Not found"
-  test -f filename: is a file?
-  test -d filename: is a directory?
-  test -r filename: readable?
-  test -w filename: writable?
-  test -x filename: executable?
-  test -s filename: file not empty?
+# test command: compare strings and test files
+  1) compare strings
+     test str1 == str2: equal (there must be spaces surrounding _==_)
+     ex.
+       str1="abc"
+       test $str1 == "abc" && echo "str1 equals abc"
 
-  ex.
-  if [[ -r /path/to/file ]]; then do_something; fi
+       if [[ $str1 == "abc" ]];
+       then
+           echo "str1 equals abc";
+       fi
 
-  ex.
-  if [[ ! -d /path/to/folder ]]; then mkdir -p /path/to/folder; fi
+     test str1 != str2: not equal (there must be spaces surrounding _!=_)
+     test -z str: empty string
+     test -n str (test str): not empty string (-n can be omitted)
+     ${#str1} ==> get string length, i.e. 3
 
-# test command
-  test -s filename: test if filename exists and has a size greater than zero
-  test -S filename: test if filename exists and is a socket
-  test -s filename || { echo "filename does not exist! Exiting..."; exit 1; }
-    test if the non-empty filename exists; otherwise, print error message and exit with 1
+  2) test files
+     test -e filename: does filename exist? i.e. [ -f filename ]
+     ex.
+       [ -f /etc/hosts ] && echo "Found: /etc/hosts" || echo "Not found: /etc/hosts"
+
+       if [[ -f /etc/hosts ]];
+       then
+           echo "Found: /etc/hosts"
+       else
+           echo "Not found: /etc/hosts"
+       fi
+
+     test -f filename: is a file?
+     test -d filename: is a directory?
+     ex.
+       if [[ ! -d /path/to/folder ]]; then mkdir -p /path/to/folder; fi
+
+     test -r filename: readable?
+     ex.
+       if [[ -r /path/to/file ]]; then do_something; fi
+
+     test -w filename: writable?
+     test -x filename: executable?
+     test -s filename: file not empty? (test if filename exists and has a size greater than zero)
+     ex.
+       test -s filename || { echo "non-empty filename does not exist! Exit with 1"; exit 1; }
+
+     test -S filename: test if filename exists and is a socket
+     test -p filename: test if filenmae exists and is a named pipe
 
 # how to define function?
   function_name()
@@ -159,12 +235,13 @@
   }
 
   ex.
-  func()
-  {
-      read -p "input a number: " var
-      echo "the input number is $var"
-  }
-  func  <== execute func
+    func()
+    {
+        echo "the input parameters is $@"
+        echo "the first parameter is $1"
+    }
+    func 1 2 3 <== execute func and pass in three parameters: 1, 2, 3
+
 
 # nested if statement
   if [ condition ];  <==== [_condition_] must have spaces surrounding condition
@@ -241,21 +318,6 @@
       ;;
   esac
 
-# debugging bash scripts
-  bash -x /path/to/script
-    -x: run the entire script in debug mode. traces of each command plus its arguments are
-        printed to stdout
-
-# xargs: build and execute command lines from standard input
-  find /path/to/folder -perm -700 | xargs ls -l
-    (find files with permissions at least 700 and perform ls -l to them)
-  find . -mtime +15 -type f | xargs -i <cmd> {}
-  find . -mtime +15 -type f | xargs -i ls -alh {}
-    -i[replace-str]: i.e. -I{} (default)
-  rpm -ql yum | xargs -I {} sh -c 'test -f {} && echo {}'
-    (note: rpm -ql yum | xargs -I {} test -f {} && echo {} does not work)
-    sh -c string: commands are read from string (sh: bash)
-  
 # double-dash
   a double dash (--) is used in bash built-in commands to signify the end of command options
     after which only positional parameters are accepted

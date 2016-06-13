@@ -43,9 +43,8 @@
 # pkill: look up or signal processes based on name and other attributes
   pkill -f -o <keyword>
   pkill -f -<signal> <keyword>
-    -<signal>: by default SIGTERM
-    -SIGTERM: -15, can be blocked, handled, and ignored, the normal way to politely to terminate
-    -SIGKILL: -9, cannot be handled or ignored, cause immediate program termination
+    -SIGTERM, -15: the default, can be blocked, handled, and ignored, the normal way to politely to terminate
+    -SIGKILL, -9: cannot be handled or ignored, cause immediate program termination
   pkill -u <username>
 
 # pstree: display all processes in hierarchical structure

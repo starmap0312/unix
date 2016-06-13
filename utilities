@@ -185,8 +185,13 @@
   discard symbols from object files
 
 # mktemp commnad
-  mktemp: make temporary file (unique)
-  mktemp -d: make temporary directory (unique)
+  by default, the command creates a unique temporary file / directory under $TMPDIR (ex. /tmp)
+  1) mktemp: make temporary file
+  2) mktemp -d: make temporary directory
+  3) mktemp filename.XXXXX  ==> the XXXXX will be replaced in order to create a unique filename
+     ex.
+       OUT=$(mktemp /tmp/output.XXXXXXXXXX) || { echo "Failed to create temp file"; exit 1; }
+       echo "Today is $(date)"  >> $OUT
 
 # expand: convert tabs to spaces
   ex.
@@ -287,3 +292,13 @@
 # dos2unix: DOS/MAC to UNIX text file format converter
   when vim a filename, if it shows [dos], it means the filename is interpreted as DOS format
   running dos2unix filename converts the file into UNIX format
+
+# xargs: build and execute command lines from standard input
+  find /path/to/folder -perm -700 | xargs ls -l
+    (find files with permissions at least 700 and perform ls -l to them)
+  find . -mtime +15 -type f | xargs -i <cmd> {}
+  find . -mtime +15 -type f | xargs -i ls -alh {}
+    -i[replace-str]: i.e. -I{} (default)
+  rpm -ql yum | xargs -I {} sh -c 'test -f {} && echo {}'
+    (note: rpm -ql yum | xargs -I {} test -f {} && echo {} does not work)
+    sh -c string: commands are read from string (sh: bash)
