@@ -170,8 +170,14 @@
       modify the /etc/shadow file?
     because /usr/bin/passwd has its SUID turned on, i.e. the s flag of r-s in user permission
       and group and other users have the execute permission, i.e. --x--x
-      when group users or other users execute the program, they have the owner's privilege during
+      when group users or other users execute the program, they have the owner's (i.e. root) privilege during
       the execution, and therefore can modify the /etc/shadow file
+    ex. 
+    ls -l /usr/bin/crontab
+      -rwsr-xr-x 1 root root 51784 Mar 23  2015 /usr/bin/crontab
+    ls -l /var/spool/cron/kuanyu
+      -rw------- 1 kuanyu users 54 Jun 16 12:50 /var/spool/cron/kuanyu
+
   sticky bit: used for directories to protect files from removal/renaming
       if a directory allows others to read/write/execute, then everyone can create files in
         the directory. if the sticky bit of the directory is turned ON

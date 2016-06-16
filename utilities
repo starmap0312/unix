@@ -302,3 +302,8 @@
   rpm -ql yum | xargs -I {} sh -c 'test -f {} && echo {}'
     (note: rpm -ql yum | xargs -I {} test -f {} && echo {} does not work)
     sh -c string: commands are read from string (sh: bash)
+
+# send mail
+  1) mail -s "Title" username@email.com < filename
+     cat filename / echo "message" | mail -s "Title" username@email.com
+  2) sendmail username@email.com < filename

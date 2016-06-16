@@ -48,6 +48,7 @@
 # how to list or enable services that are enabled at a particular run level?
   list service: chkconfig --list | grep 5:on
   enable service: chkconfig <name_service> on --level 3
+  ex. sudo chkconfig ntpd on --level 3
 
 # default ports:
   SMTP: 25
@@ -390,3 +391,12 @@
 # tree
   tree -d /path/to/folder  ==> display only directories
   tree /path/to/folder     ==> display also files
+
+# at
+  atq: list the scheduled jobs using atq
+  atrm <job_id>: ex. atrm 3
+  at -f myjobs.txt now + 1 hour
+    myjobs.txt
+      /path/to/a/shell-script
+      /path/to/any/command/or/script 
+  at 8:00 -f /path/to/a/shell-script

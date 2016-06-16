@@ -5,3 +5,22 @@
       of a file, both mTime and cTime will change)
   aTime: file "access time" (when the file is last accessed, ex. edit file, use head/cat/grep
       or sort commands to access a file)
+
+# Network Time Servers (NTP)
+  Sync Your Linux Server Time with Network Time Servers (NTP)
+
+  1) start ntp daemon
+     sudo service ntpd start
+  2) check ntpd status
+     chkconfig --list ntpd   ==> check if ntpd is configured to run at system start
+     ntpq -p                 ==> check if ntp is running
+     ex.
+       remote           refid      st t when poll reach   delay   offset  jitter
+       ==============================================================================
+       +clock.util.phx2 .CDMA.           1 u  111  128  377  175.495    3.076   2.250
+
+     ntpstat                 ==> obtain a brief status report from ntpd
+     ex.
+       synchronised to NTP server (10.5.26.10) at stratum 2
+       time correct to within 52 ms
+       polling server every 1024 s
