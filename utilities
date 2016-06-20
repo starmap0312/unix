@@ -57,6 +57,9 @@
   sort filename: sort a file in an ascending order
   sort -r filename: sort a file in a descending order
   sort -t: -k 3n /etc/passwd ==> sort file by the 3rd field
+  sort -n: sort in numeric order
+    ex. sort     => 12  2 
+        sort -n  =>  2 12
 
 # export:
   export VAR_NAME=xxxxxxxxxxxxxxx (export an environment variable)

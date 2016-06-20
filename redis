@@ -1,0 +1,9 @@
+# redis commands
+  1) redis-cli -p 22122
+     127.0.0.1:22122> get keyword
+     (nil)
+
+  2) redis-cli -p 6379 -h <redis_server>
+     redis_server:6379> info
+       ...
+       db0:keys=6790988,expires=1534663
