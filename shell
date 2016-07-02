@@ -97,7 +97,18 @@
     ex.
       var1=123
       var2=oneTwoThree
-  echo ${var:=value} ==> use var if set; use new value if undefined, and redefine
+  ${var:=value}     ==> use var if set; use new value if undefined, and redefine
+    ex.
+      ${var3:=123}
+      this will set var3=123 if $var3 is undefined
+  ${var4:-value}    ==> If parameter is unset or null, use value; otherwise, use the value of $var4 
+    ex.
+      echo ${var3:-123}
+      a) this will echo value 123 if $var3 is undefined/null (but unlike ${var:=value}, it will not set the value of $var3)
+      b) it will echo $var3 if $var3 has a value
+    ex.
+      var3=${var3:-123}
+      set var3=123 if $var3 is undefined or null
 
 # default variables 
   $?: whether the previous command is executed successfully (0: successful)
@@ -160,6 +171,9 @@
   if [ $x -gt $y ];  <==== use $variable_name to access variable
   then
       echo "x > y";
+  elif [ $x -eq $y ];
+  then
+      echo "x = y"
   else
       echo "x <= y";
   fi
@@ -288,6 +302,15 @@
   do
       echo $i;
   done
+
+  ex. read in a file line by line
+  OLD_IFS=$IFS
+  IFS=$'\n'
+  for i in $(cat filename);
+  do
+      echo $i
+  done
+  IFS=$OLD_IFS
 
 # the switch statement
   case $var in
@@ -436,3 +459,31 @@
       options="$options $arg"
   done
 
+# variable scopes
+  1) function paramters
+  ex. ./filename.sh arg1
+
+      #!/bin/bash
+      function func
+      {
+          echo $1    ==>   $1 == arg2
+          var="hello world"
+      }
+      echo $1        ==>   $1 == arg1
+      func arg2;
+      echo $1        ==>   $1 == arg1
+      echo $var      ==> $var == "hello world"
+
+    a) function has its own parameters: $1, $2, etc. and they do not overwrite the global script parameters, and
+       they do not live outside of the function)
+    b) the variables set inside (outside) a function will continue to live, right after they are set
+
+  2) if a script executes another script, their variables won't extend to current script
+
+# comment out multiple lines
+
+  <<COMMENT
+  ...
+  code
+  ...
+  COMMENT

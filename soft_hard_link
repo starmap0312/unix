@@ -11,6 +11,7 @@
              (internally)           original file inode   <----    soft link inode
                                           |
                                           |----> data on hard disk
+
   hard link: a direct pointer to the original inode of the original file (no inode created)
              there is no difference between the original file and its hard link
              hard links cannot cross file systems and cannot link to directories

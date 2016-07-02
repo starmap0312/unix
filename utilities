@@ -1,9 +1,17 @@
-# list all the links from a directory: ls -lrt | grep "^l"
+# list all the links from a directory
+  ls -lrt | grep "^l"
+    grep "^l" => grep lines that begins with l (which represents link files)
   options:
     -l: list long format
     -t: sort by modified time (new to old)
     -rt: sort by reversed modified time (old to new)
-  grep "^l" => grep lines that begins with l (which represents link files)
+
+# ls
+  ls -1 /path/to/folder/*.txt
+    filename1.txt
+    filename2.txt
+  option:
+    -1: list one file per line
 
 # scp: copy file from one host to other
   scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
@@ -152,20 +160,25 @@
 # date
   date [OPTION]... [+FORMAT]
   date                            ==> show the current system date
+  date +%<format-option>          ==> use formatting option to display date command in various formats
   options:
     -s: set time specified 
-    -d: display date specified
+    -d, --date=STRING: display date specified (display time described by STRING, not 'now')
     %s: day of month (e.g, 01) 
   ex.
     date -s "01/31/2012 23:59:53" ==> set the system date
     date -d yesterday             ==> show yesterday's system date
       Mon May  9 01:09:50 PDT 2016
     date +%d                      ==> display only day of month information
+      22
+    date +%F
+      2016-05-18
+    date +%s                      ==> display seconds since 1970-01-01 00:00:00 UTC
+      1466651401
     date +%d -d yesterday         ==> show yesterday's system date with only day of month info
     date -d @1462867742.066994    ==> convert integer to date
       Tue May 10 01:09:02 PDT 2016
     date +%F
-      2016-05-18
 
 # wget
   wget http://www.google.com ==> download file from the internet
@@ -287,8 +300,10 @@
      echo "the geek stuff" | tr -d 't'
   5) squeeze repetition of characters using -s
      option: -s, --squeeze-repeats: replace a repeated character with a single character
+     echo "This   is   for testing" | tr -s ' '
+       This is for testing
      echo "This   is   for testing" | tr -s [:space:] '\t'
-     echo "This  is  for testing" | tr -s [:space:] ' '
+       This	is	for	testing
   5) join all the lines in a file into a single line
      tr -s '\n' ' ' < inputfile
 

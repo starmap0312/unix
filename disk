@@ -17,61 +17,61 @@
   type w (write changes to partition table)
 
   used to manage hard disk partition: create/delete/change a partition
-  1. fdisk -l: list all existing disk partitions
-  2. fdisk /dev/sda (interactive):
-    ex. delete a hard disk partition, or create a new disk partition
+  1) fdisk -l: list all existing disk partitions
+  2) fdisk /dev/sda (interactive):
+     ex. delete a hard disk partition, or create a new disk partition
 
 # 5 steps to set up user and group disk quota
   - hard limit: if set to 2GB, user cannot create new files after using 2GB
   - soft limit: if set to 1GB, user will receive warning but can still create files before reaching
     hard limit
   - grace period: if set to 10 days, user can create new files in additional 10 days
-  1. enable quota check
+  1) enable quota check
     edit /etc/fstab
     LABEL=/home /home ext2 defaults,usrquota,grpquota 1 2
-  2. initial quota check
+  2) initial quota check
     quotacheck -avug
     (-a: check all quota-enabled filesystems, -v: verbose, -u: check user disk quota,
      -g: check group disk quota)
-  3. assign disk quota to a user
+  3) assign disk quota to a user
     edquota username
-  4. report disk quota usage
+  4) report disk quota usage
     repquota /home
-  5. add quotacheck to daily cron job
+  5) add quotacheck to daily cron job
     add file /etc/cron.daily/quotacheck (quotacheck -avug)
     (this will send the output of the quotacheck command to root email address)
 
 # dd: a useful backup command
   used by linux kernel makefiles to make boot images, need to be run as superuser
   ex.
-  1. disk to disk backup
+  1) disk to disk backup
      dd if=/dev/sda of=/dev/sdb
      (backup an entire hard disk to another hard disk connected to the same system)
      (if: inputfile, of: output file)
      dd if=/dev/sda of=/dev/sdb conv=noerror,sync
      (conv=noerror: continue to copy if there are read errors, sync: copy via synchronized I/O)
-  2. create an image of a hard disk
+  2) create an image of a hard disk
      dd if=/dev/hda of=/path/to/folder/hda.img
      (create and save the disk image file in other storage devices, allowing quick data restoring)
-  3. restore disk using hard disk image
+  3) restore disk using hard disk image
      dd if=/path/to/folder/hdadisk.img of=/dev/hdb
      (continuing 2, the above command restores /dev/hda to /dev/hdb)
-  4. create a floppy image
+  4) create a floppy image
      dd if=/dev/fd0 of=floppy.img
-  5. backup a partition
+  5) backup a partition
      dd if=/dev/hda1 of=/path/to/folder/hda_partition1.img
-  6. CDROM backup
+  6) CDROM backup
      dd if=/dev/cdrom of=/path/to/folder/cdrom.iso bs=2048
      (if CD is auto mounted, unmount the CD device before creating the iso image)
      (bs=2048: specify the block size)
 
 # two ways to add swap space using dd, mkswap, and swapon
   free -k/-m/-g/-h: show the swap space currently used by the system
-  1. use a hard disk partition as swap space
+  1) use a hard disk partition as swap space
      mkswap /dev/sdc1, swapon /dev/sdc1
      (edit /etc/fstab: make the swap space permanent
-      /dev/sdc1 swap swap defaults 0 0)
-  2. use a file as swap space
+     /dev/sdc1 swap swap defaults 0 0)
+  2) use a file as swap space
      dd if=/dev/zero of=/path/to/local/file bs=1M count=1024 ==> create a zeroed, 1024MB file
      chmod 600 /path/to/local/file
      mkswap /path/to/local/file, swapon /path/to/local/file

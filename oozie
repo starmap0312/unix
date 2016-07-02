@@ -11,7 +11,9 @@
            -rerun <coord_id> date <arg>: coordinator/bundle rerun on action dates
      d) display job info / action info:
        ex. oozie job -info 4046712-150922212940621-oozie_PT-C
+           ozi 4046712-150922212940621-oozie_PT-C
            oozie job -info 4046712-150922212940621-oozie_PT-C@5545
+           ozi 4046712-150922212940621-oozie_PT-C@5545
            -info <coord_id>[@<action_id>]
      e) kill a job:
        ex. oozie job -kill 0686041-160525100548329-oozie_PT-C

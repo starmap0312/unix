@@ -11,6 +11,8 @@
   9) find . -empty    ==> find empty files
  10) find . -mtime +15 -type f -regex ".*[0-9]$"
      (find files whose filename ends with a digit)
+ 11) find . -regex ".*\(dirname1\|dirname2\)"
+     (find folders ending with dirname1 or dirname2)
 
 options:
   -mtime: modify time, ex. +15: 15 days ago, -5: within 5 days

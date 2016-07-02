@@ -15,6 +15,8 @@
 
 # replace all the keywords of a file row by row 
   sed 's/word1/word2/g' filename
+  option:
+    g: global, replace all occurrences (without g, it will only replace the first occurrence)
 
 # replace one line in filename
   sed -i 'Ns/.*/replaced_content/' filename
@@ -22,6 +24,8 @@
     N: target line number
   sed 'Ns/.*/replaced_content/' filename > filename2
     save the changed text in another file
+  sed -i -E "s/$pattern/replaced_string" filename
+    -E: enable shell variable
 
 # print the 10th line of a file
   sed -n '10p' filename

@@ -8,17 +8,22 @@
   FILENAME: the input filename
 
   ex.
-  awk '{print $1 "\t" $3}' filename   ==> print column 1 and column 3
-  tail -n 3 filename | awk '{print $1 "\t" $3}' ==> print column 1 and column 3 of last 3 lines
-  awk -F ':' '$3==$4' /etc/passwd
-  echo $HOME | awk -F= '{print $NF}'  ==> print the last column of each row
-    HOME=/home/kuanyu ($NF == $1, print $NF == /home/kuanyu)
+    awk '{print $1 "\t" $3}' filename   ==> print column 1 and column 3
+    tail -n 3 filename | awk '{print $1 "\t" $3}' ==> print column 1 and column 3 of last 3 lines
+    awk -F ':' '$3==$4' /etc/passwd
+    echo $HOME | awk -F= '{print $NF}'  ==> print the last column of each row
+      HOME=/home/kuanyu ($NF == $1, print $NF == /home/kuanyu)
+    awk -F'[/=]' '{print $3 "\t" $5 "\t" $8}' filename           ==> multiple separators
+    awk -F '[ /\t]' '{print $6 " " $7 " " $8 " " $10}' filename  ==> multiple separators 
 
 # example: print the 3rd column of a tab separated file
   awk -F "\t" '{print $3}' filename (default delimiter: "\t", " ", "\n")
   cut -f3 filename (default delimiter: "\t")
   cut -d " " -f3 filename (cut 3rd column using delimiter: " ")
   cut -d : -f 1 /etc/passwd (cut -d":" -f1 /etc/passwd)
+  ex. cut a string and save to variable
+      var1=(echo "hello world" | cut -d " " -f1)    ==> var1="hello"
+      var1=(echo "hello world" | cut -d " " -f2)    ==> var2="world"
 
 # gawk: pattern scanning and processing language (GNU awk)
   gawk '/pattern/ {action}' filename

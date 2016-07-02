@@ -1,6 +1,7 @@
 # hadoop fs <args> / hdfs dfs <args>
   1) list a folder
      ex. hadoop fs -ls /path/to/hadoop/folder
+         hls /path/to/hadoop/folder
   2) download a hadoop folder
      ex. hadoop fs -get /path/to/folder
   3) upload a local folder / file to hadoop
@@ -12,6 +13,10 @@
   5) count the number of directories, files and bytes under the path
      ex. hadoop fs -count -q /path/to/hadoop/folder
          hdfs dfs -count -q hdfs://nn1.example.com/file1
+  6) make a folder
+     hadoop fs -mkdir [-p] /path/to/folder
+  7) move a folder
+     hadoop fs -mv /user/hadoop/folder1 /user/hadoop/folder2
 
 # hadoop fsck: runs a HDFS filesystem checking utility
   hadoop fsck <path>: start checking from this path
