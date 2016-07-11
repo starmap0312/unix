@@ -38,6 +38,20 @@
       -f: Archive File name
       -x: Extract files
 
+# bzip2
+  1) compress a single file
+     bzip2 filename                      ==> compress filename into filename.bz2
+  2) compress multiple files
+     bzip2 filename1 filename2 filename3 ==> compress into filename1.bz2, filename2.bz2, filename3.bz3
+  3) compress and keep the original file
+     bzip2 -k filename                   ==> compress into filename.bz2 and keep original filename
+  4) decompress a bz2 file
+     bzip2 -d filename.bz2               ==> decompress filename.bz2 into filename
+  5) decompress and keep the original bz2 file
+     bzip2 -k filename.bz2               ==> decompress into filename and keep original filename.bz2
+  6) integrity test
+     bzip2 -tv filename.bz2              ==> -t, -test: check integrity of a bz2 file
+
 # diff:
   diff filename1 filename2
   diff -w filename1 filename2: ignore white spaces when comparing
@@ -178,7 +192,6 @@
     date +%d -d yesterday         ==> show yesterday's system date with only day of month info
     date -d @1462867742.066994    ==> convert integer to date
       Tue May 10 01:09:02 PDT 2016
-    date +%F
 
 # wget
   wget http://www.google.com ==> download file from the internet
