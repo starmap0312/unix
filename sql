@@ -211,3 +211,114 @@
   1) too low: some queries may not have a parallel execution process available to them during
               query processing
   2) too high: memory resource shortages may occur during peak periods, which can degrade performance.
+
+# Oracle View
+  1) create view: create a virtual table based on the result set of the SELECT statement
+     CREATE VIEW view_name AS SELECT columns FROM tables [WHERE conditions];
+     ex.
+       CREATE VIEW sup_orders AS
+       SELECT suppliers.supplier_id, orders.quantity, orders.price
+       FROM suppliers
+       INNER JOIN orders
+       ON suppliers.supplier_id = orders.supplier_id
+       WHERE suppliers.supplier_name = 'Microsoft';
+
+       SELECT * FROM sup_orders;      ==> use the view just like a table
+  2) Update VIEW
+     CREATE OR REPLACE VIEW view_name AS SELECT columns FROM table WHERE conditions;
+  3) Drop VIEW
+     DROP VIEW view_name;
+
+# Oracle indexes
+  1) an optional structure, associated with a table or table cluster that speed data access
+     if a heap-organized table has no indexes, then database must perform a full table scan to find a value
+     i.e. search every row in every table block for the given value
+  2) by creating an index on one or more columns of a table, you gain the ability in some cases to
+     retrieve a small set of randomly distributed rows from the table
+  3) indexes are one of many means of reducing disk I/O
+  4) when to create an index
+     a) the indexed columns are queried frequently and return a small percentage of the total number of
+        rows in the table
+     b) a unique key constraint will be placed on the table and you want to manually specify the index and
+        all index options
+     c) a referential integrity constraint exists on the indexed column or columns
+        the index is a means to avoid a full table lock that would otherwise be required if you update
+        the parent table primary key, merge into the parent table, or delete from the parent table
+  5) create an index
+     ex. creates an index on the customer_id column of table orders
+         CREATE INDEX ord_customer_ix ON orders (customer_id);
+  6) create composite indexes, i.e. an index on multiple columns
+     order of the columns used in the definition is important: the most commonly accessed columns go first
+     ex. if application frequently queries the last_name, job_id, and salary columns in the employees table 
+         CREATE INDEX employees_ix ON employees (last_name, job_id, salary);
+         (queries that access all three columns, or only last_name, or only last_name and job_id will 
+          use the index)
+
+# Oracle partitions
+  1) decompose large tables and indexes into smaller and more manageable pieces called partitions
+  2) do not need to modify SQL queries and DML statements to access partitioned tables
+  3) however, after partitions are defined, DDL statements can access and manipulate individuals partitions
+     rather than entire tables or indexes
+  4) partitioning is entirely transparent to applications
+  5) partitioning key: each row in a partitioned table is unambiguously assigned to a single partition
+     the partitioning key is comprised of one or more columns that determine the partition
+  6) partitioning methods
+     a) range partitioning: ex. [Jan.-Feb.], [Mar.-Apr.], [May-June], [July-Aug.]
+     ex.
+       CREATE TABLE sales_range 
+       (salesman_id   NUMBER(5), 
+        salesman_name VARCHAR2(30), 
+        sales_amount  NUMBER(10), 
+        sales_date    DATE
+       )
+       PARTITION BY RANGE(sales_date) 
+       (PARTITION sales_jan2000 VALUES LESS THAN(TO_DATE('02/01/2000','MM/DD/YYYY')),
+        PARTITION sales_feb2000 VALUES LESS THAN(TO_DATE('03/01/2000','MM/DD/YYYY')),
+        PARTITION sales_mar2000 VALUES LESS THAN(TO_DATE('04/01/2000','MM/DD/YYYY')),
+        PARTITION sales_apr2000 VALUES LESS THAN(TO_DATE('05/01/2000','MM/DD/YYYY'))
+       );
+
+       // retriving rows from a table partition
+       SELECT * FROM sales_range;
+       SELECT * FROM sales_range PARTITION(sales_feb2000);
+
+       // adding a partition
+       ALTER TABLE sales_range ADD PARTITION sales_may2000 VALUES LESS THAN (TO_DATE('06/01/2000','MM/DD/YYYY'));
+
+       // dropping a partition
+       ALTER TABLE sales_range DROP PARTITION sales_may2000; 
+
+     b) list partitioning:  ex. [New York, Virginia, Florida], [California, Oregon, Hawaii], [Illinois, Texas]
+       ex.
+       CREATE TABLE sales_list
+       (salesman_id  NUMBER(5), 
+        salesman_name VARCHAR2(30),
+        sales_state   VARCHAR2(20),
+        sales_amount  NUMBER(10), 
+        sales_date    DATE)
+       PARTITION BY LIST(sales_state)
+       (PARTITION sales_west VALUES('California', 'Hawaii'),
+        PARTITION sales_east VALUES ('New York', 'Virginia', 'Florida'),
+        PARTITION sales_central VALUES('Texas', 'Illinois'),
+        PARTITION sales_other VALUES(DEFAULT)
+       );
+
+       (10, 'Jones', 'Hawaii', 100, '05-JAN-2000') maps to partition sales_west
+     c) hash partitioning:  ex. [h1], [h2], [h3], [h4]
+     d) composite partitioning: ex. range-hash or range-list
+  7) when to partition a table
+     a) tables greater than 2GB should always be considered for partitioning
+     b) tables containing historical data, in which new data is added into the newest partition
+        ex. a historical table where only the current month's data is updatable and the other 11 months
+            are read only
+  8) advantages
+     a) reducing downtime for scheduled maintenance
+        i.e. allows maintenance operations to be carried out on selected partitions while other partitions are
+        available to users
+     b) reducing downtime due to data failure
+        i.e. failure of a particular partition will no way affect other partitions
+     c) partition independence allows for concurrent use of the various partitions for various purposes
+  9) differences with storing in many Tablespaces
+     a) reduces the possibility of data corruption in multiple partitions
+     b) back up and recovery of each partition can be done independently
+
