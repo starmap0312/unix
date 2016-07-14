@@ -63,13 +63,19 @@
   3) only allow people in wheel group to become superuser using su
 
 # nobody: username/groupname
-  1) a  a pseudo, headless user with the least permissions on the system, i.e. not assigned to any file or 
-     directory (as owner)
+  1) a  a pseudo, headless user with the least permissions on the system
+     i.e. not assigned to any file or directory (as owner)
+          nobody user should have no shell assigned to it (i.e. /sbin/nologin or /bin/false)
   2) sudo grep nobody /etc/shadow: nobody doesn't have a password
   3) sudo su nobody: leave you in a pretty desolate sh shell
   4) when to use nobody user?
      when permissions aren not required for a program operations, ex. no disk activity
-  5) real-world example
+  5) real-world examplex
      ex. memcached (a key-value in-memory cache) is running under the nobody account, because it does not
          need any permissions (no write access to files)
-
+     ex. in earlier Unixes and Linux distributions daemon (ex. a webserver) were called under user nobody
+         but as more and more daemons are running with nobody user, it is no longer secure
+         today, daemons have their own user
+     ex. NFS daemon still needs the nobody user
+         if the owner of a file or directory in a mounted NFS share doesn't exist at the local system,
+         it is replaced by the nobody user and group
