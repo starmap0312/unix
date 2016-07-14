@@ -63,6 +63,7 @@
   commands:
     iptables -L -n -v
       -v: verbose: makes the list command show the interface name
+      -n: numeric
 
     iptables -t filter -L -n (-L: list all rules, -n: numeric, avoid long reverse dns lookups)
       Chain INPUT (policy ACCEPT)
@@ -101,7 +102,15 @@
        (-i, --in-interface name: interface via which a packet was received)
        (-p, --protocol: the protocol of the rule or of the packet to check)
 
-    d) write the changes to config file
+    d) insert a rule
+       iptables -I INPUT 3 -p tcp --dport 80 -j ACCEPT
+         -I: insert rule
+         (insert a rule to the third place of chain INPUT)
+    e) delete a rule
+       iptables -D INPUT 5
+         -D: delete
+
+    e) write the changes to config file
        /etc/init.d/iptables save
 
 # turn on iptable
