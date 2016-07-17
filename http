@@ -1,9 +1,54 @@
-# status code
-  301: moved, permanent url redirection
-    (the server responds with an additional redirect url in the location header field)
-  302: found, temporary url redirection
-    (the server responds with an additional redirect url in the location header field)
-  403: forbidden
-    (client can communicate with the server but server refuse to take action, ex. deny access)
-  404: not found 
-    (client can communicate with the server but server cannot find what was requested)
+# differences HTTP/1.0 & HTTP/1.1
+  1) Proxy support and the Host field
+     a) HTTP 1.1 has a required Host header by spec
+     b) HTTP 1.0 does not officially require a Host header, but can add one
+     many applications/proxies expect to see the Host header regardless of the protocol version
+       the Host header is useful because it allows you to route a message through proxy servers, and
+       the web server can distinguish between different sites on the same server
+       i.e. if you have example1.com and example2.com both pointing to the same IP; the web server can
+       use the Host field to distinguish which site the client machine wants
+     ex.
+       GET / HTTP/1.1
+       Host: www.example1.com
+  2) Persistent connections
+     a) HTTP 1.1 has persistent connections which means that you can have more than one request/response
+        on the same HTTP connection 
+     b) HTTP 1.0 has to open a new connection for each request/response pair
+        i.e. after each response the connection would be closed (performance issue)
+  3) OPTIONS method
+     HTTP/1.1 introduces the OPTIONS method: an HTTP client can use this method to determine the abilities of
+     the HTTP server (mostly used for Cross Origin Resource Sharing in web applications)
+  4) Caching
+     1) HTTP 1.0 had support for caching via the header: If-Modified-Since
+     2) HTTP 1.1 expands on the caching support a lot by using something called "entity tag"
+        if two resources are the same, they will have the same entity tags
+        HTTP 1.1 also adds the If-Unmodified-Since, If-Match, If-None-Match conditional headers
+  5) 100 Continue status
+     HTTP/1.1 has a new return code: 100 Continue
+     used to prevent a client from sending a large request when that client is not even sure if the server
+     can process the request, or is authorized to process the request
+     i.e. the client sends only the headers, and the server tells the client 100 Continue to go ahead with
+          the body
+
+# HTTP requests
+  GET /index.html HTTP/1.1  ==> Request line
+  Host: www.google.com      ==> Header line (name: value), used for distinguishing multiple hostnames
+  User-agent: Chrome        ==> Header line (name: value), information may be used by the server
+
+# HTTP responses
+  HTTP/1.1 200 OK                        ==> Response line (HTTP/1.1 <status code> <reason phrase>)
+  Date: Sat, 16 Jul 2016 09:10:49 GMT    ==> Header line (required)
+  Server: Apache/2.2.3                   ==> Header line
+  Content-Type: text/html; charset=UTF-8 ==> Header line (information for browser)
+  Content-Length: 1539                   ==> Header line (information for browser)
+
+# HTTP status code
+  200 OK: document found
+  301 Moved: permanent url redirection
+    the server responds with an additional redirect url in the location header field
+  302 Found: document located somewhere else, temporary url redirection
+    the server responds with an additional redirect url in the location header field
+  403 Forbidden: client can communicate with the server but server refuse to take action, ex. deny access
+  404 Not found: document not found
+    client can communicate with the server but server cannot find what was requested
+  500 Server Error: server is broke and cannot handle the request

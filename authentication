@@ -1,0 +1,49 @@
+# cookies
+  1) a small piece of data (< 4KB, often a string of 100 Bytes) stored in the browser for a website
+     the server sends back the response with a cookie data when the browser visits the website (in HTTP header)
+     then everytime the browser makes requests to the website, it sends the cookie back
+  2) temporary information represented by name=value
+     ex. user_id=882063 (indicating that your computer has logined in the website as user_id=882063)
+  3) uses of cookies
+     a) storing login information
+     b) storing small amounts of data to avoid hitting a database
+     c) tracking user for ads
+  4) browser limits
+     a) at most 20 cookies per website
+
+# cookie headers
+  cookies are sent by HTTP headers
+  ex. HTTP Response
+    Set-Cookie: user_id=882063          (name=value, value < 4 KB) ==> can have multiple cookies set
+    Set-Cookie: last_seen=Dec 25, 1995  (name=value, value < 4 KB)     headers do not need to be unique
+
+  ex. HTTP Request (browser visits the website later)
+    Cookie: user_id=822063;last_seen=Dec 25, 1995                  ==> all cookies separated by ;
+
+  ex. Cookie Domains
+    response:
+      Set-Cookie: name=steve;Domain=ide.example.com;Path=/foo
+      (Domain: what domain this cookie is relevant to)
+      (Path: what path the cookie is relevant to, ex. /, all paths)
+        note: only ide.example.com or other.ide.example.com domains can set the above cookie
+              ide.example.com domain cannot set the cookie domain as www.google.com
+    request:
+      Cookie: name=steve;Domain=ide.example.com;Path=/foo
+        note: the cookie can only be sent to ide.example.com or other.ide.example.com domains
+
+  ex. Cookie expiration
+    Set-Cookie: user=123;Expires=Tue, 1 Jan 2025 00:00:00 GMT
+    (if no Expires parameter in the cookie, the cookie will expire when closing the browser, i.e. session cookie)
+    when logining websites, usually there is a check box of "Remember Me"; if you check the box, the Expires
+      parameter will be set in the cookie, which specifies the expiration of the cookie to some datetime 
+
+# Cookie hashing
+  for security reason, a parameter value is paired with a hash value which only the server knows how to compute
+  i.e. Set-Cookie: name=value,[HASH]
+       hash functions:
+       H(<SECRET>+value) = [HASH]  ==> only the server knows the <SECRET>, hash function H can be md5, sha1, etc.
+       HMAC(<SECRET>, value): use python hmac algorithm/module: hashed-based message authentication code
+  ex.
+    Set-Cookie: visits=6,2a59cff14c252fcec1cc30edbef364abfef324f3
+    (the server can verify by the [HASH] if the cookie value is forged)
+

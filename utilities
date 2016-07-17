@@ -241,10 +241,21 @@
 # curl
   options:
     -H, --header: specify the header (overwrite the default header) when getting a web page
-    -v: verbose
-    -s, --slient: quiet mode. do not show progress meter or error messages
+    -v: verbose (including headers & webpage)
+    -s, --slient: quiet mode. do not show progress meter or error messages (only the webpage)
+    -I, --head: fetch the HTTP-header only (HTTP/FTP/FILE)
+                when used on an FTP or FILE file, curl displays the file size and last modification time only
   ex.
-    curl -v -H "Host:www.yahoo.com" http://www.google.com
+    curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
+  ex.
+    curl -I http://www.google.com.tw
+
+    HTTP/1.1 200 OK
+    Date: Sat, 16 Jul 2016 11:51:09 GMT
+    Expires: -1
+    Content-Type: text/html; charset=Big5
+    Server: gws
+    Set-Cookie: NID=82=KTngbx; expires=Sun, 15-Jan-2017 11:51:09 GMT; path=/; domain=.google.com.tw
 
 # strace: System-calls Trace
   1) display the system calls used by a process and the signals received by the process
