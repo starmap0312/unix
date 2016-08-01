@@ -20,13 +20,6 @@
       Host jump_host.yahoo.com
       LocalForward  3631 dest_host.yahoo.com:1521
 
-# check if ssh forwarding is enabled
-  1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
-     is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
-  2) ssh-add -L: list the keys added on the local machine's agent
-  3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist.
-     env | grep SSH_AUTH_SOCK
-
 # ssh <host> -p <port>: connects to a different port on a remote host
   -p: port to connect to on the remote host
   ex. ssh <username>@<hostname> -p 5566
@@ -89,6 +82,13 @@ if [ -f "${SSH_ENV}" ]; then
 else
      start_agent;
 fi
+
+# check if ssh forwarding is enabled
+  1) when ssh agent forward is enabled on the client (ForwardAgent yes on ~/.ssh/config) and
+     is also enabled on the remote server (AllowAgentForwarding yes on /etc/ssh/sshd_config)
+  2) ssh-add -L: list the keys added on the local machine's agent
+  3) when logging to the remote server the environment variable SSH_AUTH_SOCK should exist.
+     env | grep SSH_AUTH_SOCK
 
 # two steps to setup passwordless login
   login remote host without password

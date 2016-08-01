@@ -51,4 +51,5 @@
   403 Forbidden: client can communicate with the server but server refuse to take action, ex. deny access
   404 Not found: document not found
     client can communicate with the server but server cannot find what was requested
+  429 Too Many Requests: user has sent too many requests in a given amount of time
   500 Server Error: server is broke and cannot handle the request

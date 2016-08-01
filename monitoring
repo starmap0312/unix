@@ -124,6 +124,16 @@
   iostat -n ==> display only network statistics
   iostat -p sda ==> display i/o statistics for only a device (/dev/sda)
 
+# iotop: simple top-like I/O monitor
+  a list of processes along with details about their current I/O use
+  ex.
+ TID  PRIO  USER     DISK READ  DISK WRITE  SWAPIN     IO>    COMMAND                                      
+23399 be/4 mysql      2.16 M/s   10.55 K/s  0.00 % 97.67 %     mysqld --basedir=/home/~p/mysql.sock
+
+  IO column: total I/O for each process (which includes disk use and swap)
+             sorted by the I/O column by default
+  SwapIn column: swap activity for each process
+
 ### network statistics ###
 
 # tcpdump: a network packet analyzer

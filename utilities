@@ -349,3 +349,6 @@
   1) mail -s "Title" username@email.com < filename
      cat filename / echo "message" | mail -s "Title" username@email.com
   2) sendmail username@email.com < filename
+
+# unzip
+  unzip -p filename.zip  ==> extract files to pipe (stdout)

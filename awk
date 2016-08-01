@@ -24,6 +24,10 @@
   ex. cut a string and save to variable
       var1=(echo "hello world" | cut -d " " -f1)    ==> var1="hello"
       var1=(echo "hello world" | cut -d " " -f2)    ==> var2="world"
+  echo "hello world " | cut -c 8-                   cut out columns 8 and after for output
+    orld
+  echo "hello world " | cut -c 3-5                  ==> cut out columns 3-5 for output
+    llo
 
 # gawk: pattern scanning and processing language (GNU awk)
   gawk '/pattern/ {action}' filename

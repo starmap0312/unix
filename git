@@ -17,8 +17,10 @@
       -u, --set-upstream: for every branch pushed, add upstream (tracking) reference
                           used by argument-less git-pull
   2) set up the upstream of a forked repo
-    git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git
+    git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (add a upstream repo)
     git remote -v: view all remote repos
+    git pull upstream master (pull to sync with the upstream repo)
+    git push origin master (update the origin to sync with upstream master)
 
 # update/sync with upstream branch
   git fetch upstream (fetch upstream repo)
