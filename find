@@ -5,6 +5,7 @@
   4) find . -perm 644  ==> find files with permission exactly the 644
   5) find . -perm -644 ==> 644 are required, any extra file mode bits are ignored
   6) find . -iname "pattern" ==> find filenames containing case insensitive pattern
+     find . ! -iname "pattern" => exclude filenames containing case insensitive pattern
   7) find . -name "*.txt" | xargs grep "keyword" ==> find *.txt files containing "keyword"
   8) find . -size +1000c -exec ls -l {} \; ==> find files of size larger than 1000 bytes
      (use c in +1000c for bytes; otherwise, the size is in disk blocks)

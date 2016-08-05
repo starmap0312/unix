@@ -270,9 +270,9 @@
     -c: display the time, count, and errors of each system
 
 # dig
-  1) find out how the ip address of a host is resolved by its <fqdn>
-  2) dig [options] <fqdn> [@server]
-  options:
+# dig
+  dig [options] <fqdn> [@server]: resolve ip from fqdn
+    find out how the ip address of a host is resolved by its <fqdn>
     @server: specify the dns server ip address (default: dns configured in /etc/resolv.conf)
   ex. dig yahoo.search.com
   sections:
@@ -281,11 +281,13 @@
     AUTHORITY: one can see which dns server provides the answer
     (the number at 2nd column indicates the seconds allowed for the user to cache this record)
 
+  dig -x <ip>: resolve fqdn from ip
+
   options:
     -x: reverse query of <ip> to its <fqdn>
   ex. dig -x 64.30.228.118
-  (note: the ip address in QUESTION section is reversed: 118.228.30.64.in-addr.arpa
-   this is because for domain name: yahoo < search < com, whereas for ip: 64 > 30 > 228 > 118)
+    (note: the ip address in QUESTION section is reversed: 118.228.30.64.in-addr.arpa
+     this is because for domain name: yahoo < search < com, whereas for ip: 64 > 30 > 228 > 118)
 
 # tmpwatch
   1) removes files which haven’t been accessed for a period of time

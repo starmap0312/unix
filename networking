@@ -206,10 +206,6 @@
         service network restart
         ifconfig eth0
 
-# dig
-  dig [options] <fqdn>: resolve ip from fqdn
-  dig -x <ip>: resolve fqdn from ip
-
 # nmap: network exploration tool and security / port scanner
   1) sudo nmap -sS -p 80 <fqdn>
     -sS/sT/sA/sW/sM: TCP SYN/Connect()/ACK/Window/Maimon scans ==> SCAN TECHNIQUES
@@ -226,3 +222,30 @@
      -F: fast mode, scan fewer ports than the default scan
   4) sudo nmap -O <remote_host>
      scan for the host operating system
+
+# DNS: A record
+  1) A record (A: Address) maps a domain name to the IP address (IPv4) of the computer hosting the domain
+  2) the simplest type of DNS records, yet one of the primary records used in DNS servers
+  3) multiple A records for the same domain in order to provide redundancy
+     i.e. multiple names could point to the same IP address, each would have its own A record pointing to
+     the that same IP address
+  4) use dig to determine the A record associated to a domain name
+     ex. dig A api.dnsimple.com
+
+     ;; ANSWER SECTION:
+     api.dnsimple.com.	59	IN	A	208.93.64.253
+
+     api.dnsimple.com: fully-qualified domain name (FQDN)
+     59: the remaining time-to-live (TTL) in seconds, i.e. 59 seconds
+     208.93.64.253: the IP address
+
+# DNS: CNAME
+  1) CNAME (Canonical Name): used to alias one name to another
+  2) add a CNAME record that points <NEW_NAME>.example.com to <ORIGINAL_NAME>.example.com
+     ex. dig search.yahoo.com
+
+     ;; ANSWER SECTION:
+     search.yahoo.com.	300	IN	CNAME	ds1-global.l7.search.ystg1.b.yahoo.com.
+     ds1-global.l7.search.ystg1.b.yahoo.com.	14 IN A	68.142.242.215
+
+     search.yahoo.com is a CNAME of ds1-global.l7.search.ystg1.b.yahoo.com 
