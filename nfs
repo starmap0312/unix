@@ -51,7 +51,7 @@
        defines the maximum number bytes in each READ/WRITE request that the nfs client can
        receive/send when communicating with a nfs server
     4) tcp
-       specifies the NFS mount to use the TCP protocol.
+       specifies the NFS mount to use the TCP protocol
 
 # /etc/exports
   example 1)

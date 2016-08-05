@@ -385,8 +385,14 @@
   sysctl -w kernel.hostname=new_fqdn
 
 # less
-  less -S filename
-  (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)
+  1) less -S filename
+     (-S, --chop-long-lines: causes lines longer than the screen width to be chopped)
+  2) search <keyword> from end-of-file: vim/less
+     G goes to the bottom of the file
+     ? searches backwards.
+  3) search <keyword> case-insensitively
+     -i
+     /<keyword>
 
 # tree
   tree -d /path/to/folder  ==> display only directories

@@ -73,7 +73,8 @@
   option -O: open a window for each file
   Ctrl + w: jump to the left / right window
   :set list  ==> display whitespace, end of lines ($), and carriage returns (^M)
-  /\ckeyword ==> case-insensitive search <keyword>
+  /\c<keyword> ==> case-insensitive search <keyword>
+  ?<keyword>   ==> search <keyword> backwards
 
 # sort:
   sort filename: sort a file in an ascending order
