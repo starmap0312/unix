@@ -96,15 +96,52 @@
           less data, it will keep the data in the buffers
     cached Mem: RAM space used for caching of data for future purpose
       a temporary location to store frequently used data for faster access
-    (the difference between buffers and cached is that cache can be used multiple times, whereas
-     buffers is used only one time. both are temporary for your data processing)
+      (the difference between buffers and cached is that cache can be used multiple times, whereas
+       buffers is used only one time. both are temporary for your data processing)
     - buffers/cache: 2643 (actual used RAM) = 4377 (used RAM) - 103 (buffers) - 1630 (cached)
+      (actual used RAM = used RAM - buffers RAM - cached RAM)
     + buffers/cache: 5384 (actual available RAM) = 8027 (total RAM) - 2643 (actual used RAM)
+      (actual available RAM = total RAM - actual used RAM = total RAM - used RAM + buffer RAM + cached RAM)
 
 # vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
+  vmstat      ==> display information such as used/free virtual memory, memory swapped from/to disk,
+                  interrupts per second, context switches, blocks in/out per second
+  vmstat -S m ==> display memory sizes reported in megabytes
   ex.
-  vmstat ==> display information such as used/free virtual memory, memory swapped from/to disk,
-             interrupts per second, context switches, blocks in/out per second
+    procs  -----------memory----------  ---swap--  -----io----  --system--    -----cpu-----
+     r  b    swpd   free   buff  cache    si   so     bi    bo     in   cs   us sy id wa st
+     7  0       0   2202    107  26170     0    0      3    79      0    0   13  2 84  0  0	
+
+    (procs)
+     r: displays the total number of processes waiting for access to the processor
+     b: displays the total number of processes in a “sleep” state
+
+    (memory: provides information same as free -m)
+     swpd:  the amount of memory has been swapped out to a swap file or disk
+     free:  the amount of unallocated memory
+     buff:  the amount of allocated memory in use
+     cache: the amount of allocated memory that could be swapped to disk or unallocated if the resources are
+            needed for another task
+
+    (swap)
+     si:    the amount of memory that is moved from swap to “real” memory per second
+     so:    the amount of memory that is moved to swap from “real” memory per second
+
+    (io)
+     bi:    the number of blocks received, or “blocks in”, from a disk per second
+     bo:    the number of blocks sent, or “blocks out”, to a disk per second
+
+    (system: the number of system operations per second)
+     in:    the number of system interrupts per second, including interrupts from system clock
+     cs:    the number of context switches that the system makes in order to process all tasks
+
+    (cpu: the use of the system’s CPU resources, all columns are added to 100)
+     us:    the amount of time that the processor spends on userland tasks, or all non-kernel processes
+     sy:    the amount of time that the processor spends on kernel related tasks
+     id:    the amount of time that the processor spends idle
+     wa:    the amount of time that the processor spends waiting for IO operations to complete before
+            being able to continue processing tasks
+
   vmstat 2 10 ==> execute 10 times with 2 seconds interval
 
 ### disk I/O statistics ###

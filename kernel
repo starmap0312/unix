@@ -27,7 +27,6 @@
      sysctl -p                ==> let the change take effect
 
 # segfault: dmesg (kernel log message)
-
   ex.
     MyProcess[9755]: segfault at 7f1fd68fab50 ip 00007f1fcf3a4285 \
                      sp 00007fff3001bbc0 error 4 in libc-2.12.so[7f1fcf32e000+18b000]
@@ -43,4 +42,33 @@
       error 5: user-mode read resulting in a protection fault
       error 6: user-mode write resulting in no page being found
       error 7: user-mode write resulting in a protection fault
+
+# /var/log/mcelog
+  mcelog logs and accounts machine checks (in particular memory, IO, and CPU hardware errors)
+
+  ex. memory scrubbing
+
+    STATUS cc000201000800c1 MCGSTATUS 0
+    MCGCAP 1000814 APICID 29 SOCKETID 1 
+    CPUID Vendor Intel Family 6 Model 45
+    Hardware event. This is not a software error.
+    MCE 1
+    CPU 31 BANK 9 
+    MISC 90001000100028c ADDR 83ffe9000 
+    TIME 1470434232 Fri Aug  5 21:57:12 2016
+    MCG status:
+    MCi status:
+    Error overflow
+    Corrected error
+    MCi_MISC register valid
+    MCi_ADDR register valid
+    MCA: MEMORY CONTROLLER MS_CHANNEL1_ERR
+    Transaction: Memory scrubbing error
+    MemCtrl: Corrected patrol scrub error
+
+  memory scrubbing:
+    1) reading from each computer memory location, correcting bit errors (if any) with an error-correcting
+       code (ECC), and writing the corrected data back to the same location
+    2) the information in an ECC memory is stored redundantly enough to correct single bit error per memory
+       word. hence, an ECC memory can support the scrubbing of the memory content
 
