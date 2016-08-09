@@ -322,3 +322,13 @@
      a) reduces the possibility of data corruption in multiple partitions
      b) back up and recovery of each partition can be done independently
 
+# Oracle Tablespaces & Datafiles
+  1) Oracle stores data logically in tablespaces and physically in datafiles associated with the
+     corresponding tablespace
+  2) differences between databases, tablespaces, and datafiles
+     a) database consists of one or more logical storage units called tablespaces, which collectively
+        store all of the database's data
+     b) each tablespace in a database consists of one or more files called datafiles, which are
+        physical structures that conform to the operating system
+     c) database's data is collectively stored in the datafiles that constitute each tablespace of the
+        database
