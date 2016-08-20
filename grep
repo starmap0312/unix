@@ -15,6 +15,20 @@
   grep -E "^pattern1|^pattern2" / egrep "^pattern1|^pattern2": interpret pattern as extended regexp 
   grep -q "pattern" && <command>: quiet (no output to stdout), used to execute the second command
     if the pattern is greped
+  grep -h "pattern"
+    -h, --no-filename: suppress the prefixing of file names on output
+  grep -o "pattern"
+    -o, --only-matching: print only the matched (non-empty) parts of a matching line
+    ex. grep -o r..t /etc/passwd
+        root
+        r/ft
+        r:/t
+    ex. grep r..t /etc/passwd
+        root:x:0:0:root:/root:/bin/bash
+        operator:x:11:0:operator:/root:/sbin/nologin
+        ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
+  grep "pattern" *sub*
+    grep "pattern" for all files with filenames containing sub
 
 # regular expressions:
   the following characters are of special meaning

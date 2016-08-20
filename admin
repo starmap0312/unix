@@ -406,3 +406,16 @@
       /path/to/a/shell-script
       /path/to/any/command/or/script 
   at 8:00 -f /path/to/a/shell-script
+
+# stat: display file or file system status
+  ex.
+    $ stat folder/
+
+    File: `folder/'
+    Size: 4096      	Blocks: 8          IO Block: 4096   directory
+    Device: fc00h/64512d	Inode: 5509893     Links: 3
+    Access: (0755/drwxr-xr-x)  Uid: (94048/  kuanyu)   Gid: (  100/   users)
+    Access: 2016-06-02 01:23:14.110845766 -0700
+    Modify: 2016-05-31 23:56:38.088172403 -0700
+    Change: 2016-05-31 23:56:38.088172403 -0700
+

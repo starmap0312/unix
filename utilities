@@ -355,3 +355,7 @@
 
 # unzip
   unzip -p filename.zip  ==> extract files to pipe (stdout)
+
+# uniq
+  uniq -c
+    -c, --count: prefix lines by the number of occurrences

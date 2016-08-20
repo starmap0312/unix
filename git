@@ -14,8 +14,6 @@
   1) add the remote repo & push master up to that repo
     git remote add origin git@github.com:username/repo_name.git
     git push origin master (git push -u origin master)
-      -u, --set-upstream: for every branch pushed, add upstream (tracking) reference
-                          used by argument-less git-pull
   2) set up the upstream of a forked repo
     git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (add a upstream repo)
     git remote -v: view all remote repos
@@ -36,11 +34,13 @@
   git checkout -b branch_name
   (create a local branch which is a duplicate of the master branch)
   git push -u origin branch_name
-  (push local branch to remote)
+    -u, --set-upstream: for every branch pushed, add upstream (tracking) reference
+                        used by argument-less git-pull
+    (push local branch to remote)
   git checkout --orphan branch_name
-  (create a local and isolated branch)
+    (create a local and isolated branch)
   git branch -a 
-  (-a, --all: list both remote-tracking and local branches)
+    (-a, --all: list both remote-tracking and local branches)
 
 # create a local branch that tracks a remote branch
   git branch --track branch_name origin/branch_name
@@ -99,3 +99,6 @@
 # show git log graph
   git log --graph --abbrev-commit --decorate
 
+# config user and email
+  git config --global user.name "John Doe"
+  git config --global user.email johndoe@example.com

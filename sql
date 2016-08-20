@@ -332,3 +332,8 @@
         physical structures that conform to the operating system
      c) database's data is collectively stored in the datafiles that constitute each tablespace of the
         database
+
+# sqlplus: Oracle DB client
+  display query result more clearly
+    set lines 128: the length of the line
+    set wrap off: truncates the line if its is longer then 128
