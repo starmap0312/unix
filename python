@@ -1,0 +1,4 @@
+# virtualenv
+  virtualenv --python=/usr/local/bin/python3.5 myproject
+  source myproject/bin/activate
+  pip install <python_pkg> 
