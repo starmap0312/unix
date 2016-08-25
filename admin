@@ -419,3 +419,24 @@
     Modify: 2016-05-31 23:56:38.088172403 -0700
     Change: 2016-05-31 23:56:38.088172403 -0700
 
+# ulimit & sysctl
+  open file limits:
+    1) file-max: system-wide, maximum File Descriptors (FD) enforced on a kernel level
+       (cannot be surpassed by all processes without increasing)
+    2) ulimit: process level, provides control over the resources available to the shell and to processes
+       (can be less than the file-max)
+  increase ulimit -a 
+    1) check parameters:
+       ulimit -a | grep "open files"
+       open files                      (-n) 1024
+    2) change parameters
+       edit /etc/security/limits.conf
+       *    soft    nofile    65536
+       *    hard    nofile    65536
+  increase sysctl -a: total number of files that can remain open system-wide
+     1) check parameters
+        sysctl -a (or cat /proc/sys/fs/file-max) 
+     2) update parameters
+        edit /etc/sysctl.conf
+        fs.file-max = 2097152
+        (to take effect: user either run "sysctl -p" or log out and log in again)
