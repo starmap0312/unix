@@ -101,7 +101,7 @@
     - buffers/cache: 2643 (actual used RAM) = 4377 (used RAM) - 103 (buffers) - 1630 (cached)
       (actual used RAM = used RAM - buffers RAM - cached RAM)
     + buffers/cache: 5384 (actual available RAM) = 8027 (total RAM) - 2643 (actual used RAM)
-      (actual available RAM = total RAM - actual used RAM = total RAM - used RAM + buffer RAM + cached RAM)
+      (actual available RAM = total RAM - actual used RAM = free RAM + buffer RAM + cached RAM)
 
 # vmstat: reports virtual memory statistics (memory and swap usage), part of sar utility
   vmstat      ==> display information such as used/free virtual memory, memory swapped from/to disk,

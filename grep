@@ -29,6 +29,8 @@
         ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
   grep "pattern" *sub*
     grep "pattern" for all files with filenames containing sub
+  grep -r "pattern" --include \*.py .
+    grep "pattern" for file extenstion *.py recursively
 
 # regular expressions:
   the following characters are of special meaning

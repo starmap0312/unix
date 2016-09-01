@@ -440,3 +440,8 @@
         edit /etc/sysctl.conf
         fs.file-max = 2097152
         (to take effect: user either run "sysctl -p" or log out and log in again)
+
+# sysctl
+  ex. the local port range that is used by TCP and UDP traffic to choose the local port
+    sysctl -a | grep net.ipv4.ip_local_port_range
+    net.ipv4.ip_local_port_range = 32768	61000

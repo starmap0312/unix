@@ -249,3 +249,11 @@
      ds1-global.l7.search.ystg1.b.yahoo.com.	14 IN A	68.142.242.215
 
      search.yahoo.com is a CNAME of ds1-global.l7.search.ystg1.b.yahoo.com 
+
+# tcpdump: a network packet analyzer
+  allows us to save the packets captured. one can use wireshark to read the tcpdump pcap files
+  1) tcpdump -i eth0 (-i: interface): capture packets from an interface
+  2) tcpdump -A -i eth0 (-A: in ASCII): display captured packets in ASCII
+  3) tcpdump -w filename.pcap -i eth0: write captured packets to a file
+  4) tcpdump -tttt -r filename.pcap: read captured packets from a saved file
+     (-tttt: proper readable timestamp)

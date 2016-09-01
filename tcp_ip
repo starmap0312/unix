@@ -80,3 +80,22 @@
   403: Forbidden
     server can be reached and understood the request, but refuses to take any further action
     ex. the web server is configured to deny access to the requested resource by the client
+
+# TCP connection states
+  1) LISTENING
+  2) ESTABLISHED
+  3) CLOSE_WAIT: the remote endpoint (other side of the connection) has closed the connection
+  4) TIME_WAIT: the local endpoint (this side) has closed the connection
+       the connection is being kept around so that any delayed packets can be matched to the connection and
+       handled appropriately
+
+                initiator                    receiver
+
+              (ESTABLISHED) ----- FIN ----> (CLOSE_WAIT)
+                            <---- ACK -----
+               (TIME_WAIT)  <---- FIN -----
+                   .        ----- ACK ---->  (CLOSE)
+                   .
+                   .
+                (CLOSE) 
+
