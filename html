@@ -1,1 +1,38 @@
-# 
+# properties and attributes 
+  1) in html source code, one can define "attributes" of an html element
+     once the browser parses the source code, a corresponding DOM node object will be created
+     (as the node is an object, it has many "properties")
+
+    ex. 
+        <input type="text" value="Name:">    <== an html element which has 2 attributes
+
+        an HTMLInputElement node object will be created, the node object has dozens of properties
+        (ex. accept, attributes, align, baseURL, childNodes, classList, className, etc.)
+
+  2) for a given DOM node object,
+     properties: properties of a DOM node object, which has an attributes property
+     attributes: elements of that attributes property of the DOM node object
+
+  3) when a DOM node object is created for a given html element, many of its properties relate to attributes with
+     the same or similar names
+
+     ex.
+         <input id="the-input" type="text" value="Name:">
+
+         the corresponding DOM node object have id, type, and value properties
+         a) the id property is a reflected property for the id attribute (pure: doesn't modify/limit the value)
+            i.e. getting the property reads the attribute value, setting the property writes the attribute value
+         b) the type property is a reflected property for the type attribute (not pure: limited to known values)
+            i.e. having the valid types of an input
+                 if you had <input type="foo">, then
+                 theInput.getAttribute("type") gives you "foo" but theInput.type gives you "text"
+         c) the value property doesn't reflect the value attribute, instead it is the current value of the input
+            i.e. when the user changes the value of the input box, the value property reflects this change
+                 ex.
+                   if the user inputs "John" into the input box, then
+                   theInput.value // returns "John"
+                   whereas
+                   theInput.getAttribute('value') // returns "Name:"
+
+                   the value property reflects the current text-content inside the input box, whereas
+                   the value attribute contains initial text-content of value attribute from HTML source code

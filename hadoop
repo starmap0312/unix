@@ -21,3 +21,6 @@
 # hadoop fsck: runs a HDFS filesystem checking utility
   hadoop fsck <path>: start checking from this path
   ex. hadoop fsck /
+
+# hadoop distcp: migrate data between two clusters
+  hadoop distcp hftp://cdh3-namenode:50070/ hdfs://cdh4-nameservice/

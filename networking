@@ -257,3 +257,12 @@
   3) tcpdump -w filename.pcap -i eth0: write captured packets to a file
   4) tcpdump -tttt -r filename.pcap: read captured packets from a saved file
      (-tttt: proper readable timestamp)
+  5) sudo tcpdump -i eth0 -A -s 0 -w filename.pcap 'port 80'
+     monitor traffic on port 80
+  6) sudo tcpdump -i eth0 -A -s 0 -w - | strings
+     -s <num>: snarf snaplen bytes of data from each packet rather than the default of 65535 bytes
+     -s 0: setting snaplen to 0 sets it to the default of 65535
+  7) sudo tcpdump -i eth0 -n 'src host 10.194.148.45' -w - | strings
+     src host <ip>: filter packets by source ip address
+     strings: print the strings of printable characters, ex. ASCII
+     (only prints the strings from the initialized and loaded sections of object files)

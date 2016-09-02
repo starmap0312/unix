@@ -89,6 +89,18 @@
        the connection is being kept around so that any delayed packets can be matched to the connection and
        handled appropriately
 
+     eatablish a TCP connection:
+
+                initiator                    receiver
+
+                connect()                    listen()
+
+                            ----- SYN ---->  (SYN-RECEIVED) 
+                            <-- SYN-ACK ---
+                            ----- ACK ---->  (ESTABLISHED) 
+
+     close a TCP connection:
+
                 initiator                    receiver
 
               (ESTABLISHED) ----- FIN ----> (CLOSE_WAIT)
@@ -96,6 +108,7 @@
                (TIME_WAIT)  <---- FIN -----
                    .        ----- ACK ---->  (CLOSE)
                    .
+                   . (wait ~60 secs)
                    .
                 (CLOSE) 
 
