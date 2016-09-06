@@ -36,6 +36,7 @@
   grep -r "pattern" --exclude="*.py" .
     --exclude=GLOB: 
   grep -r "pattern" --exclude-dir="bootstrap-3.3.6" .
+    grep -r "pattern" --exclude-dir="*bootstrap*" .
 
 # regular expressions:
   the following characters are of special meaning

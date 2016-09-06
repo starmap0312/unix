@@ -1,3 +1,8 @@
+# Selectors: patterns used to select the element(s) you want to style
+  ex.
+    .class           .class_name        ==> selects all elements with class="class_name"
+    #id              #id_name           ==> selects the element with id="id_name"
+
 # .class Selector
   ex. select and style all elements with class="intro":
   <html>
@@ -14,3 +19,9 @@
   </div>
   </body>
   </html>
+
+# ::before Selector
+  ex. insert some text before the content of each <p> element
+  p::before { 
+    content: "Read this: ";
+  }
