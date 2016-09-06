@@ -1,0 +1,15 @@
+# container vs. container-fluid
+  .container has one fixed width for each screen size in bootstrap (xs,sm,md,lg)
+  .container-fluid expands to fill the available width
+
+# Grid options
+  Container width  750px     970px     1170px
+  Class prefix     .col-sm-  .col-md-  .col-lg-
+  num of columns 12
+
+  ex. a three equal-width columns starting at tablets and scaling to large desktops.
+  <div class="row">
+    <div class="col-sm-4">.col-sm-4</div>
+    <div class="col-sm-4">.col-sm-4</div>
+    <div class="col-sm-4">.col-sm-4</div>
+  </div>

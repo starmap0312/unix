@@ -29,8 +29,13 @@
         ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
   grep "pattern" *sub*
     grep "pattern" for all files with filenames containing sub
-  grep -r "pattern" --include \*.py .
+  grep -r "pattern" --include=\*.py .
     grep "pattern" for file extenstion *.py recursively
+    need backslash or quotes to avoid * being expanded:
+      i.e. grep -r "pattern" --include="*.py" . (similiar to: find . -name \*.py or find . -name "*.pyc")
+  grep -r "pattern" --exclude="*.py" .
+    --exclude=GLOB: 
+  grep -r "pattern" --exclude-dir="bootstrap-3.3.6" .
 
 # regular expressions:
   the following characters are of special meaning
@@ -60,3 +65,34 @@
   egrep '^[0-9]{3}-[0-9]{3}-[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
   egrep '^([0-9]{3}-){2}[0-9]{4}$|^\([0-9]{3}\) [0-9]{3}-[0-9]{4}$' filename
 
+# standard wildcards (globbing patterns)
+  used by various command-line utilities to work with multiple files, ex. mv, cp, rm
+
+  ? (question mark): single character
+    ex. find /dev -name tty1?
+        /dev/tty19
+        /dev/tty18
+        /dev/tty17
+
+  * (asterisk): zero or more characters
+    ex. find . -name "view*"   (find filenames with prefix view)
+        ./setting/views.py
+        ./api_manager/views.py
+
+  [ ] (square brackets): a range
+    ex. find /dev -name "tty1[5-7]"
+        /dev/tty17
+        /dev/tty16
+        /dev/tty15
+    ex. find /dev/ -name "vd[a-c]"
+        /dev/vdb
+        /dev/vda
+
+  { } (curly brackets): an “or” relationship
+
+
+  [!]: match any character, as long as it is not listed between the [ and ] (logical NOT)
+    ex. rm myfile[!9]
+        remove all myfile*, i.e. myfile1, myfile2, etc but not myfile9
+
+  \ (backslash): an escape character, i.e. to protect a subsequent special character

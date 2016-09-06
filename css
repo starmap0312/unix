@@ -1,0 +1,16 @@
+# .class Selector
+  ex. select and style all elements with class="intro":
+  <html>
+  <head>
+  <style>
+    .intro {
+        background-color: yellow;
+    }
+  </style>
+  </head>
+  <body>
+  <div class="intro">
+      <p>My name is Donald.</p>
+  </div>
+  </body>
+  </html>
