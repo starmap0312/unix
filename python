@@ -1,4 +1,17 @@
-# virtualenv
+# create virtualenv
   virtualenv --python=/usr/local/bin/python3.5 myproject
   source myproject/bin/activate
   pip install <python_pkg> 
+
+# str type vs unicode type
+  1) str: a plain sequence of bytes (in Python3, str is called bytes)
+  2) unicode: a general representation of some text, which can be encoded in many different ways
+     (text is a sequence of code points which may be bigger than a single byte)
+  3) literal strings are unicode by default in Python3, i.e. unicode of Python2 is equivalent to str in Python3
+  ex.
+    >>> text = 'á'     <== unicode string in Python3, i.e. text = u'á'
+    >>> len(text)   
+        1              <== one code point
+    >>> text.encode('utf8')
+        b'\xc3\xa1'    <== bytes literal 
+
