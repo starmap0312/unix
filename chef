@@ -1,0 +1,58 @@
+# Chef resource
+  1) one part of the system, ex. a file, a template, or a package
+  2) a part of the system and its desired state, ex. a package that should be installed, a service that
+     should be running, or a file that should be generated
+  3) every resource in Chef has a default action
+     file resource has a default action ":create"  (create a file)
+     ex.
+
+     file 'motd' do
+       content 'hello world'
+     end
+
+
+     file 'motd' do
+       action :create
+       content 'hello world'
+     end
+
+     other actions: install a package, and start a service
+  4) resource attributes: can be ordered arbitrary
+     ex.
+       file '/etc/motd' do
+         owner 'root'          <== resource attribute can be put in front of action
+         group 'root'
+         mode '0755'
+         action :create
+       end
+
+# Chef recipe: recipes organize resources
+  1) a file that groups related resources, ex. everything needed to configure a web server, database server, or
+     a load balancer
+  2) a collection of resources that describes a particular configuration or policy
+     i.e. it describes everything that is required to configure part of a system
+          install and configure software components
+          manage files
+          deploy applications
+     ex.
+       package 'httpd'                <== default action for package resource is install
+
+       service 'httpd' do             <== specify the action for service resource to be enable, start
+         action [:enable, :start]         i.e. enables the service when the system boots, then starts it
+       end
+
+       file '/var/www/html/index.html' do  <== create a file resource of webpage
+         content '<html>
+         <body>
+             <h1>hello world</h1>
+         </body>
+       </html>'
+       end
+
+  2) use chef-client in local mode to apply that recipe from the command line
+     i.e. chef-client --local-mode filename.rb
+  3) Chef applies resources in the order they appea
+
+# Chef cookbook: make your recipe more manageable
+  1) provides structure to your recipes and enables you to more easily reference external files
+     i.e. a cookbook helps you stay organized.
