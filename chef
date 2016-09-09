@@ -49,10 +49,40 @@
        </html>'
        end
 
-  2) use chef-client in local mode to apply that recipe from the command line
-     i.e. chef-client --local-mode filename.rb
+  2) command to run a single recipe (local mode)
+     ex.
+       chef-client --local-mode filename.rb
+       
   3) Chef applies resources in the order they appea
 
 # Chef cookbook: make your recipe more manageable
   1) provides structure to your recipes and enables you to more easily reference external files
      i.e. a cookbook helps you stay organized.
+  2) command to create a cookbook
+     chef generate cookbook /path/to/cookbooks/<cookbook_name>
+     ex.
+       chef generate cookbook cookbooks/learn_chef_httpd
+  3) command to run a cookbook (local mode)
+     sudo chef-client --local-mode --runlist 'recipe[<cookbook_name>]'
+       run-list specifies each of the individual recipes from your cookbook that you want to apply
+       run-list can contain multiple recipes from multiple cookbooks
+     ex. 
+       sudo chef-client --local-mode --runlist 'recipe[learn_chef_httpd]'
+       (recipe[learn_chef_httpd] == recipe[learn_chef_httpd::default])
+
+# create a template
+  chef generate template cookbooks/<cookbook_name> <filename>
+  ex.
+    chef generate template cookbooks/learn_chef_httpd index.html
+
+# differences between recipe and cookbook
+  recipe: a collection of resources, and typically configures a software package or a piece of infrastructure
+  cookbook: groups together recipes in a way that is more manageable than having just recipes alone
+  ex.
+    a recipe starts the configuration policy of a web site
+    a template resource for the HTML home page from a external file
+    a cookbook to package both parts up into a single unit for later deployment
+
+# run-list: let you specify which recipes to run, and the order in which to run them
+  run-list is important when there are multiple cookbooks (the order in which they run)
+  

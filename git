@@ -102,3 +102,17 @@
 # config user and email
   git config --global user.name "John Doe"
   git config --global user.email johndoe@example.com
+
+# resolve conflicts from command-line
+  merge a <remote_branch> of <remote_repo> to the master branch
+  1) check out a new branch and test the changes
+     git checkout -b <new-branch-for-merge> master                          <== create a new branch for merging
+     git pull git@git.com:<git_account>/<remote_repo>.git <remote_branch> <== try to pull the <remote_branch>
+     (the pull shows warning messages of conflicts)
+  2) edit conflicted files manually and commit the changes
+     git commit -am 'resolve the conflicts'
+  2) merge the changes to master branch and push the update to GitHub
+     git checkout master
+     git merge --no-ff <new-branch-for-merge>
+     git push origin master
+
