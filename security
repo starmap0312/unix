@@ -20,14 +20,17 @@
 # snort
   a free lightweight network intrusion detection system for both Unix/Windows systems
 
-# POM: Pluggable Authentication Modules for Linux
+# PAM: Pluggable Authentication Modules for Linux
   /etc/security/pamkeys/
   1) Linux-PAM is a system of libraries that handle the authentication tasks of applications
      (services) on the system
   2) the library provides a stable general interface (Application Programming Interface - API) 
      that privilege granting programs (such as login(1) and su(1)) defer to to perform standard authentication
        tasks.
-  /etc/security/pamkeys/
+  3) PAM agent allows a user to use key-based authentication for executing sudo
+     cat /etc/pam.d/sudo:
+       auth sufficient pam_ssh_agent_auth.so file=/etc/security/pamkeys/%u
+       i.e. the PAM agent will use the public keys in /etc/security/pamkeys/<username> for authentication
 
 # kinit: obtain and cache Kerberos ticket-granting ticket
   options:

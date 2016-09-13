@@ -48,6 +48,7 @@
     the server responds with an additional redirect url in the location header field
   302 Found: document located somewhere else, temporary url redirection
     the server responds with an additional redirect url in the location header field
+  401 UNAUTHORIZED: lacks valid authentication credentials for the target resource
   403 Forbidden: client can communicate with the server but server refuse to take action, ex. deny access
   404 Not found: document not found
     client can communicate with the server but server cannot find what was requested

@@ -3,6 +3,8 @@
   rpm -q <pkg_name> --last
   rpm -qa | grep <pkg_name>
     list all rpm packages and grep a <pkg_name>
+  rpm -qi <pkg_name>
+    -i, --info: display package information, including name, version, and  description
   rpm -qf <filename>      ==> find package from its file
     -f, --file <filename>: query package owning <filename>
     ex. rpm -qr /path/to/folder/*

@@ -1,3 +1,9 @@
+# architecture
+  Chef server
+  workstation
+  node: computer resource managed by Chef
+    (need to provide its IP address, username/password to log in with, or use key-based authentication)
+
 # list all the links from a directory
   ls -lrt | grep "^l"
     grep "^l" => grep lines that begins with l (which represents link files)

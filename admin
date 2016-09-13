@@ -445,3 +445,25 @@
   ex. the local port range that is used by TCP and UDP traffic to choose the local port
     sysctl -a | grep net.ipv4.ip_local_port_range
     net.ipv4.ip_local_port_range = 32768	61000
+
+# find out when is OS installed
+  1) method1: check basesystem package installed time
+     ex.
+       $ rpm -qa | grep basesystem
+
+         basesystem-10.0-4.el6.noarch
+
+       $ rpm -qi basesystem-10.0-4.el6.noarch
+
+         Install Date: Fri 27 May 2016 10:13:11 PM UTC      Build Host: x86-005.build.bos.redhat.com
+
+  2) method2: check where / is mounted and use tune2fs command to get the installed info
+     ex.
+       $ df -h
+
+         Filesystem      Size  Used Avail Use% Mounted on
+         /dev/sda5        28G   25G  1.6G  95% /
+
+       $ tune2fs -l /dev/sda5 | grep 'Filesystem created'
+
+         Filesystem created:       Sat Feb 18 22:47:25 2012

@@ -19,12 +19,12 @@
     specify [local_port], [dest_host], and [dest_port] in file /path/to/config:
       Host jump_host.yahoo.com
       LocalForward  3631 dest_host.yahoo.com:1521
-# ssh -i <identity_file> <host>
+# ssh -i <identity_file> <host>: connect using key-based authentication
   ex. ssh -i ~/.ssh/id_rsa username@10.20.30.40
 
-# ssh <host> -p <port>: connects to a different port on a remote host
+# ssh -l <username> -p <port> <host>: connects to a different port on a remote host
   -p: port to connect to on the remote host
-  ex. ssh <username>@<hostname> -p 5566
+  ex. ssh -l username -p 5566 1.2.3.4
 
 # ssh -o ServerAliveInterval
   ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 [jump_host]
