@@ -65,10 +65,31 @@
   -f, --force: proceed even if the index or the working tree differs from HEAD,
                used to throw away local changes
 
-# git reset: reset current HEAD to the specified state
-  git reset HEAD filename: unstage a staged modified file
+# git reset: reset current HEAD to the specified state, i.e. change where the HEAD is pointing
   git reset HEAD: unstage all staged modified files
+    HEAD: a reference to the last commit in the current branch
+  git reset HEAD <filename>: unstage a staged modified file
   git reset --hard HEAD~3: the last 3 versions: HEAD, HEAD^, and HEAD~2 are dropped
+
+# git reset --soft <commit> vs. git reset --hard <commit>
+
+  unstaged  -- (git add) --> staged -- (git commit) --> commited
+
+  ex.
+    A - B - C (master)
+  git reset --soft B
+    HEAD points to B
+    git status: staged (the index still has the changes from C, waiting to be commited)
+  git reset --mixed B (default)
+    HEAD points to B
+    git status: unstaged (the index still has the changes from C, waiting to be staged)
+  git reset --hard B
+    HEAD points to B
+    git status: lose changes permanently
+
+  ex.
+    git reset --hard HEAD~3
+      the last 3 versions: HEAD, HEAD^, and HEAD~2 are dropped
 
 # differences of git fork and clone
   clone: clone a GitHub repo on local workstation
