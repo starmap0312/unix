@@ -8,7 +8,7 @@
   <html>
   <head>
   <style>
-    .intro {
+    .intro {                       # select class="intro"
         background-color: yellow;
     }
   </style>

@@ -49,6 +49,9 @@
     -SIGKILL, -9: cannot be handled or ignored, cause immediate program termination
   pkill -u <username>
 
+# killall: kill processes by name
+  sudo killall <process_name>
+
 # pstree: display all processes in hierarchical structure
   pstree [options] [pid/username]
   useful when terminating a series of related processes

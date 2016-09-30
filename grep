@@ -1,22 +1,32 @@
 # grep (global regular expression print) command:
-  grep -v pattern: invert match / exclude pattern
-  grep -c pattern: return count of matched lines
-  grep -A 3 pattern: output 3 lines after matched context
-  grep -B 3 pattern: output 3 lines before matched context
-  grep -C 3 pattern: output 3 lines surround matched context
-  grep -i pattern: case insensitive,  ex. grep -i error, matching "Error", "erROr", "ERROR"
-  grep -w pattern filename: search whole word in a file, i.e. grep '\<keyword\>' filename
-  grep -n pattern filename: display line number
-  grep --color pattern filename: highlight matching with colors
-  grep -l pattern *.txt: display only filenames with matching pattern
-  grep -R, -r pattern /path/to/folder/: recursively grep files in target directory
-  grep -e pattern: protect a pattern beginning with a hyphen (-); otherwise, it will be escaped
-    ex. echo "-A" | grep -e "-A"
-  grep -E "^pattern1|^pattern2" / egrep "^pattern1|^pattern2": interpret pattern as extended regexp 
-  grep -q "pattern" && <command>: quiet (no output to stdout), used to execute the second command
-    if the pattern is greped
-  grep -h "pattern"
+  grep -l "pattern" *.txt
+    -l: display only filenames with matching pattern
+  grep -h "pattern" *.txt
     -h, --no-filename: suppress the prefixing of file names on output
+  grep -n "pattern" *.txt
+    -n: display line number
+
+  grep -A 3 "pattern": output 3 lines after matched context
+  grep -B 3 "pattern": output 3 lines before matched context
+  grep -C 3 "pattern": output 3 lines surround matched context
+
+  grep -e "pattern" *.txt
+    -e: protect a pattern beginning with a hyphen (-); otherwise, it will be escaped
+    ex. echo "-A" | grep -e "-A"
+  grep -E "^pattern1|^pattern2" *.txt (egrep "^pattern1|^pattern2" *.txt)
+    -E: interpret pattern as extended regexp 
+
+  grep -R, -r "pattern" /path/to/folder/: recursively grep files in target directory
+
+  grep -v "pattern": invert match / exclude pattern
+  grep -i "pattern": case insensitive,  ex. grep -i error, matching "Error", "erROr", "ERROR"
+  grep -w "pattern" filename: search whole word in a file, i.e. grep '\<keyword\>' filename
+  grep -c "pattern": return count of matched lines
+  grep --color "pattern" filename: highlight matching with colors
+
+  grep -q "pattern" && <command>
+    -q: quiet (no output to stdout), used to execute the second command if the pattern is greped
+
   grep -o "pattern"
     -o, --only-matching: print only the matched (non-empty) parts of a matching line
     ex. grep -o r..t /etc/passwd
@@ -27,12 +37,13 @@
         root:x:0:0:root:/root:/bin/bash
         operator:x:11:0:operator:/root:/sbin/nologin
         ftp:x:14:50:FTP User:/var/ftp:/sbin/nologin
-  grep "pattern" *sub*
-    grep "pattern" for all files with filenames containing sub
-  grep -r "pattern" --include=\*.py .
-    grep "pattern" for file extenstion *.py recursively
-    need backslash or quotes to avoid * being expanded:
-      i.e. grep -r "pattern" --include="*.py" . (similiar to: find . -name \*.py or find . -name "*.pyc")
+
+  grep "pattern" *substring*
+    grep "pattern" for all files with filenames containing substring
+
+  grep -r "pattern" --include="*.py" . (grep -r "pattern" --include=\*.py .)
+    grep "pattern" for file extenstion *.py recursively (need quotes/backslash to avoid * being expanded)
+    i.e. grep -r "pattern" --include="*.py" . (similiar to: find . -name \*.py or find . -name "*.pyc")
   grep -r "pattern" --exclude="*.py" .
     --exclude=GLOB: 
   grep -r "pattern" --exclude-dir="bootstrap-3.3.6" .

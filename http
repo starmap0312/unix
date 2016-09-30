@@ -54,3 +54,48 @@
     client can communicate with the server but server cannot find what was requested
   429 Too Many Requests: user has sent too many requests in a given amount of time
   500 Server Error: server is broke and cannot handle the request
+
+# HTTP verbs (CRUD)
+  POST (Create): idempotent, not cacheable
+    sends data to a specific URI and expects the resource at that URI to handle the request
+    the web server determines what to do with the data
+    ex. posting a message to a bulletin board, submitting a form to a data-handling process
+  GET (Read): idempotent
+  PUT (Update): not idempotent, cacheable
+    puts a resource at a specific URI, and exactly at that URI
+    update or create: if there's already, PUT replaces that resource; otherwise, it creates one
+    POST responses are cacheable if server sets the appropriate Cache-Control and Expires headers
+  DELETE (Delete): idempotent
+
+  POST vs. PUT:
+    POST: the request identifies the resource that will handle the enclosed entity, ex. process, gateway, etc.
+          not idempotent, sending requests twice will create two resources
+    PUT: the request identifies the entity enclosed with the request
+         (user knows what URI is intended; server MUST NOT attempt to apply the request to other resource)
+         idempotent, sending requests twice has the same effect 
+
+    ex. if you name the URL object you create explicitly, use PUT; if you let the server decide, use POST
+
+      1) POST: update an existing question
+
+         POST /questions/<existing_question> HTTP/1.1
+         Host: www.example.com/
+
+      2) POST: create a new question, note that the resource name is not specified
+
+         POST /questions HTTP/1.1
+         Host: www.example.com/
+
+         (POST /questions/<new_question> HTTP/1.1, specifying an non-existing resource with POST gets an error)
+
+      3) PUT: update an existing question
+
+         PUT /questions/<existing_question> HTTP/1.1
+         Host: www.example.com/
+
+      4) PUT: create a new question
+
+         PUT /questions/<new_question> HTTP/1.1
+         Host: www.example.com/
+
+

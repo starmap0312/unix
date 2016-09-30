@@ -252,6 +252,22 @@
     -s, --slient: quiet mode. do not show progress meter or error messages (only the webpage)
     -I, --head: fetch the HTTP-header only (HTTP/FTP/FILE)
                 when used on an FTP or FILE file, curl displays the file size and last modification time only
+    -w, --write-out <format>: make curl display information on stdout after a completed transfer
+      curl supports formatted output for the details of the request
+      -w "@format.txt": tells curl to use the format file "@format.txt"
+      ex. format.txt (an example of format file)
+        \n
+        time_namelookup:  %{time_namelookup}\n
+        time_connect:  %{time_connect}\n
+        time_appconnect:  %{time_appconnect}\n
+        time_pretransfer:  %{time_pretransfer}\n
+        time_redirect:  %{time_redirect}\n
+        time_starttransfer:  %{time_starttransfer}\n
+        ----------\n
+        time_total:  %{time_total}\n
+        \n
+     -o, --output <file>: write output to <file> instead of stdout
+        -o /dev/null: do not display output
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
   ex.
@@ -263,6 +279,17 @@
     Content-Type: text/html; charset=Big5
     Server: gws
     Set-Cookie: NID=82=KTngbx; expires=Sun, 15-Jan-2017 11:51:09 GMT; path=/; domain=.google.com.tw
+  ex.
+    curl -w "@format.txt" -o /dev/null -s http://www.google.com.tw
+
+    time_namelookup:  0.005
+    time_connect:  0.025
+    time_appconnect:  0.000
+    time_pretransfer:  0.025
+    time_redirect:  0.000
+    time_starttransfer:  0.076
+    ----------
+    time_total:  0.080
 
 # strace: System-calls Trace
   1) display the system calls used by a process and the signals received by the process
@@ -276,7 +303,6 @@
     -o filename: write the output to filename
     -c: display the time, count, and errors of each system
 
-# dig
 # dig
   dig [options] <fqdn> [@server]: resolve ip from fqdn
     find out how the ip address of a host is resolved by its <fqdn>

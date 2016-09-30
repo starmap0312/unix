@@ -57,6 +57,33 @@
      -E: preserve environment, user wishes to preserve their existing environment variables
      ex. sudo -E pip install cx_Oracle
 
+# /etc/sudoers
+
+  <user> <hosts> = (<users>:<groups>) [NOPASSWORD :] <commands>
+
+  alan ALL     =           ALL    ==> alan ALL     = (root)    ALL
+
+    user alan can run ALL command as user (root) on any host
+    i.e. sudo <command>           ==> alan can run command as root but needs to enter his password
+
+  alan ALL     = (ALL)     ALL
+
+    user alan can run ALL commands as (ALL) users on ALL host
+    ex. sudo -u oracle <command> (run command as user oracle, need to enter his password)
+
+  alan ALL     = (ALL)     NOPASSWD: ALL
+
+    user alan can run ALL commands as (ALL) users on ALL host without password
+    ex. sudo -u oracle <command>  ==> alan can run command as user oracle and does not need to enter his password
+
+  alan ALL     = (ALL:ALL) ALL
+
+    user alan can run ALL commands as ALL users and as ALL groups
+
+  dgb  boulder = (operator) /bin/ls, (root) /bin/kill, /usr/bin/lprm
+
+    user dgb can run command /bin/ls as user (operator), and commands /bin/kill and /usr/bin/lprm as (root)
+
 # wheel: groupname
   1) Mac OS X and BSD UNIX
   2) for a group of trusted people that could become superuser by using the su command

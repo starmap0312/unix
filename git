@@ -10,24 +10,29 @@
   git add -A
   -A, --all: all files in the entire working tree are updated
 
-# git remote add
-  1) add the remote repo & push master up to that repo
-    git remote add origin git@github.com:username/repo_name.git
-    git push origin master (git push -u origin master)
-  2) set up the upstream of a forked repo
-    git remote add upstream https://github.com/ORIGINAL_OWNER/ORIGINAL_REPOSITORY.git (add a upstream repo)
-    git remote -v: view all remote repos
-    git pull upstream master (pull to sync with the upstream repo)
-    git push origin master (update the origin to sync with upstream master)
+# git pull: fetch from and integrate with a local branch
+  git pull == git fetch origin + git merge origin/master
+  git push == git push origin master
 
-# update/sync with upstream branch
-  git fetch upstream (fetch upstream repo)
-  git checkout master (checkout local master branch)
-  git merge upstream/master (merge upstream/master to local master branch)
-  git push origin master (push local master branch to forked personal GitHub)
+# git remote -v: view all remote repos
+
+# push local master branch to a remote origin repo
+  git init
+  (edit & git commit files)
+  git remote add origin git@github.com/OWNER/REPOSITORY.git
+  git push origin master (git push -u origin master)
+
+# set up the upstream repo for the remote origin repo
+  git clone git@github.com/OWNER/ORIGIN_REPO.git
+  git remote add upstream https://github.com/OWNER/REPOSITORY.git
+  git fetch upstream        ==> fetch upstream repo
+  git checkout master       ==> checkout local master branch
+  git merge upstream/master ==> merge upstream/master to local master branch
+  (edit & git commit files)
+  git push origin master    ==> push local master branch to forked personal GitHub
 
 # git push
-  git push origin branch_name (push local branch_name to remote repo)
+  git push origin <branch_name> (push local branch_name to remote repo)
   git push == git push origin master
   
 # create local branch and push to remote
