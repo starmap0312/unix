@@ -28,4 +28,5 @@
      b)
            -jobtype <arg>   job type ('Supported in Oozie-2.0 or later versions ONLY -
                                   coordinator' or 'wf' (default))
+     c) oozie jobs: view your running jobs
 

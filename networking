@@ -114,6 +114,9 @@
   2) find all IP addresses for a given domain name
      nslookup www.google.com
 
+# host: DNS lookup utility
+  a simple utility for performing DNS lookups. It is normally used to convert names to IP addresses and vice versa
+
 # traceroute: view the number of hops and response time to get to a remote system
 
 # finger: view user information such as user login name/real time/terminal name/write status
@@ -261,8 +264,10 @@
      monitor traffic on port 80
   6) sudo tcpdump -i eth0 -A -s 0 -w - | strings
      -s <num>: snarf snaplen bytes of data from each packet rather than the default of 65535 bytes
-     -s 0: setting snaplen to 0 sets it to the default of 65535
+     -s 0: setting snaplen to 0 sets it to 65535 (by default, will not show full packets, so use -s 0 to disable that)
   7) sudo tcpdump -i eth0 -n 'src host 10.194.148.45' -w - | strings
      src host <ip>: filter packets by source ip address
      strings: print the strings of printable characters, ex. ASCII
      (only prints the strings from the initialized and loaded sections of object files)
+  8) sudo tcpdump -A -vvv 'port 4080'
+     -v, -vv, -vvv: verbose output

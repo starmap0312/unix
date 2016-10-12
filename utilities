@@ -268,6 +268,9 @@
         \n
      -o, --output <file>: write output to <file> instead of stdout
         -o /dev/null: do not display output
+     -k, --insecure: allows curl to perform "insecure" SSL connections and transfers
+  ex.
+    curl -v -k https://www.example.com
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
   ex.
@@ -357,6 +360,7 @@
      echo "This is for testing" | tr [:space:] '\t'
   4) delete specified characters using -d option
      echo "the geek stuff" | tr -d 't'
+       -d, --delete: delete characters in SET1, do not translate
   5) squeeze repetition of characters using -s
      option: -s, --squeeze-repeats: replace a repeated character with a single character
      echo "This   is   for testing" | tr -s ' '
@@ -384,6 +388,16 @@
   1) mail -s "Title" username@email.com < filename
      cat filename / echo "message" | mail -s "Title" username@email.com
   2) sendmail username@email.com < filename
+
+# postconf: check mail server on RHEL
+  config file: /etc/postfix/main.cf 
+    relayhost = smarthost.yahoo.com
+  ex.
+    postconf | grep ^relayhost
+    relayhost = smarthost.yahoo.com
+  ex. 
+    postconf -d | grep ^relayhost
+      -d: print default parameter settings instead of actual settings
 
 # unzip
   unzip -p filename.zip  ==> extract files to pipe (stdout)

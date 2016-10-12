@@ -24,6 +24,7 @@
     used to find process group id
     (%p: PID, %r: PGID, %y: TTY, %x: TIME, %c: COMMAND)
     kill -TERM -5112: kill every process in group 5112
+    kill -TERM -$(pgrep -o <keyword>)
   ps -p <PID> -o %cpu,%mem,cmd
     output cpu and memory usage
   ps aux --sort -rss: prints the ps output with the largest RSS size at the top
@@ -41,6 +42,10 @@
      list the processes owned by root OR daemon
   3) pgrep -f <pattern>: match full command line
      ex. pgrep -f "pattern1|pattern2"
+  4) pgrep -o "pattern"
+       -o: select only the oldest (least recently started) of the matching processes
+       (this finds the PGID of the process, can be used to kill processes of a group)
+       ex. kill -TERM -$(pgrep -o "pattern")
  
 # pkill: look up or signal processes based on name and other attributes
   pkill -f -o <keyword>

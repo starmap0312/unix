@@ -1,7 +1,7 @@
 # revert to previous commit and make it a new commit
-  git rm -r . # remove all files
+  git rm -r .           # remove all files
   git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
-  git commit # make a new commit
+  git commit            # make a new commit
 
 # discard unstaged changes of all files
   git checkout .
@@ -52,8 +52,9 @@
   git checkout -b branch_name origin/branch_name
   (create a local branch that tracks a remote branch, and then switch to the local branch)
 
-# delete a local branch
-  git branch -d local_branch
+# delete a branch
+  git branch -d <local_branch>
+  git push origin --delete <remote_branch> OR git push origin :<remote_branch>
 
 # git fetch: download objects and refs from another repository
   git fetch upstream: fetch original remote repo
@@ -142,3 +143,5 @@
      git merge --no-ff <new-branch-for-merge>
      git push origin master
 
+# diff two branches
+  git diff <branch1> <branch2>
