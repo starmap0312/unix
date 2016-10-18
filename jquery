@@ -2,8 +2,8 @@
   window.jQuery = window.$ = jQuery; // expose jQuery to the global object (can be found in jQuery source code)
 
   ex. 
-    $('#header');    // select the element with an ID of 'header'
-    $('li');         // select all list items (elements) on the page
+    $('#header');    // select the element with attribute id 'header'
+    $('li');         // select all list elements (items)
 
   1) element selector: an element to search for, i.e. the tagName of DOM nodes
     ex.
@@ -17,14 +17,6 @@
     ex.
       $("#id_name")    // JavaScript function document.getElementById() is called
 
-# getJSON(): get JSON data using an AJAX request and output the result
-  ex.
-    $.getJSON("http://example.com/api", function(data) {
-        $.each(data, function(index, value) {
-            $("div").append(value + " ");
-        });
-    });
-
 # .addClass(class_name): add the specified class(es) to each element in the set of matched elements
   ex.
     <body>
@@ -35,42 +27,13 @@
     </body>
 
     // the function will add class "class_name" to all elements with tag name "p"
-    i.e. 
-    <p class="classname">This is a paragraph.</p>
+    i.e. adding class attribute to the <p> element
+
+    <p class="class_name">This is a paragraph.</p>
 
 # .removeClass(class_name): remove the specified class(es) to each element in the set of matched elements
 
-# $.each(array, callback): a generic iterator function, used to iterate over both objects and arrays
-  ex.
-    $.each([10, 20, 30], function(index, value) {
-        alert(index + ": " + value);
-    });
-
-    // output messages
-      0: 10
-      1: 20
-      2: 30
-
-# $(document).ready(): a page can't be manipulated safely until the document is "ready"
-  code inside $(document).ready() will only run once the page DOM is ready for JavaScript code to execute
-  ex.
-    $(document).ready(function() {
-        console.log( "ready!" );
-    });
-
-# $.makeArray(obj): convert an array-like object into a true JavaScript array
-  ex.
-    <body>
-        <div>First</div>
-        <div>Second</div>
-        <div>Third</div>
-        <script>
-            var elems = document.getElementsByTagName( "div" ); // Returns a NodeList
-            var arr = jQuery.makeArray( elems );                // Convert the NodeList to an Array
-        </script>
-    </body>
-
-# .hide() & .show(): hide the matched elements
+# .hide() & .show(): hide the selected/matched elements
   ex.
     <body>
         <p> not appearing </p>
@@ -98,4 +61,43 @@
     <div>
     </div>
 
-# .load(): load data from the server and place the returned HTML into the matched element
+# .load(): load data from the server and place the returned HTML into the selected/matched element
+
+# $.each(array, callback): a generic iterator function, used to iterate over both objects and arrays
+  ex.
+    $.each([10, 20, 30], function(index, value) {
+        alert(index + ": " + value);
+    });
+
+    // output messages
+    // 0: 10
+    // 1: 20
+    // 2: 30
+
+# getJSON(): get JSON data using an AJAX request and output the result
+  ex.
+    $.getJSON("http://example.com/api", function(data) {
+        $.each(data, function(index, value) {
+            $("div").append(value + " ");
+        });
+    });
+
+# $(document).ready(): a page can't be manipulated safely until the document is "ready"
+  code inside $(document).ready() will only run once the page DOM is ready for JavaScript code to execute
+  ex.
+    $(document).ready(function() {
+        console.log( "ready!" );
+    });
+
+# $.makeArray(obj): convert an array-like object into a true JavaScript array
+  ex.
+    <body>
+        <div>First</div>
+        <div>Second</div>
+        <div>Third</div>
+        <script>
+            var elems = document.getElementsByTagName( "div" ); // Returns a NodeList
+            var arr = jQuery.makeArray( elems );                // Convert the NodeList to an Array
+        </script>
+    </body>
+

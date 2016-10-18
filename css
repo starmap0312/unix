@@ -1,20 +1,47 @@
 # Selectors: patterns used to select the element(s) you want to style
-  ex.
+  ex1. class selector
+
     .class           .class_name        ==> selects all elements with class="class_name"
-    #id              #id_name           ==> selects the element with id="id_name"
+
+    (use class selector for repeated styling,  ex. a special form of header for error messages)
+
+    h1.error {
+
+    }
+
+    <h1 class="error"> error title </h1>
+
+
+  ex2. id selector
+
+    #id              #attribute_name    ==> selects the element with attribute id="attribute_name"
+
+    (use id selector for styling appearng once, ex. high level layout divs such sidebars, banner areas etc.)
 
 # .class Selector
   ex. select and style all elements with class="intro":
   <html>
   <head>
   <style>
+    h1.error {
+        background-color: red;
+    }
     .intro {                       # select class="intro"
         background-color: yellow;
+    }
+    #foo {
+        background-color: blue;
     }
   </style>
   </head>
   <body>
+  <h1 class="error">
+      Error Title
+  </h1>
   <div class="intro">
+      <p>My name is Donald.</p>
+  </div>
+  <div id="foo">
       <p>My name is Donald.</p>
   </div>
   </body>
