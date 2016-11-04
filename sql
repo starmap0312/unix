@@ -10,6 +10,9 @@
 # selects only the distinct values
   SELECT DISTINCT col_name FROM table_name;
 
+# create a backup table
+  CREATE TABLE table_name_bak AS (SELECT * FROM table_name);
+
 # MySQL backquotes/backticks
   allow spaces and other special characters in table/column names
 

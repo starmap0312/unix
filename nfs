@@ -3,13 +3,20 @@
   add a entry: /<name_directory> <ip or network>(options)
   restart nfs service
 
-# start nfs service
+# start nfs service (server side)
   server-side:
     0) edit /etc/exports
        ex. /folder/to/share  *(rw,no_root_squash)
     1) sudo service rpcbind start
     2) sudo service nfs start
     3) sudo service nfslock start
+
+# mount nfs drive (client side)
+  sudo vim /etc/fstab
+    www.example.com:/path/to/shared/folder /mnt/local/folder nfs rw,nfsvers=3,actimeo=0,timeo=600 0 0
+  chkconfig --level 2345 rpcbind on
+  sudo /etc/init.d/rpcbind start
+  sudo mount -a
 
 # display nfs share info, i.e. /etc/exports
   showmount -e == showmount -e localhost

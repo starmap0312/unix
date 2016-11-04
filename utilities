@@ -12,12 +12,29 @@
     -t: sort by modified time (new to old)
     -rt: sort by reversed modified time (old to new)
 
-# ls
-  ls -1 /path/to/folder/*.txt
+# ls -1: list one file per line
+  ex.
+    ls -1 /path/to/folder/*.txt
     filename1.txt
     filename2.txt
-  option:
-    -1: list one file per line
+
+# ls -ld */   OR ls -l | grep ^d
+  ex. 
+    ls -dl */
+    drwxr-xr-x  16 kuanyu  users   544 Jul 25 10:50 folder1/
+    drwxr-xr-x  51 kuanyu  users  1734 Mar 16  2016 folder2/
+    option:
+      -d: directories are listed as plain files (not searched recursively)
+  ex.
+    ls */
+    folder1/:
+    file1	file2	file3
+
+    folder2/:
+    file4	file5	file6
+
+    ls -d */
+    folder1/	folder2/
 
 # scp: copy file from one host to other
   scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
