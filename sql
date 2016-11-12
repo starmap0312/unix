@@ -340,3 +340,77 @@
   display query result more clearly
     set lines 128: the length of the line
     set wrap off: truncates the line if its is longer then 128
+
+# INNER JOIN vs. OUTER JOIN
+
+  ex.
+    ai   bi
+    -    -
+    1    
+    2    
+    3    3
+    4    4
+         5
+         6
+
+  1) a INNER JOIN b: (intersection of a and b)
+
+  ex. SELECT * FROM a INNER JOIN b ON a.ai = b.bi;
+
+    ai   bi
+    -    -
+    3    3
+    4    4
+
+  2) a LEFT OUTER JOIN b:
+
+  ex. SELECT * FROM a LEFT OUTER JOIN b ON a.ai = b.bi;
+
+    ai   bi
+    -    -
+    1    null
+    2    null
+    3    3
+    4    4
+  
+  3) a RIGHT OUTER JOIN b
+
+  ex. SELECT * FROM a RIGHT OUTER JOIN b ON a.ai = b.bi;
+
+    ai   bi
+    -    -
+    3    3
+    4    4
+   null  5
+   null  6
+
+  4) a FULL OUTER JOIN b: (union of a and b)
+
+  ex. SELECT * FROM a FULL OUTER JOIN b ON a.ai = b.bi;
+
+    ai   bi
+    -    -
+    1    null
+    2    null
+    3    3
+    4    4
+   null  5
+   null  6
+
+# find duplicate values in table
+  ex. table Person
+
+    Id   Email
+    -    -
+    1    a@b.com
+    2    c@d.com
+    3    a@b.com
+
+  SELECT Email FROM Person GROUP BY Email HAVING COUNT(*) > 1
+
+    Id   Email
+    -    -
+    1    a@b.com
+
+  (HAVING must reference only columns in the GROUP BY clause or columns used in aggregate functions)
+
