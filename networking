@@ -73,6 +73,11 @@
     nc -X 5 -x localhost:9999 (ex. used for local forwarding)
     nc -z <host> <port>: check if the port is open, exiting with 0 on success, 1 on failure
       -z: just scan for listening daemons, without sending any data to them
+    nc -l [iterface_ip] <port>: listen for an incoming connection
+      ex. nc -l 8080 (all interfaces listen to port 8080)
+          tcp        0      0 0.0.0.0:8080                0.0.0.0:*                   LISTEN      12458/nc
+      ex. nc -l 10.90.147.119 8080 (only interface with ip 10.90.147.119 listens to port 8080)
+          tcp        0      0 10.90.147.119:8080          0.0.0.0:*                   LISTEN      13050/nc
 
 # check if a host is listening on a port
   1) telnet (Layer 7: TELNET health check)
@@ -96,6 +101,15 @@
    netstat -anp: not resolve hostnames/portnames/usernames, show PID/Program
    ex. how to find which remote hosts are connecting to you on a particular port, ex. 10123?
        command: netstat -a | grep "10123"
+   ex.
+     Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name 
+     tcp        0      0 0.0.0.0:22                  0.0.0.0:*                   LISTEN      5566/sshd           
+     tcp        0      0 :::22                       :::*                        LISTEN      5566/sshd 
+
+     IPv4: process "5566/sshd" listens at all interfaces at port 22: "0.0.0.0:22"
+           it allows all foreign addresses at all ports: "0.0.0.0:*"
+     IPv6: process "5566/sshd" listens at all interfaces at port 22: ":::22"
+           it allows all foreign addresses at all ports: ":::*"
 
 # ss: another utility to investigate sockets
   options:

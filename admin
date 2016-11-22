@@ -467,3 +467,11 @@
        $ tune2fs -l /dev/sda5 | grep 'Filesystem created'
 
          Filesystem created:       Sat Feb 18 22:47:25 2012
+
+# vim: display " " (space) and "\t" (tab)
+  in command mode
+    : set list
+
+# vim: read from STDIN
+  $ ls -alh | vim -
+

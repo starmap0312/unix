@@ -337,9 +337,19 @@
         database
 
 # sqlplus: Oracle DB client
-  display query result more clearly
-    set lines 128: the length of the line
-    set wrap off: truncates the line if its is longer then 128
+  1) display query result more clearly
+     set lines 128: the length of the line
+     set wrap off: truncates the line if its is longer then 128
+
+  2) execute a sql script
+     sqlplus -s username/passwd@service_name @filename.sql
+     -s: suppresses all information and prompt messages, ex. command prompt, command echoing, and banner 
+
+  3) spool output to a file
+     ex. 
+       spool stdout.txt
+       <sql commands>
+       spool off;
 
 # INNER JOIN vs. OUTER JOIN
 
@@ -413,4 +423,5 @@
     1    a@b.com
 
   (HAVING must reference only columns in the GROUP BY clause or columns used in aggregate functions)
+
 
