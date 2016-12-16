@@ -425,3 +425,9 @@
   (HAVING must reference only columns in the GROUP BY clause or columns used in aggregate functions)
 
 
+# select MAX number of a column
+  Oracle:
+    SELECT * FROM (SELECT * FROM table_name ORDER BY column DESC) WHERE rownum = 1;
+
+  MySQL:
+    SELECT id, MAX(column_name) FROM table_name GROUP BY id;

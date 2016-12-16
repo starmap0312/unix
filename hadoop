@@ -17,6 +17,8 @@
      hadoop fs -mkdir [-p] /path/to/folder
   7) move a folder
      hadoop fs -mv /user/hadoop/folder1 /user/hadoop/folder2
+  8) hadoop dfs -count <paths>
+     ex. hdfs dfs -count hdfs://nn1.example.com/file1 hdfs://nn2.example.com/file2
 
 # hadoop fsck: runs a HDFS filesystem checking utility
   hadoop fsck <path>: start checking from this path
