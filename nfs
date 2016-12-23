@@ -14,6 +14,7 @@
 # mount nfs drive (client side)
   sudo vim /etc/fstab
     www.example.com:/path/to/shared/folder /mnt/local/folder nfs rw,nfsvers=3,actimeo=0,timeo=600 0 0
+  chkconfig --list rpcbind
   chkconfig --level 2345 rpcbind on
   sudo /etc/init.d/rpcbind start
   sudo mount -a

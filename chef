@@ -172,3 +172,13 @@
     $ knife client delete node1 --yes
       Deleted client[node1]node1 --yes
 
+# Run rake
+  run tests defined in a Rakefile: ex. foodcritic, rubocop and rspec tests
+  cookbook tests:
+    foodcritic: static validation (a helpful lint tool you can use to check your Chef cookbooks for common problems)
+    rubocop: static validation
+    rspec: unit test
+
+# Run kitchen test
+  run a converge and serverspec tests defined in a .kitchen.yml file 
+    i.e. automatically test cookbook data across any combination of platforms and test suites
