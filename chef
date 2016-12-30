@@ -143,6 +143,12 @@
   2) boostrap using key-based authentication
      knife bootstrap <ip> --ssh-user <username> --sudo --identity-file <id_rsa> \
        --node-name <node_name> --run-list 'recipe[<cookbook_name>]'
+  ex.
+    knife bootstrap -c /path/to/knife.rb -V -y <FQDN> -E 'prod'
+    -c: configuration file to use
+    -V: --verbose
+    -y: --yes
+    -E: --environment ENVIRONMENT, set the Chef environment
 
 # knife node list: list all successfully bootstrapped nodes
   ex. knife node list
