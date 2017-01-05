@@ -188,3 +188,5 @@
 # Run kitchen test
   run a converge and serverspec tests defined in a .kitchen.yml file 
     i.e. automatically test cookbook data across any combination of platforms and test suites
+  kitchen list
+  kitchen login <platform-suite>
