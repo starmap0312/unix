@@ -1,4 +1,5 @@
-# Chef resource
+# Chef terminology
+# I) Chef resource
   1) one part of the system, ex. a file, a template, or a package
   2) a part of the system and its desired state, ex. a package that should be installed, a service that
      should be running, or a file that should be generated
@@ -26,7 +27,7 @@
          action :create
        end
 
-# Chef recipe: recipes organize resources
+# II) Chef Recipe: recipes organize resources
   1) a file that groups related resources, ex. everything needed to configure a web server, database server, or
      a load balancer
   2) a collection of resources that describes a particular configuration or policy
@@ -55,11 +56,63 @@
        
   3) Chef applies resources in the order they appea
 
-# Chef cookbook: make your recipe more manageable
+# III) Chef Cookbook: make your recipe more manageable
   provides structure to your recipes and enables you to more easily reference external files
-    i.e. a cookbook helps you stay organized.
+    i.e. a cookbook helps you stay organized
 
-# recipe vs. cookbook
+# IV) Chef Run-list
+  let you specify which recipes to run, and the order in which to run them
+  important when there are multiple cookbooks (the order in which they run)
+  1) an ordered list of roles and/or recipes that are run in the exact order defined in the run-list
+     if a recipe appears more than once in the run-list, the chef-client will not run it twice
+  2) always specific to the node on which it runs
+     nodes may have a run-list that is identical to the run-list used by other nodes
+  3) stored as part of the node object on the Chef server
+  4) maintained using knife, and then uploaded from the workstation to the Chef server, or is maintained using
+     the Chef management console
+
+# V) Chef Attribute
+  1) a specific detail about a node
+  2) used by the chef-client to understand:
+     the current state of the node
+     what the state of the node was at the end of the previous chef-client run
+     what the state of the node should be at the end of the current chef-client run
+  3) defined by:
+     the state of the node itself
+     cookbooks (in attribute files and/or recipes)
+     roles
+     environments
+
+# VI) Chef Role
+  1) a way to define certain patterns and processes that exist across nodes in organization (same job function)
+  2) each role consists of zero (or more) attributes and a run-list
+  3) when a chef-client runs, it merges its own attributes and run-lists with those contained within each
+     assigned role
+  4) when a role is run against a node, the configuration details of that node are compared against the
+     attributes of the role, and then the contents of that role’s run-list are applied to the node’s
+     configuration details
+  5) each node can have zero (or more) roles assigned to it
+
+# VII) Chef Environment
+  1) a way to map an organization’s real-life workflow to what can be configured and managed when using
+     Chef server
+  2) every organization begins with a single environment called the _default environment, which cannot be
+     modified (or deleted)
+  3) additional environments can be created to reflect each organization’s patterns and workflow
+     ex. creating production, staging, testing, and development environments
+  4) an environment is also associated with one (or more) cookbook versions
+
+# VIII) Chef Policy
+  1) policy maps business and operational requirements, process, and workflow to settings and objects 
+     stored on the Chef server
+
+# Chef Comparison
+# Role vs. Environment vs. Policy
+  1) roles define server types, such as web server or database server
+  2) environments define process, such as dev, staging, or production
+  3) cookbooks (and cookbook versions) in which organization-specific configuration policies are maintained
+
+# Recipe vs. Cookbook
   recipe: a collection of resources, and typically configures a software package or a piece of infrastructure
   cookbook: groups together recipes in a way that is more manageable than having just recipes alone
   ex.
@@ -67,6 +120,12 @@
     a template resource for the HTML home page from a external file
     a cookbook to package both parts up into a single unit for later deployment
 
+# Sensitive data
+  certain types of data-passwords, user account data, and other sensitive items—can be placed in data bags,
+    which are located in a secure sub-area on the Chef server that can only be accessed by nodes that
+    authenticate to the Chef server with the correct SSL certificates
+
+# Chef Command
 # chef generate cookbook: command to create a cookbook
   chef generate cookbook /path/to/cookbooks/<cookbook_name>
     ex.
@@ -80,9 +139,6 @@
   ex. 
     sudo chef-client --local-mode --runlist 'recipe[learn_chef_httpd]'
     (recipe[learn_chef_httpd] == recipe[learn_chef_httpd::default])
-
-# run-list: let you specify which recipes to run, and the order in which to run them
-  run-list is important when there are multiple cookbooks (the order in which they run)
 
 # chef generate template: command create a template
   chef generate template cookbooks/<cookbook_name> <filename>
