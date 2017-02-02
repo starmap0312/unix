@@ -475,3 +475,11 @@
 # vim: read from STDIN
   $ ls -alh | vim -
 
+# fuser: give information about the process that is currently using the file or directory
+  ex. fuser -v .         (Who is Using a File or Directory?)
+                           USER        PID ACCESS COMMAND
+      .:                   kuanyu    20367  ..c.. bash
+
+  ex. fuser -v -n tcp 22 (Check Processes Using TCP/UDP Sockets)
+                           USER        PID ACCESS COMMAND
+      22/tcp:              kuanyu    20366  F.... sshd

@@ -20,13 +20,14 @@
   sudo mount -a
 
 # mount nfs drive via autofs
-  sudo vim /etc/auto.mnt (template setting: /etc/auto.misc)
+  sudo vim /etc/auto.mnt (template setting: /etc/auto.misc, process: automount --pid-file /var/run/autofs.pid)
     mnt -ro,soft,intr ftp.example.org:/pub/linux
-  chkconfig --level 2345 rpcbind on
-  service rpcbind start
-  service autofs stop
-  service autofs start
-  ls /mnt (the mount point will be mounted via autofs when it's accessed)
+    (autofs will create the mount folder /mnt for you)
+  sudo chkconfig --level 2345 rpcbind on
+  sudo service rpcbind start
+  sudo service autofs stop
+  sudo service autofs start
+  ls /mnt (the mount point will be mounted via autofs when it's accessed; it will be umounted after 300 secs)
 
 # display nfs share info, i.e. /etc/exports
   showmount -e == showmount -e localhost

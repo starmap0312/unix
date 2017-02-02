@@ -214,20 +214,36 @@
 
 # C-style regular expressions
   1) anchors and assertions: 
-     ^: field starts with, ex. [^abc]
+     ^: field starts with
+     ex. "^abc"      ==> starts with abc
+         ["abc"]
      $: field ends with
   2) character groups: any one character from the group
      [a-f], [0-9]: any hex character
+     ex. "[1-3]+"
+         ["1", "2", "33"]
+     ex. "[13]"
+         ["1", "3"]
+     ex. "[^a-z123 ]" ==> NOT a-z, 1, 2, 3
+         ["S", ",", "'", "!", "R", "4"]
   3) counts: apply to previous element
      +: 1 or more
      *: 0 or more
      ?: 0 or 1
      {4}: exactly 4
      {4,8}: between 4 and 8
+     ex. "it+"
+         ["it", "itt", "ittt"]
+     ex. "it*"
+         ["i", "it", "itt"]
   4) alternation:
      |: either or
+     ex. "it|st"
+         ["it", "st"]
   5) grouping:
      (): group for count and save to variable
+     ex. "(it)*"
+         ["", "it", "itit"]
 
 # encoding
   base62: [A-Z], [a-z], [0-9] ==> 26 + 26 + 10 = 62
