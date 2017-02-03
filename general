@@ -261,3 +261,31 @@
   7) uses the Lucene Java search library at its core for full-text indexing and
      search, and has REST-like HTTP/XML and JSON APIs
 
+# hash table
+  1) linear probing
+     ex. h(x) = x mod 7
+     index key
+         0
+         1
+         2   9
+         3   2              ==> insert to the next available slot
+         4   
+
+  2) separate chaining
+     ex. h(x) = x mod 7
+     index key
+         0
+         1
+         2   ----> 9 -> 2  ==> insert to a chain
+         3
+         4   
+
+  time complexity: average O(1) for lookup, insert, remove operations
+
+  challenge 1: resizing
+    resize the table when ~70% full
+    create a larger table with a new hash function, and re-insert everything
+
+  challenge 2: ordering data
+    no data ordering within hash table
+
