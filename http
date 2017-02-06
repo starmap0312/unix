@@ -56,7 +56,7 @@
   500 Server Error: server is broke and cannot handle the request
 
 # HTTP verbs (CRUD)
-  POST (Create): idempotent, not cacheable
+  POST (Create): not idempotent, not cacheable
     sends data to a specific URI and expects the resource at that URI to handle the request
     the web server determines what to do with the data
     ex. posting a message to a bulletin board, submitting a form to a data-handling process
