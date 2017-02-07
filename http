@@ -98,4 +98,8 @@
          PUT /questions/<new_question> HTTP/1.1
          Host: www.example.com/
 
-
+# URI (Uniform Resource Identifier) vs. URL (Uniform Resource Locator)
+  1) URI: classified as a locator, a name, or both
+  2) URL: URL refers to the subset of URIs
+          in addition to identifying a resource, provide a means of locating the resource by describing its primary access mechanism
+          ex. its network location

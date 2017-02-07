@@ -8,3 +8,42 @@
      access a database
   2) provides methods to query and update data in a database, and is oriented towards relational
      databases
+
+# .jar vs. .war files
+  .jar file: contains libraries, resources and accessories files like property files
+  .war file: contains the web application that can be deployed on any servlet/jsp container
+             ex. jsp, html, javascript, etc. necessary for the development of web applications
+
+# JavaFX (FX: functions)
+  1) a set of graphics and media packages that enables developers to design, create, test, debug, and
+     deploy rich client applications that operate consistently across diverse platforms
+  2) JavaFX applications can use Java API libraries to access native system capabilities and connect to
+     server-based middleware applications
+
+# SBT (simple build tool)
+  1) interactive build tool
+  2) commands
+     a) Project-level tasks
+        sbt clean: deletes all generated files (the target directory)
+     b) Configuration-level tasks 
+        sbt compile      : compiles the main sources (in the src/main/scala directory)
+        sbt test:compile : compiles test sources (in the src/test/scala/ directory).
+        sbt test         : runs all tests detected during test compilation
+     ex. sbt clean test
+  3) Dependency Management Flow 
+     a) update resolves dependencies according to the settings in a build file, such as libraryDependencies and resolvers
+     b) before compile can run, the update task needs to run
+     c) run clean and then update
+     d) before deleting ~/.ivy2/cache, try to delete files in ~/.ivy2/cache related to problematic dependencies
+        ex. ~/.ivy2/cache/org.example/demo/1.0/
+     
+# IDE: IntelliJ IDEA
+  1) Java Libraries: a set of class files stored in an archive or directory
+     a Java library includes class files, archives, directories with class files, and
+     directories with Java native libraries (.dll, .so or .jnilib)
+  2) Project: the highest level of organization in the IDE
+  3) Module: a discrete unit of functionality which you can compile, run, test and debug independently
+     a) Every project consists of modules
+     b) Module dependencies: classes, archives, libraries and resources that your module files references
+        A module can be a dependency for another module in the project
+

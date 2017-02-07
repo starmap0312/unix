@@ -66,3 +66,8 @@
   6) mvn jetty:run / mvn tomcat:run: execute web project
   7) mvn javadoc:jar: generate java api .jar file
   8) mvn exec:exec: execute project
+
+# ~/.m2/settings.xml: configuration file
+  1) element in the file contains elements used to define values which configure Maven execution in various ways
+     ex. values such as the local repository location, alternate remote repository servers, and authentication information
+  2) it's like the pom.xml, but should not be bundled to any specific project, or distributed to an audience
