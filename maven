@@ -36,6 +36,7 @@
        }
   5) create package file
      mvn package
+     create .jar file (packaging) based on pom.xml
      create .war file (packaging) based on pom.xml, which will be deployed to Tomcat/JBoss server
   6) clean/remove target folder
      mvn clean
