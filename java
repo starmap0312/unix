@@ -9,6 +9,10 @@
   2) provides methods to query and update data in a database, and is oriented towards relational
      databases
 
+# javac: compile source code & java: execute main class
+  javac -cp ./lib1.jar:./lib2.jar source.java
+  java -cp .:./lib1.jar:./lib2.jar source.java
+
 # .jar vs. .war files
   .jar file: contains libraries, resources and accessories files like property files
   .war file: contains the web application that can be deployed on any servlet/jsp container

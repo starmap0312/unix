@@ -1,5 +1,7 @@
+# CSS: Cascading Style Sheets
+
 # Selectors: patterns used to select the element(s) you want to style
-  ex1. class selector
+  1) class selector
 
     .class           .class_name        ==> selects all elements with class="class_name"
 
@@ -12,7 +14,7 @@
     <h1 class="error"> error title </h1>
 
 
-  ex2. id selector
+  2) id selector
 
     #id              #attribute_name    ==> selects the element with attribute id="attribute_name"
 
@@ -29,7 +31,7 @@
     .intro {                       # select class="intro"
         background-color: yellow;
     }
-    #foo {
+    #foo {                         # select id="foo"
         background-color: blue;
     }
   </style>
