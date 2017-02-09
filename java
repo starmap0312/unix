@@ -24,13 +24,3 @@
   2) JavaFX applications can use Java API libraries to access native system capabilities and connect to
      server-based middleware applications
 
-# IDE: IntelliJ IDEA
-  1) Java Libraries: a set of class files stored in an archive or directory
-     a Java library includes class files, archives, directories with class files, and
-     directories with Java native libraries (.dll, .so or .jnilib)
-  2) Project: the highest level of organization in the IDE
-  3) Module: a discrete unit of functionality which you can compile, run, test and debug independently
-     a) Every project consists of modules
-     b) Module dependencies: classes, archives, libraries and resources that your module files references
-        A module can be a dependency for another module in the project
-
