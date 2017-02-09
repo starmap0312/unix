@@ -23,3 +23,7 @@
      Step Out:  Shift + Fn + F8
      Resume:    Cmd + Option + R
      Show Exec: Option + Fn + F10
+  3) Editor
+     Jump to file beg: Cmd + Fn + <-
+     Jump to file end: Cmd + Fn + ->
+  4) Search Keyword: Shift + Cmd + F

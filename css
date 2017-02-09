@@ -54,3 +54,30 @@
   p::before { 
     content: "Read this: ";
   }
+
+# Java class selector: org.jsoup.select
+  CSS-like element selector, that finds elements matching a query
+  Selector syntax: a selector is a chain of simple selectors, separated by combinators (case insensitive)
+    universal selector (*) is implicit when no element selector is supplied
+      ex. *.header and .header is equivalent
+
+    Pattern                  Matches
+    -------                  -------
+    *                        any element
+    .class                   elements with a class name of "class"
+    #id                      elements with attribute ID of "id"
+    [attr]                   elements with an attribute named "attr" (with any value)
+    [^attrPrefix]            elements with an attribute name starting with "attrPrefix". Use to find elements with HTML5 datasets
+    [attr=val]               elements with an attribute named "attr", and value equal to "val"
+    [attr="val"]             elements with an attribute named "attr", and value equal to "val"
+    [attr*=valContaining]    elements with an attribute named "attr", and value containing "valContaining"
+    [attr~=regex]            elements with an attribute named "attr", and value matching the regular expression
+    (The above may be combined in any order)
+
+    Combinators
+    E F                      an F element descended from an E element
+    E > F                    an F direct child of E
+
+    Pseudo selectors
+    :not(selector)           elements that do not match the selector
+    :has(selector)           elements that contains at least one element matching the selector
