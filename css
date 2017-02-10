@@ -61,23 +61,47 @@
     universal selector (*) is implicit when no element selector is supplied
       ex. *.header and .header is equivalent
 
-    Pattern                  Matches
-    -------                  -------
-    *                        any element
-    .class                   elements with a class name of "class"
-    #id                      elements with attribute ID of "id"
-    [attr]                   elements with an attribute named "attr" (with any value)
-    [^attrPrefix]            elements with an attribute name starting with "attrPrefix". Use to find elements with HTML5 datasets
-    [attr=val]               elements with an attribute named "attr", and value equal to "val"
-    [attr="val"]             elements with an attribute named "attr", and value equal to "val"
-    [attr*=valContaining]    elements with an attribute named "attr", and value containing "valContaining"
-    [attr~=regex]            elements with an attribute named "attr", and value matching the regular expression
+    Pattern                Matches
+    -------                -------
+    *                      any element
+    tag                    elements with the given tag name                            (ex. div)
+    .class                 elements with a class name of "class"                       (ex. div.left, .result)
+    #id                    elements with attribute ID of "id"                          (ex. div#wrap, #logo)
+    [attr]                 elements with an attribute named "attr" with any value      (ex. a[href], [title])
+    [^attrPrefix]          elements with an attribute name starting with "attrPrefix"  (ex. [^data-], div[^data-]) 
+    [attr=val]             elements with an attribute named "attr" and value equal to "val" (ex. img[width=500])
+    [attr="val"]           elements with an attribute named "attr" and value equal to "val" (ex. a[rel="nofollow"])
+    [attr*=valContaining]  elements with an attribute named "attr" and value containing "valContaining"  (ex. a[href*=/search/])
+    [attr~=regex]          elements with an attribute named "attr" and value matching regular expression (ex. img[src~=(?i)\\.(png|jpe?g)])
     (The above may be combined in any order)
 
     Combinators
-    E F                      an F element descended from an E element
-    E > F                    an F direct child of E
+    E F                      an F element descended from an E element                  (ex. div a, .logo h1)
+    E > F                    an F direct child of E                                    (ex. ol > li)
 
     Pseudo selectors
-    :not(selector)           elements that do not match the selector
-    :has(selector)           elements that contains at least one element matching the selector
+    :has(selector)           elements that contains at least one element matching the selector (ex. div:has(3) divs that contain 3 elements)
+    :not(selector)           elements that do not match the selector                           (ex. div:not(:has(div)) divs containing no div)
+
+# HTML id, class, attribute
+  1) definitions
+     a) id: specifies a unique id for an HTML element (the value must be unique within the HTML document) 
+        ex. <h1 id="myHeader"> text </h1>
+     b) class: makes it possible to define equal styles for elements with the same class name
+        ex. <div class="cities">  # multiple <div> elements can be associated to to the same class name
+     c) attribute: provide additional information about HTML elements
+        ex. <html lang="en-US">
+     id's and classes are "hooks" used to target them (i.e. manipulate them uniquely) 
+       ex. <li id="comment-27299" class="item">
+  2) differences between id and class:
+     id's are unique
+       each element can have only one ID
+       each page can have only one element with that ID
+     classes are NOT unique
+       you can use the same class on multiple elements
+       you can use multiple classes on the same element
+       ex.
+         <div class="widget"></div>     # a page can have multiple elements with the same class
+         <div class="widget big"></div> # an element can be associated to more than one class
+         <div class="widget"></div>
+
