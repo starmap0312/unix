@@ -19,6 +19,9 @@
      hadoop fs -mv /user/hadoop/folder1 /user/hadoop/folder2
   8) hadoop dfs -count <paths>
      ex. hdfs dfs -count hdfs://nn1.example.com/file1 hdfs://nn2.example.com/file2
+  9) outputs the file in text format (allowed formats: zip and TextRecordInputStream)
+     ex. hadoop fs -text /path/to/filename.zip
+         hadoop fs -text /path/to/filename.tgz
 
 # hadoop fsck: runs a HDFS filesystem checking utility
   hadoop fsck <path>: start checking from this path

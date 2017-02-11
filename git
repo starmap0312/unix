@@ -23,11 +23,14 @@
   git push origin master (git push -u origin master)
 
 # set up the upstream repo for the remote origin repo
-  git clone git@github.com/OWNER/ORIGIN_REPO.git
-  git remote add upstream https://github.com/OWNER/REPOSITORY.git
-  git fetch upstream        ==> fetch upstream repo
-  git checkout master       ==> checkout local master branch
-  git merge upstream/master ==> merge upstream/master to local master branch
+  git clone git@github.com/FORKED_REPO.git
+  git remote add upstream https://github.com/ORIGINAL_REPO.git
+  sync with upstream
+    1) git checkout master       ==> checkout local master branch
+    2) git fetch upstream        ==> fetch upstream repo
+       git merge upstream/master ==> merge upstream/master to local master branch
+       or 
+       git pull upstream         ==> git fetch upstream + git merge upstream/master
   (edit & git commit files)
   git push origin master    ==> push local master branch to forked personal GitHub
 
