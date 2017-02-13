@@ -246,8 +246,15 @@
          ["", "it", "itit"]
 
 # encoding
-  base62: [A-Z], [a-z], [0-9] ==> 26 + 26 + 10 = 62
-  base64: [A-Z], [a-z], [0-9], +, / (append = if the encoded string cannot be divided by 3)
+  1) base62: [A-Z], [a-z], [0-9] ==> 26 + 26 + 10 = 62
+  2) base64: [A-Z], [a-z], [0-9], +, / (append = if the encoded string cannot be divided by 3)
+  3) linux shell commands:
+     a) encode:
+        echo -n 'scottlinux.com rocks' | base64
+        c2NvdHRsaW51eC5jb20gcm9ja3M=
+     b) decode:
+        echo -n c2NvdHRsaW51eC5jb20gcm9ja3M= | base64 --decode (or base64 -D)
+        scottlinux.com rocks
 
 # Apache Solr
   1) open-source, written in JAVA

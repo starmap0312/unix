@@ -283,11 +283,12 @@
         ----------\n
         time_total:  %{time_total}\n
         \n
-     -o, --output <file>: write output to <file> instead of stdout
-        -o /dev/null: do not display output
-     -k, --insecure: allows curl to perform "insecure" SSL connections and transfers
-  ex.
-    curl -v -k https://www.example.com
+   -o, --output <file>: write output to <file> instead of stdout
+     ex. -o /dev/null: do not display output
+   -k, --insecure: allows curl to perform "insecure" SSL connections and transfers
+     ex. curl -v -k https://www.example.com
+   -d, --data-binary <data>: HTTP POST binary data (H), i.e. post data exactly as specified without extra processing
+     ex. curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://localhost:9000/api/
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
   ex.
