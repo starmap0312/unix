@@ -12,7 +12,11 @@
      sbt war          : package for Java container sbt war
      sbt dist         : package for standalone Play package (build a standalone project issue)
      sbt run <args>*  : runs main class of project in the same virtual machine as sbt (run an application)
-  (run sbt commands in batch: ex. sbt clean compile test)
+  c) run sbt commands in batch: ex. sbt clean compile test)
+     ex.
+       sbt "project project_name" clean format compile test package
+       sbt "project project_name" run
+   
 
 # sbt dependency management flow
   1) update: resolves dependencies according to the settings of build.sbt file
