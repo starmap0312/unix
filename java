@@ -9,6 +9,10 @@
   2) provides methods to query and update data in a database, and is oriented towards relational
      databases
 
+# Java Package
+  Java namespace management: a grouping of related types (classes, interfaces, etc.)
+    used to prevent naming conflicts, to control access, to make locating and usage of classes easier
+
 # javac: compile source code & java: execute main class
   javac -cp ./lib1.jar:./lib2.jar source.java
   java -cp .:./lib1.jar:./lib2.jar source.java
