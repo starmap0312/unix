@@ -7,9 +7,12 @@
         sbt compile      : compiles the main sources (in the src/main/scala directory)
         sbt test:compile : compiles test sources (in the src/test/scala/ directory).
         sbt test         : runs all tests detected during test compilation
+        sbt package      : creates jar file containing files in src/main/resources and classes compiled from
+                           src/main/scala and src/main/java
         sbt war          : package for Java container sbt war
         sbt dist         : package for standalone Play package (build a standalone project issue)
-     (combination of commands: ex. sbt clean test)
+        sbt run <args>*  : runs main class of project in the same virtual machine as sbt (run an application)
+     (run sbt commands in batch: ex. sbt clean compile test)
   3) Dependency Management Flow
      a) update resolves dependencies according to the settings in a build file, such as libraryDependencies and resolvers
      b) before compile can run, the update task needs to run
