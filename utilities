@@ -61,7 +61,18 @@
       -f: Archive File name
       -x: Extract files
 
+# gzip/gunzip:
+  gzip filename ==> create a filename.gz compressed file
+  gzip -d filename.gz ==> uncompress filename.gz file
+    i.e. gunzip filename.gz
+
+# zcat/zmore/zless
+  uncompress .gz file and write the uncompressed data on standard output
+  zcat filename.gz
+
 # bzip2
+  bzip2 filename ==> create a filename.bz2 compressed file
+  bzip2 -d filename.bz2 ==> uncompress filename.bz2 file
   1) compress a single file
      bzip2 filename                      ==> compress filename into filename.bz2
   2) compress multiple files
@@ -128,12 +139,6 @@
   8) echo {11..14} | xargs -n 1 | xargs -I{} -P 4 ping -c 1 int{}.img.search.gq1.yahoo.com
      -n 1: specifies how many arguments at a time to supply to the given command
      -P 4: run up to 4 processes at a time (default 1)
-
-# gzip and bzip2:
-  gzip filename ==> create a filename.gz compressed file
-  gzip -d filename.gz ==> uncompress filename.gz file
-  bzip2 filename ==> create a filename.bz2 compressed file
-  bzip2 -d filename.bz2 ==> uncompress filename.bz2 file
 
 # shutdown
   shutdown -h now ==> shutdown
@@ -224,10 +229,6 @@
 # ldd: print shared library dependencies
   ldd filename ==> list all dynamic libraries used by an executable
   (use pmap to view the libraries used by a running process)
-
-# zcat/zmore/zless
-  uncompress .gz file and write the uncompressed data on standard output
-  zcat filename.gz
 
 # tee: direct to both stdout and a file
   echo helloworld | tee filename

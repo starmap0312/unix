@@ -28,3 +28,21 @@
   2) JavaFX applications can use Java API libraries to access native system capabilities and connect to
      server-based middleware applications
 
+# Apache Akka
+  1) a convenient framework for doing reactive and distributed application on the JVM
+  2) it is based on reactive manifesto
+     a) Responsive    : the system responds in a timely manner
+     b) Resilient     : the system stays responsive in the face of failure
+                        achieved by replication, containment, isolation and delegation
+     c) Elastic       : the system stays responsive under varying workload 
+                        need the ability to shard or replicate components and distribute inputs among them
+     d) Message Driven: the system rely on asynchronous message-passing to establish a boundary between
+                        components that ensures loose coupling, isolation and location transparency 
+  3) characteristics
+     a) Event-driven with message passing (i.e loosely coupled)
+     b) Resilient through the use of supervision strategies, death watch and hierarchies
+     c) Scalable and responsive
+        it saves resources with your actors sharing threads in a non-blocking way
+        it does not require locking mechanisms blocking the current thread and context switching
+  4) it uses the Actor model to hide all the thread-related code
+     this gives you simple interfaces to implement a scalable and fault-tolerant system
