@@ -148,3 +148,18 @@
 
 # diff two branches
   git diff <branch1> <branch2>
+
+# git rebase
+  history 
+     v1 -> v2 -> v3.1         ... master
+           |---> v3.2         ... dev
+
+  1) git checkout dev
+  2) git rebase master
+     v1 -> v2 -> v3.1         ... master
+           |---> v3.1 -> v3.2 ... dev   (need to resolve conflicts if any)
+
+  3) git checkout master
+  4) git merge dev
+     v1 -> v2 -> v3.1 -> v3.2 ... master & dev
+
