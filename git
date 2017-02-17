@@ -35,7 +35,8 @@
   git push origin master    ==> push local master branch to forked personal GitHub
 
 # git push
-  git push origin <branch_name> (push local branch_name to remote repo)
+  git push origin <branch_name>      => push local branch_name to remote repo)
+  git push origin <branch_name> -f   => force push
   git push == git push origin master
   
 # create local branch and push to remote
@@ -150,7 +151,7 @@
   git diff <branch1> <branch2>
 
 # git rebase
-  history 
+  ex. git history 
      v1 -> v2 -> v3.1         ... master
            |---> v3.2         ... dev
 
@@ -159,7 +160,9 @@
      v1 -> v2 -> v3.1         ... master
            |---> v3.1 -> v3.2 ... dev   (need to resolve conflicts if any)
 
+  3) git push origin dev      ... origin/dev (push local dev branch to remote origin/dev)
+     git push origin dev -f                  (force push if needed)
+  4) create PR to merge orign/dev into upstream/master
   3) git checkout master
-  4) git merge dev
-     v1 -> v2 -> v3.1 -> v3.2 ... master & dev
-
+     git merge dev OR git pull upstream/master (after the commits are merged into upstream/master)
+       v1 -> v2 -> v3.1 -> v3.2 ... master & dev
