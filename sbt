@@ -19,8 +19,10 @@
        sbt "project project_name" clean format compile test package
        sbt "project project_name" run
   d) interactive mode
+     sbt                 : enter interactive mode
      projects            : list projects
      project project_name: set current project to project_name
+     testOnly MyTest     : run MyTest only
      run                 : run the project
 
 # sbt dependency management flow
@@ -35,3 +37,4 @@
 # build.sbt: project configuration file
     name := """play-java"""   # project name
     version := "1.0-SNAPSHOT" # project version
+

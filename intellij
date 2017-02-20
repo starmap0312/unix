@@ -23,7 +23,10 @@
      Step Out:  Shift + Fn + F8
      Resume:    Cmd + Option + R
      Show Exec: Option + Fn + F10
+     Jump to class declaration/Show usages of a class: Cmd + Mouse Click
   3) Editor
      Jump to file beg: Cmd + Fn + <-
      Jump to file end: Cmd + Fn + ->
+     Jump to line    : Cmd + l
+     Jump to declaration:
   4) Search Keyword: Shift + Cmd + F
