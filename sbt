@@ -18,6 +18,7 @@
      ex.
        sbt "project project_name" clean format compile test package
        sbt "project project_name" run
+       sbt "project project_name" "test-only TestFilename"
   d) interactive mode
      sbt                 : enter interactive mode
      projects            : list projects
