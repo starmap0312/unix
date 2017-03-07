@@ -166,3 +166,14 @@
   3) git checkout master
      git merge dev OR git pull upstream/master (after the commits are merged into upstream/master)
        v1 -> v2 -> v3.1 -> v3.2 ... master & dev
+
+# git stash: saved working directory and index state
+  used to switch between branches without commiting the changes
+  1) git stash list            : list all stashed states 
+     ex.
+       stash@{0}: WIP on master: 049d078 added the index file
+       stash@{1}: WIP on master: c264051 Revert "added file_size"
+  2) git stash apply: restore to the most-recent stashed state
+     git stash apply stash@{2} : restore to the specified stashed state
+  3) git stash drop stash@{0}  : drop the specified stashed state
+
