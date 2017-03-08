@@ -199,7 +199,15 @@
   ${string:position:length}
   ex.
     var=12345
-    echo ${var:2:2} ==> 34
+    echo ${var:2:2}  ==> 34
+
+# substring removal
+  ${string##substring}: deletes longest match of substring from front of $string
+  ex.
+    var="abcde"
+    echo ${var##ab}  ==> prints out "cde"
+    var2="foldername/"
+    echo ${var2##*/} ==> * indicates wildcard, so it prints out $var2 unless it is a string that ends with "/" (ex. foldername) 
 
 # test command: compare strings and test files
   1) compare strings

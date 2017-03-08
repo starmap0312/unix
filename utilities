@@ -292,6 +292,9 @@
      ex. curl -v -k https://www.example.com
    -d, --data-binary <data>: HTTP POST binary data (H), i.e. post data exactly as specified without extra processing
      ex. curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://localhost:9000/api/
+   -f, --fail: (HTTP) Fail silently (no output at all) on server errors (in case we get the HTTP error page and treats it as normal)
+     ex. curl http://www.google.com/xxxxx    (get Error 404 page, but return code = 0)
+         curl -f http://www.google.com/xxxxx (get error: curl: (22) 404 Not Found, return code = 22)
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
   ex.
