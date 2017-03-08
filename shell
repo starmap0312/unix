@@ -20,6 +20,7 @@
          traces of each command plus its arguments are printed to stdout
 
   2) set -e: enables checking of all commands
+     aborts the execution when a command fails
      if a command exits with error and caller does not check such error, then the scripts aborts immediately
      ex.
        set -e
@@ -27,7 +28,7 @@
        ls /unknown  ==> exit status of the command is not 0, the scripts aborts here
        ls /tmp      ==> this command will not be executed
 
-  3) set -x: trace the execution of all commands
+  3) set -x: trace the execution of all commands (or use "set -o xtrace")
      make the interpreter print each command right before it is executed
      ex.
        set -x
@@ -37,7 +38,12 @@
        (stdout)
        + ls /var
        + ls /tmp
-  4) trap <command> <signal>: error handling for singal
+  4) set -u: no unset variables (or use "set -o nounset")
+     aborts the execution if an unset variable is used
+     ex.
+       echo $unsetVar                                    ==> error: unbound variable, exits with 1
+       echo "this line will not be executed"
+  5) trap <command> <signal>: error handling for singal
      trap - <signal>: unset error handling for signal
      signal:
        a) INT: Interrupt
