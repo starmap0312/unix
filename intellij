@@ -29,4 +29,7 @@
      Jump to file end: Cmd + Fn + ->
      Jump to line    : Cmd + l
      Jump to declaration:
-  4) Search Keyword: Shift + Cmd + F
+  4) Search
+     Find keyword in file   : Cmd + F
+     Replace keyword in file: Cmd + R
+     Find keyword in project: Shift + Cmd + F
