@@ -150,7 +150,7 @@
 # diff two branches
   git diff <branch1> <branch2>
 
-# git rebase
+# git rebase [branch]
   ex. git history 
      v1 -> v2 -> v3.1         ... master
            |---> v3.2         ... dev
@@ -163,9 +163,18 @@
   3) git push origin dev      ... origin/dev (push local dev branch to remote origin/dev)
      git push origin dev -f                  (force push if needed)
   4) create PR to merge orign/dev into upstream/master
-  3) git checkout master
+  5) git checkout master
      git merge dev OR git pull upstream/master (after the commits are merged into upstream/master)
        v1 -> v2 -> v3.1 -> v3.2 ... master & dev
+
+# git rebase -i [commit]
+  ex.
+  1) git history
+     commit 919f085276696c26a818a50c8d5652fb16625e28
+     commit 1b5228ee490ea9986575c0cc51e644d8204f91c8
+     commit eb62c7b27edbaf54502c80fd0ae4e040117c87ef 
+  2) git rebase -i eb62c7b27edbaf54502c80fd0ae4e040117c87ef
+     this will re-commit 919f0852 and 1b5228ee in an interactive mode
 
 # git stash: saved working directory and index state
   used to switch between branches without commiting the changes
