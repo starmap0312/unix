@@ -1,6 +1,8 @@
-# hadoop fs <args> / hdfs dfs <args>
-  1) list a folder
+# hadoop fs <args>
+  1) list a folder (option -ls -R: list recursively)
      ex. hadoop fs -ls /path/to/hadoop/folder
+         hls /path/to/hadoop/folder
+     ex. hadoop fs -ls -R /path/to/hadoop/folder
          hls /path/to/hadoop/folder
   2) download a hadoop folder
      ex. hadoop fs -get /path/to/folder
@@ -17,9 +19,11 @@
      hadoop fs -mkdir [-p] /path/to/folder
   7) move a folder
      hadoop fs -mv /user/hadoop/folder1 /user/hadoop/folder2
-  8) hadoop dfs -count <paths>
+  8) remove a folder recursively
+     hadoop fs -rm -r /user/hadoop/folder
+  9) hadoop dfs -count <paths>
      ex. hdfs dfs -count hdfs://nn1.example.com/file1 hdfs://nn2.example.com/file2
-  9) outputs the file in text format (allowed formats: zip and TextRecordInputStream)
+ 10) outputs the file in text format (allowed formats: zip and TextRecordInputStream)
      ex. hadoop fs -text /path/to/filename.zip
          hadoop fs -text /path/to/filename.tgz
 

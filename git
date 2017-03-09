@@ -36,7 +36,7 @@
 
 # git push
   git push origin <branch_name>      => push local branch_name to remote repo)
-  git push origin <branch_name> -f   => force push
+  git push -f origin <branch_name>   => force push
   git push == git push origin master
   
 # create local branch and push to remote
