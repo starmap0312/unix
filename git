@@ -6,6 +6,10 @@
 # discard unstaged changes of all files
   git checkout .
 
+# checkout a previous commit and return
+  git checkout 919f085276696c26a818a50c8d5652fb16625e28
+  git checkout [branch_name]
+
 # git add
   git add -A
   -A, --all: all files in the entire working tree are updated
