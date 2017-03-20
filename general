@@ -296,3 +296,16 @@
   challenge 2: ordering data
     no data ordering within hash table
 
+# static and shared libraries
+  1) static libraries:
+     the code is copied over into your program
+     no need to search for library after your program is compiled and linked
+  2) shared libraries: 
+     libraries needs to be dynamically linked to your program, search for directories specified by LD_LIBRARY_PATH
+
+# environement variables: LIBRARY_PATH vs. LD_LIBRARY_PATH
+  1) LIBRARY_PATH:
+     used by gcc before compilation to search for directories containing libraries to be linked to your program
+  2) LD_LIBRARY_PATH: 
+     used by your program to search for directories containing libraries after successfully compiled and linked
+
