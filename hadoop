@@ -12,6 +12,10 @@
            -f: force, to overwirte
   4) cat a hadoop file
      ex. hadoop fs -cat /path/to/filename
+  5) copy a hadoop file
+     options:
+       -f: overwrite the destination if it already exists
+     ex. hadoop fs -cp /path/to/file1 /path/to/file2
   5) count the number of directories, files and bytes under the path
      ex. hadoop fs -count -q /path/to/hadoop/folder
          hdfs dfs -count -q hdfs://nn1.example.com/file1
@@ -31,5 +35,47 @@
   hadoop fsck <path>: start checking from this path
   ex. hadoop fsck /
 
-# hadoop distcp: migrate data between two clusters
+# hadoop distcp: copy data between two clusters
   hadoop distcp hftp://cdh3-namenode:50070/ hdfs://cdh4-nameservice/
+  options:
+    -update   : overwrite if src size different from dst size
+    -overwrite: overwrite destination
+  ex.
+    hadoop distcp -update hftp://cdh3-namenode:50070/ hdfs://cdh4-nameservice/
+
+# Hadoop Permissions
+# 1) traditional POSIX permissions model
+# 1.1) hadoop fs -chown [-R] [OWNER][:[GROUP]] URI [URI ]
+  change the owner of files (file owner and file group)
+  ex.
+    hadoop fs -chown user:hadoop /path/to/file
+
+# 1.2) hadoop fs -chmod [-R] <MODE[,MODE]... | OCTALMODE> URI [URI ...]
+  change the permissions of files
+  ex.
+    hadoop fs -chmod 755 /path/to/file
+
+# 2) POSIX ACLs (Access Control Lists)
+  useful for implementing permission requirements that differ from the natural organizational hierarchy of users and groups
+  it provides a way to set different permissions for specific named users or named groups, not only file owner and file group
+  an ACL consists of a set of ACL entries:
+    each ACL entry names a specific user/group and grants/denies read/write/execute permissions for that specific user/group
+    ex.
+      user :       :rw-               #               (unnamed user , i.e. file owner, has read-write access)
+      group:       :r-x               # effective:r-- (unnamed group, i.e. file group, has read-execute access)
+      other:       :r--               #               (unnamed other,                , has read access)
+      user :starmap:rwx               # effective:r-- (named user   , i.e. starmap   , has full access)
+      group:yahoo  :rwx               # effective:r-- (named group  , i.e. yahoo     , has full access)
+      mask :       :r--               #               (mask,        ,                , filters permissions of all named user and named group)
+    the algorithm for permission checks:
+      file owner -> named user (masked) -> file group (masked) -> named group (masked) -> other permissions
+# 2.1) hadoop fs -getfacl [-R] <path>
+  dsplay the Access Control Lists (ACLs) of files and directories
+  option:
+    -R: List the ACLs of all files and directories recursively
+# 2.2) hadoop fs -setfacl [-R] [-b |-k -m |-x <acl_spec> <path>]
+  set Access Control Lists (ACLs) of files and directories
+  option:
+    -m: Modify ACL. New entries are added to the ACL, and existing entries are retained
+  ex.
+    hadoop fs -setfacl -m user:hadoop:rw- /path/to/file
