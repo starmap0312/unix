@@ -1,3 +1,16 @@
+# oozie
+  1) a Java Web application running in a Java servlet-container that executes Workflow jobs consisting of one or more actions
+  2) it allows you to define, manage, schedule, and execute complex Hadoop workloads through Web services
+     ex. tasks workflow
+         MapReduce -> Pig -> Streaming -> HDFS operation such as mkdir, chmod
+     without oozie, you will need to write shell scripts and cron jobs for the above workflow
+  3) Use Cases
+     a) jobs triggered periodically
+        define a coordinator job specifying frequency
+     b) jobs triggered when input data is available (check periodically)
+        oozie lets you materialize (create but not run) a Workflow at a specified interval
+        but only run the Workflow when input data is ready
+
 # command-line
   1) oozie job <OPTIONS>: job operations
      a) run a job:
