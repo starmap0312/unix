@@ -4,42 +4,66 @@
      ex. tasks workflow
          MapReduce -> Pig -> Streaming -> HDFS operation such as mkdir, chmod
      without oozie, you will need to write shell scripts and cron jobs for the above workflow
-  3) Use Cases
+  3) common use patterns 
      a) jobs triggered periodically
         define a coordinator job specifying frequency
      b) jobs triggered when input data is available (check periodically)
         oozie lets you materialize (create but not run) a Workflow at a specified interval
         but only run the Workflow when input data is ready
+     c) Rolling Window: access datasets at a smaller interval and then roll them up at a larger frequency
+        ex. roll the 15-minute datasets into hourly datasets
+  3) common use cases
+     a) data transformation/filtering
+     b) data metrics
+     c) directory management
+     d) copying input data
+     e) data replication
+     f) data cleanup
+     g) generate data 
+  4) data modeling: data analysis
+     a) process logs/data in parallel
+     b) data consolidation
 
-# command-line
+# Bundles
+  data pipelines:
+    it involves a set of Coordinators, each Coordinator with one Workflow job that may contain multiple actions
+    data dependencies exist between Coordinators and at the Workflow level
+  examples:
+    stream video pipeline
+    complete data transformation pipeline
+    data ingestion
+
+# oozie client commands
   1) oozie job <OPTIONS>: job operations
-     a) run a job:
-        ex. oozie job -run -config /path/to/coordinator.properties
-            -config: specify the job configuration file '.xml' or '.properties' 
-     b) rerun jobs based on action ids:
-        ex. oozie job -rerun 4046712-150922212940621-oozie_PT-C -action 5545-5664
-            -rerun <coord_id> -action 5545-5664: coordinator rerun on action ids
-     c) rerun jobs based on action dates:
-        ex. oozie job -rerun 7442168-151111002143708-oozie_PT-C date
-            -rerun <coord_id> date <arg>: coordinator/bundle rerun on action dates
-     d) display job info / action info:
-        ex. oozie job -info 4046712-150922212940621-oozie_PT-C
-            oozie job -info 4046712-150922212940621-oozie_PT-C@5545
-            -info <coord_id>[@<action_id>]
-     e) kill a job:
-        ex. oozie job -kill 0686041-160525100548329-oozie_PT-C
-            -kill <coord_id>
-     f) display job definition: (i.e. content of coordinator.xml)
-        ex. oozie job -definition 0686041-160525100548329-oozie_PT-C
+     a) submit a job:
+        oozie job -submit -config job.properties -auth kerberos
+     b) start a job based on the received job_id when submitted:
+        oozie job -start [oozie-wf-job_id] -auth kerberos
+     c) run a workflow/coordinator job:
+        oozie job -run -config coordinator.properties
+          -config: specify the job configuration file '.xml' or '.properties' 
+     d) rerun jobs based on action ids:
+        oozie job -rerun 4046712-150922212940621-oozie_PT-C -action 5545-5664
+          -rerun <coord_id> -action 5545-5664: coordinator rerun on action ids
+     e) rerun jobs based on action dates:
+        oozie job -rerun 7442168-151111002143708-oozie_PT-C date
+          -rerun <coord_id> date <arg>: coordinator/bundle rerun on action dates
+     f) display job info / action info:
+        oozie job -info 4046712-150922212940621-oozie_PT-C
+        oozie job -info 4046712-150922212940621-oozie_PT-C@5545
+          -info <coord_id>[@<action_id>]
+     g) kill a job:
+        oozie job -kill 0686041-160525100548329-oozie_PT-C
+          -kill <coord_id>
+     h) display job definition: (i.e. content of coordinator.xml)
+        oozie job -definition 0686041-160525100548329-oozie_PT-C
 
-  2) oozie jobs <OPTIONS>: job status
+  2) oozie jobs <OPTIONS>: display job status
      a) filter
-       ex. oozie jobs -filter user=<username> -verbose
-           oozie jobs -filter user=<username>\;status=RUNNING -verbose
-           -filter <arg>    user=<U>;name=<N>;group=<G>;status=<S>;
-           -verbose: verbose mode
-     b)
-           -jobtype <arg>   job type ('Supported in Oozie-2.0 or later versions ONLY -
-                                  coordinator' or 'wf' (default))
-     c) oozie jobs: view your running jobs
+        oozie jobs -filter user=<username> -verbose
+        oozie jobs -filter user=<username>\;status=RUNNING -verbose
+          -filter <arg>    user=<U>;name=<N>;group=<G>;status=<S>;
+          -verbose: verbose mode
+          -jobtype <arg>   job type
+     b) oozie jobs: view your running jobs
 
