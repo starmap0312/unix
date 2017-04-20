@@ -37,6 +37,7 @@
   1) oozie job <OPTIONS>: job operations
      a) submit a job:
         oozie job -submit -config job.properties -auth kerberos
+        to submit a job, the App definition specified in the job.properties must exist in the grid
      b) start a job based on the received job_id when submitted:
         oozie job -start [oozie-wf-job_id] -auth kerberos
      c) run a workflow/coordinator job:

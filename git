@@ -35,8 +35,8 @@
        git merge upstream/master ==> merge upstream/master to local master branch
        or 
        git pull upstream         ==> git fetch upstream + git merge upstream/master
-  (edit & git commit files)
-  git push origin master    ==> push local master branch to forked personal GitHub
+       (git pull upstream master ==> get the newest code from original repo to local repo)
+    3) git push origin master    ==> push local master branch to forked personal GitHub (edit & git commit files)
 
 # git push
   git push origin <branch_name>      => push local branch_name to remote repo)

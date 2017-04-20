@@ -79,6 +79,16 @@
     (ex. /usr/bin/vim ==> display users currently using vim)
   lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
 
+  when delete file does not release the space, it might be caused by some process opening the file:
+    sudo lsof | grep delete              (find out what process is blocking the space release)
+      ex. python2.7 11569     root    1w      REG              252,0 8329941823     663846 /var/logs/filename.log (deleted)
+    sudo ls -al /proc/{pid}/fd           (find the file descriptor of deleted file)
+      ex. sudo ls -al /proc/19758/fd
+          l-wx------ 1 root root 64 Apr 20 08:56 1 -> /var/logs/filename.log (deleted)
+    sudo -i
+    cat /dev/null > /proc/{pid}/fd/{fd}  (nullize the file manually)
+      ex. cat /dev/null > /proc/19758/fd/1
+
 # change kernel parameters
   edit: /etc/sysctl.conf
   sysctl -p (make the changes permanently without rebooting)
