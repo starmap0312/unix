@@ -1,0 +1,105 @@
+# XML vs. JSON
+1) XML : a markup language
+   a markup language is a way of adding extra information to free-flowing plain text
+  ex.
+  (plain text)
+    Here is some text.
+  (xml)
+    <Document>
+      <Paragraph Align="Center">
+        Here <Bold>is</Bold> some text.
+      </Paragraph>
+    </Document>
+2) JSON: a way of representing objects 
+   it is more like the data structures we declare in programming languages
+   it is not as flexible as a markup language
+  ex.
+    {
+      "Paragraphs": [
+        {
+          "align": "center",
+          "content": [
+            "Here ",
+            {
+              "style" : "bold",
+              "content": [ "is" ]
+            },
+            " some text."
+          ]
+        }
+      ]
+    }
+  in the above example, we are trying to do markup with an object notation
+  we have to invent a way to scatter snippets of plain text around our objects
+    ex. using "content" arrays that can hold a mixture of strings and nested objects
+3) example of representing a hierarchy of objects
+  if you have a hierarchy of objects to represent in a stream, JSON is better suited to this task
+  ex1.
+  (JSON)
+    {
+      "firstName": "Homer",
+      "lastName": "Simpson",
+      "relatives": [
+        "Grandpa",
+        "Marge",
+        "The Boy",
+        "Lisa",
+        "I think that's all of them"
+      ]
+    } 
+  (XML)
+    <Person>
+      <FirstName>Homer</FirstName>
+      <LastName>Simpsons</LastName>
+      <Relatives>
+        <Relative>Grandpa</Relative>
+        <Relative>Marge</Relative>
+        <Relative>The Boy</Relative>
+        <Relative>Lisa</Relative>
+        <Relative>I think that's all of them</Relative>
+      </Relatives>
+    </Person>
+  ex2.
+  (JSON)
+    {
+      "persons": [
+        {
+          "name": "Ford Prefect",
+          "gender": "male"
+        },
+        {
+          "name": "Arthur Dent",
+          "gender": "male"
+        }
+      ]
+    }
+  (XML)
+    <object>   
+      <object>
+        <name>persons</name>
+        <value>
+          <array>
+            <object>
+              <name>name</name>
+              <value>Ford Prefect</value>
+              <name>gender</name>
+              <value>male</value>
+            </object>
+            <object>
+              <name>name</name>
+              <value>Arthur Dent</value>
+              <name>gender</name>
+              <value>male</value>
+            </object>
+          </array>
+        </value>   
+      </object> 
+    </object>
+4) comparison
+   JSON: it is a defined way of distinguishing between a map (identified by names) and a list (identified by position)
+   XML: XML does not have such distinction
+        instead, XML has "elements" versus "attributes", which are not the same kind of distinction
+          attribute: provide additional information about elements
+            attributes can only have string values: they cannot be nested objects
+            one can add attributes to each element, and use namespaces to partition elements
+        by using extra user-defined attributes, we can formalise a distinction between maps and lists in XML

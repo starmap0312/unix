@@ -3,6 +3,9 @@
   git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
   git commit            # make a new commit
 
+# checkout a file from a previous commit
+  git checkout xxxxxx /path/to/file (xxxxx is the commit number)
+
 # discard unstaged changes of all files
   git checkout .
 
