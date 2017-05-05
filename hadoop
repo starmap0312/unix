@@ -30,6 +30,10 @@
  10) outputs the file in text format (allowed formats: zip and TextRecordInputStream)
      ex. hadoop fs -text /path/to/filename.zip
          hadoop fs -text /path/to/filename.tgz
+         hadoop fs -text /path/to/000000_0.deflate (to decompress a hadoop deflate file in shell, use "openssl zlib -d -in 004999_1.deflate")
+     hadoop fs -text vs. hadoop fs -cat
+       hadoop fs -text detects the encoding of the file and decodes it to plain text whenever possible
+       hadoop fs -cat does not try to detect the encoding and do the decoding
 
 # hadoop fsck: runs a HDFS filesystem checking utility
   hadoop fsck <path>: start checking from this path
