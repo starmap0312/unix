@@ -25,6 +25,7 @@
      hadoop fs -mv /user/hadoop/folder1 /user/hadoop/folder2
   8) remove a folder recursively
      hadoop fs -rm -r /user/hadoop/folder
+     hadoop fs -rm -r -skipTrash /user/hadoop/folder  (do not move the files to /user/hadoop/.Trash)
   9) hadoop dfs -count <paths>
      ex. hdfs dfs -count hdfs://nn1.example.com/file1 hdfs://nn2.example.com/file2
  10) outputs the file in text format (allowed formats: zip and TextRecordInputStream)
@@ -83,3 +84,40 @@
     -m: Modify ACL. New entries are added to the ACL, and existing entries are retained
   ex.
     hadoop fs -setfacl -m user:hadoop:rw- /path/to/file
+
+# hadoop command alias
+alias htxt='hadoop fs -text'
+alias hcat='hadoop fs -cat'
+alias hls='hadoop fs -ls'                       # list hdfs folder
+alias hlsr='hadoop fs -ls -R'                   # list hdfs folder recursively
+alias hrm='hadoop fs -rm'                       # remove hdfs file
+alias hrmr='hadoop fs -rm -r'                   # remove hdfs folder
+alias hcp='hadoop fs -cp'                       # copy hdfs file to hdfs
+alias hmv='hadoop fs -mv'                       # move hdfs file to hdfs
+alias hget='hadoop fs -get'                     # copy hdfs file to local
+alias hput='hadoop fs -put'                     # copy local file to hdfs
+alias hcopyToLocal='hadoop fs -copyToLocal'     # copy hdfs folder to local
+alias hmoveToLocal='hadoop fs -moveToLocal'     # move hdfs folder to local
+alias hcopyFromLocal='hadoop fs -copyFromLocal' # copy local folder to hdfs
+alias hmoveFromLocal='hadoop fs -moveFromLocal' # move local folder to hdfs
+alias hmkdir='hadoop fs -mkdir'                 # make hdfs folder: ex. hadoop fs -mkdir -p /user/hadoop/folder
+alias hcount='hadoop fs -count'                 # list space usage: ex. hadoop fs -count -q /user/hadoop/*
+alias hgetmerge='hadoop fs -getmerge'           # concatenate multiple files: ex. hadoop fs -getmerge /path/to/src1 /path/to/src2 filename.txt
+
+alias hdu='hdfs dfs -du'
+alias hdus='hdfs dfs -dus'
+alias hexpunge='hdfs dfs -expunge'
+alias hsetrep='hdfs dfs -setrep'
+alias htouchz='hdfs dfs -touchz'
+alias htest='hdfs dfs -test'
+alias hstat='hdfs dfs -stat'
+alias htail='hdfs dfs -tail'
+alias hchmod='hdfs dfs -chmod'
+alias hchown='hdfs dfs -chown'
+alias hchgrp='hdfs dfs -chgrp'
+alias hhelp='hdfs dfs -help'
+
+alias shmkdir='sudo -u hdfs hdfs dfs -mkdir'
+alias shrmr='sudo -u hdfs hdfs dfs -rmr'
+alias shchmod='sudo -u hdfs hdfs dfs -chmod'
+alias shchown='sudo -u hdfs hdfs dfs -chown'

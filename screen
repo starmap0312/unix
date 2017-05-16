@@ -10,3 +10,7 @@
 
 # list all screen environments
   screen -ls
+
+# scroll up
+  Ctrl+a [      # enter crollback/copy mode
+  Ctrl+a ]      # to leave this mode 

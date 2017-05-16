@@ -39,3 +39,11 @@
     name := """play-java"""   # project name
     version := "1.0-SNAPSHOT" # project version
 
+# install sbt manually
+  1) put sbt-launch.jar in ~/bin
+  2) create a script to run the jar, by creating ~/bin/sbt with these contents:
+     #!/bin/bash
+     SBT_OPTS="-Xms512M -Xmx1536M -Xss1M -XX:+CMSClassUnloadingEnabled -XX:MaxPermSize=256M"
+     java $SBT_OPTS -jar `dirname $0`/sbt-launch.jar "$@"
+  3) make the script executable:
+     $ chmod u+x ~/bin/sbt
