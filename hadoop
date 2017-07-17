@@ -85,6 +85,29 @@
   ex.
     hadoop fs -setfacl -m user:hadoop:rw- /path/to/file
 
+# run hadoop mapreduce jobs
+$HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/tools/lib/hadoop-streaming.jar\
+-Dmapred.child.env="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:."\
+-Dmapred.child.java.opts="-Xmx10000m"\
+-Dmapreduce.job.queuename=default\
+-Dmapreduce.job.reduces=1\
+-Dmapreduce.task.timeout=6000000\
+-Dmapreduce.map.speculative=true\
+-Dmapreduce.map.memory.mb=40960\
+-Dmapreduce.reduce.memory.mb=40960\
+-Dmapred.map.tasks=1000\
+-files "mapper.py", "reducer.py", "utils.py", "meta.json"\
+-input "hdfs://hadoop.gridserver.com:8020/path/to/hdfs/input_folder/*"\
+-output "/path/to/hdfs/output_folder/"\ # the output folder cannot exist (i.e. execute before submission: hadoop fs rm -r)
+-mapper "python mapper.py"\
+-reducer "python reducer.py"
+# check mapreduce job error log
+yarn logs -applicationId application_[app_id]
+ex. yarn logs -applicationId application_1496686551678_490456
+# kill a mapreduce job
+yarn application -kill application_[app_id]
+ex. yarn application -kill application_1496686551678_502502
+
 # hadoop command alias
 alias htxt='hadoop fs -text'
 alias hcat='hadoop fs -cat'
@@ -103,8 +126,10 @@ alias hmoveFromLocal='hadoop fs -moveFromLocal' # move local folder to hdfs
 alias hmkdir='hadoop fs -mkdir'                 # make hdfs folder: ex. hadoop fs -mkdir -p /user/hadoop/folder
 alias hcount='hadoop fs -count'                 # list space usage: ex. hadoop fs -count -q /user/hadoop/*
 alias hgetmerge='hadoop fs -getmerge'           # concatenate multiple files: ex. hadoop fs -getmerge /path/to/src1 /path/to/src2 filename.txt
+alias hdu='hadoop fs -du'                       # disk usage, ex. hdu -s -h /user/hadoop/folder
+alias hchmod='hadoop fs -chmod'                 # change file permissions: ex. hadoop fs -chmod -R 755 /user/hadoop/folder
+alias hchown='hadoop fs -chown'
 
-alias hdu='hdfs dfs -du'
 alias hdus='hdfs dfs -dus'
 alias hexpunge='hdfs dfs -expunge'
 alias hsetrep='hdfs dfs -setrep'
@@ -112,8 +137,6 @@ alias htouchz='hdfs dfs -touchz'
 alias htest='hdfs dfs -test'
 alias hstat='hdfs dfs -stat'
 alias htail='hdfs dfs -tail'
-alias hchmod='hdfs dfs -chmod'
-alias hchown='hdfs dfs -chown'
 alias hchgrp='hdfs dfs -chgrp'
 alias hhelp='hdfs dfs -help'
 

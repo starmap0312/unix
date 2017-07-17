@@ -39,15 +39,15 @@
   SELECT column_name(s) FROM table1 UNION ALL SELECT column_name(s) FROM table2;
   (allow duplicate values)
 
-# LIKE
+# match regular expression
+# I) LIKE
   ex.
   1) SELECT ... FROM ... WHERE col_name LIKE 'prefix%'
   2) SELECT ... FROM ... WHERE col_name LIKE '%suffix'
   3) SELECT ... FROM ... WHERE col_name LIKE '%keyword%'
   4) SELECT ... FROM ... WHERE col_name LIKE '___'
     (find col_name with exactly three characters)
-
-# REGEXP
+# II) REGEXP
   .: match one character
   [abc]: match a, or b, or c
   [0-9]*: match any number of digits
@@ -59,6 +59,7 @@
   4) SELECT ... FROM ... WHERE col_name REGEXP '^...$'
      SELECT ... FROM ... WHERE col_name REGEXP '^.{3}$'
     (find col_name with exactly three characters)
+  5) SELECT * FROM table_name WHERE (col_name REGEXP '^[a-zA-Z0-9]+$');
 
 # TRUNC function
   TRUNC(n1): returns n1 truncated to integer number
@@ -431,3 +432,4 @@
 
   MySQL:
     SELECT id, MAX(column_name) FROM table_name GROUP BY id;
+

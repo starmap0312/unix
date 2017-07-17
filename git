@@ -12,6 +12,7 @@
 # checkout a previous commit and return
   git checkout 919f085276696c26a818a50c8d5652fb16625e28
   git checkout [branch_name]
+  git checkout 919f085276696c26a818a50c8d5652fb16625e28 path/to/filename # checkout out a specific file from a given commit
 
 # git add
   git add -A
@@ -59,9 +60,11 @@
     (-a, --all: list both remote-tracking and local branches)
 
 # create a local branch that tracks a remote branch
-  git branch --track branch_name origin/branch_name
-  git checkout -b branch_name origin/branch_name
-  (create a local branch that tracks a remote branch, and then switch to the local branch)
+  1) create a remote branch
+     git remote add [remote_branch] git@github.com/OWNER/REPOSITORY.git
+  2) create a local branch that tracks the remote branch
+     git branch --track branch_name [remote_branch]/branch_name
+     git checkout -b branch_name [remote_branch]/branch_name (create a local branch tracking remote branch and switch to that branch)
 
 # delete a branch
   git branch -d <local_branch>
@@ -185,11 +188,12 @@
 
 # git stash: saved working directory and index state
   used to switch between branches without commiting the changes
-  1) git stash list            : list all stashed states 
+  1) git stash list             : list all stashed states 
      ex.
-       stash@{0}: WIP on master: 049d078 added the index file
-       stash@{1}: WIP on master: c264051 Revert "added file_size"
+       stash@{0}: WIP on master : 049d078 added the index file
+       stash@{1}: WIP on master : c264051 Revert "added file_size"
   2) git stash apply: restore to the most-recent stashed state
-     git stash apply stash@{2} : restore to the specified stashed state
-  3) git stash drop stash@{0}  : drop the specified stashed state
+     git stash apply stash@{2}  : restore to the specified stashed state
+  3) git stash drop stash@{0}   : drop the specified stashed state
+  4) git stash show -p stash@{2}: show git diff against a specific stash
 

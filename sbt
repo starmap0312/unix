@@ -7,6 +7,7 @@
      sbt compile      : compiles the main sources (in the src/main/scala directory)
      sbt test:compile : compiles test sources (in the src/test/scala/ directory).
      sbt test         : runs all tests detected during test compilation
+     sbt "test-only [test_name]": run a specific test, ex. sbt "test-only com.my_package.MyTest"
      sbt package      : creates jar file containing files in src/main/resources and classes compiled from
                         src/main/scala and src/main/java
      sbt war          : package for Java container sbt war
