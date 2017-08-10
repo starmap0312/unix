@@ -28,9 +28,35 @@
      Jump to file beg: Cmd + Fn + <-
      Jump to file end: Cmd + Fn + ->
      Jump to line    : Cmd + l
-     Jump to declaration:
+     Jump to declaration: Cmd + Click
   4) Search
      Find keyword in file   : Cmd + F
      Replace keyword in file: Cmd + R
      Find keyword in project: Shift + Cmd + F
      Search Everywhere (ex. filename): Shift + Shift
+  5)
+     Enter Action or Option Name: Shift + Cmd + A (ex. reimport all Maven libraries)
+
+# issues
+  1) Cannot find declaration to go to: rm -rf .idea/ & re-open the project
+  2) Import SNAPSHOT libraries for use of another developing library:
+     1.1) publish the library to be used, mylib_2.11, to "maven-local-snapshot"
+     1.2) edit the pom.xml of the developing library
+       <distributionManagement>
+         <snapshotRepository>
+           <id>maven-local-snapshot</id> # specify URL of maven-local-snapshot
+           <url>scpexe://artifactory-ssh-proxy.mydomain.com:4443/maven-local-snapshot/</url>
+         </snapshotRepository>
+         <repository>
+           <id>maven-local-release</id>
+           <url>scpexe://artifactory-ssh-proxy.mydomain.com:4443/maven-local-release/</url>
+         </repository>
+       </distributionManagement>
+       ...
+        <dependency>
+            <groupId>com.mydomain</groupId>
+            <artifactId>mylib_2.11</artifactId>
+            <version>0.1.4-SNAPSHOT</version>   # specify version of SNAPSHOT library in dependency
+        </dependency>
+     1.3) reimport all Maven libraries to get the latest published SNAPSHOT library
+          intellij shortcut: Shift + Cmd + A (click "reimport all Maven libraries")

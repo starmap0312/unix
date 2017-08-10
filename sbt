@@ -14,7 +14,7 @@
      sbt dist         : package for standalone Play package (build a standalone project issue)
      sbt run <args>*  : runs main class of project in the same virtual machine as sbt (run an application)
      sbt -jvm-debug <port>:  Turn on JVM debugging, open at the given port (in IDE, select Run -> Attach to Local Process)
-       ex. sbt -jvm-debug 5005
+       ex. sbt -jvm-debug 5005 run
   c) run sbt commands in batch: ex. sbt clean compile test)
      ex.
        sbt "project project_name" clean format compile test package
