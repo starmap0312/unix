@@ -8,6 +8,11 @@
      b) Module dependencies: classes, archives, libraries and resources that your module files references
         A module can be a dependency for another module in the project
 
+# Import Project from build.sbt
+  1) run "Import projects/modules from existing sources"
+  2) select JDK 1.8
+  3) select file build.sbt & check auto-import on the fly
+
 # Change Scheme and Font sizes
   Preferences -> Appearance & Behavior -> Appearance
     set Theme to Darcula
@@ -37,6 +42,9 @@
   5)
      Enter Action or Option Name: Shift + Cmd + A (ex. reimport all Maven libraries)
 
+# Install intellij PlugIns
+  Preferences -> PlugIns -> ex. search for "Scalariform"
+
 # issues
   1) Cannot find declaration to go to: rm -rf .idea/ & re-open the project
   2) Import SNAPSHOT libraries for use of another developing library:
@@ -59,4 +67,12 @@
             <version>0.1.4-SNAPSHOT</version>   # specify version of SNAPSHOT library in dependency
         </dependency>
      1.3) reimport all Maven libraries to get the latest published SNAPSHOT library
-          intellij shortcut: Shift + Cmd + A (click "reimport all Maven libraries")
+          intellij shortcut: Shift + Cmd + A (enter & click "reimport all Maven libraries")
+ 2) Disable "Optimize imports on the fly"
+    intellij shortcut: Shift + Cmd + A (enter & click "Default settings")
+    uncheck "Auto Import" -> "Optimize imports on the fly"
+ 3) No "Run All Tests" when right clicking a project folder, or code shows warning of "Cannot resolve symbol"
+    need to import the project by build.sbt with "JDK 1.8" specified as the JDK version
+    i.e. Close all projects and re-open intellij application
+         Click "Import Project" and select the build.sbt file
+
