@@ -25,7 +25,51 @@ spark-shell \
 --jars ~/.ivy2/local/mydomain/mylib_2.11/0.1.1-SNAPSHOT/jars/mylib_2.11-assembly.jar \
 -i MyScalaClass.scala  # ex. println("Hello world") ... line-by-line code in MyScalaClass.scala, no need to define object with main() function 
 
-# spark code
+# Saving to Persistent Tables
+  DataFrames can also be saved as persistent tables into Hive metastore using the saveAsTable command
+  1) Spark will create a default local Hive metastore (using Derby) for you
+  2) saveAsTable will materialize the contents of the DataFrame and create a pointer to the data in the Hive metastore
+  3) Persistent tables will still exist even after your Spark program has restarted
+  4) A DataFrame for a persistent table can be created by calling the table method on a SparkSession with the name of the table
+  5) When the table is dropped, the custom table path will not be removed and the table data is still there
+     ex. dataframe.write.option("path", "/some/path").saveAsTable("t")
+     If no custom table path is specified, Spark will write data to a default table path under the warehouse directory
+     When the table is dropped, the default table path will be removed too
+     ex. dataframe.write.saveAsTable("t")
+  6) Partitioning
+     Table partitioning is a common optimization approach used in systems like Hive
+     In a partitioned table, data are stored in different directories, with partitioning column values encoded in the path of each partition directory
+     ex.
+       peopleDF
+         .write
+         .partitionBy("favorite_color")
+         .bucketBy(42, "name")
+         .saveAsTable("people_partitioned_bucketed")
+     ex. gender and country as partitioning columns
+         path
+         └── to
+             └── table
+                 ├── gender=male
+                 │   ├── ...
+                 │   │
+                 │   ├── country=US
+                 │   │   └── data.parquet
+                 │   ├── country=CN
+                 │   │   └── data.parquet
+                 │   └── ...
+                 └── gender=female
+                     ├── ...
+
+# Saving to Parquet Files
+  1) Parquet is a columnar format that is supported by many other data processing systems
+  2) Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data
+  3) When writing Parquet files, all columns are automatically converted to be nullable for compatibility reasons
+     ex. 
+         peopleDF.write.parquet("people.parquet") # saved as Parquet files, maintaining the schema information
+         ...
+         val parquetFileDF = spark.read.parquet("people.parquet") # Read in the parquet file created above (schema is preserved)
+
+# spark coding examples
 1) def repartition(numPartitions: Int): Dataset[T]
    returns a new DataFrame that has exactly 20 partitions # ex. part-00000, part-00001, ..., part-00020
    ex. dataframe.repartition(20)

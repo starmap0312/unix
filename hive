@@ -3,3 +3,18 @@
      property: hive.metastore.warehouse.dir
      ex. /user/hive/warehouse
   2) a table name is just a folder (with partitions)
+
+# Loading Data
+  there are multiple ways to load data into Hive tables
+  1) create an external table that points to a specified location within HDFS
+     i.e. pointing to a file at HDFS with all the relevant row format information
+     ex. file /user/data/pv_2008-06-08.txt with comma separated format
+         CREATE EXTERNAL TABLE table_name(time INT, id BIGINT, url STRING)
+         ROW FORMAT DELIMITED FIELDS TERMINATED BY '44' LINES TERMINATED BY '\n'
+         STORED AS TEXTFILE
+         LOCATION '/user/data';
+  2) load the data from a file at HDFS (or in the local file system) directly into a Hive table where the input data format is the same as the table format
+     ex. 
+         LOAD DATA LOCAL INPATH /tmp/local/pv_2008-06-08_us.txt INTO TABLE page_view PARTITION(date='2008-06-08', country='US')
+         LOAD DATA INPATH '/user/data/pv_2008-06-08_us.txt' INTO TABLE page_view PARTITION(date='2008-06-08', country='US') 
+
