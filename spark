@@ -1,2 +1,47 @@
 # Apache Spark vs. Apache Hadoop (Map-Reduce)
 
+# dataframe.cache():
+  cache() RDD's and DataFrames in the following cases
+  1) reusing them in an iterative loop (ex. ML algos)
+  2) reusing the RDD multiple times in a single application, job, or notebook
+  3) when the cost to regenerate the RDD partitions is costly (i.e. HDFS, after a complex set of map(), filter(), etc.)
+     this helps in the recovery process if a Worker node dies
+
+# spark-shell & spark-submit commands
+1) spark-submit
+spark-submit \
+--master yarn-client --files /path/to/config_file/hive-site.xml \
+--num-executors 100 --conf spark.yarn.stagingDir=/tmp --conf spark.kryoserializer.buffer.max=1024 \
+--driver-memory 14g --executor-memory 14g \
+--jars ~/.ivy2/local/mydomain/mylib_2.11/0.1.1-SNAPSHOT/jars/mylib_2.11-assembly.jar \
+--class MyScalaClass \ # ex. object MyScalaClass { def main(args: Array[String]): Unit = { ... } }
+arg1 arg2
+
+2) spark-shell
+spark-shell \
+--master yarn-client --files /path/to/config_file/hive-site.xml \ 
+--num-executors 100 --conf spark.kryoserializer.buffer.max=1024 \
+--driver-memory 14g --executor-memory 14g \
+--jars ~/.ivy2/local/mydomain/mylib_2.11/0.1.1-SNAPSHOT/jars/mylib_2.11-assembly.jar \
+-i MyScalaClass.scala  # ex. println("Hello world") ... line-by-line code in MyScalaClass.scala, no need to define object with main() function 
+
+# spark code
+1) def repartition(numPartitions: Int): Dataset[T]
+   returns a new DataFrame that has exactly 20 partitions # ex. part-00000, part-00001, ..., part-00020
+   ex. dataframe.repartition(20)
+2) def write: DataFrameWriter[T]
+   interface for saving the content of the non-streaming Dataset out into external storage
+   ex. dataframe.repartition(20).write
+3) def dataFrameWriter.option(key: String, value: String): DataFrameWriter[T]
+   adds an output option for the underlying data source
+   ex. dataframe.repartition(20).write.option("sep", "\t")
+4) def csv(path: String): Unit
+   saves the content of the DataFrame in CSV format at the specified path
+   ex. dataframe.repartition(20).write.option("sep", "\t").csv("filepath")
+5) def from_json(e: Column, schema: StructType): Column
+   import org.apache.spark.sql.functions.from_json
+   parses a column containing a JSON string into a StructType with the specified schema (returns null, in the case of an unparseable string)
+6) def withColumn(colName: String, col: Column): DataFrame 
+   returns a new DataFrame by adding a column or replacing the existing column that has the same name
+   ex. val schema = StructType(Seq(StructField("key", StringType, true), StructField("value", DoubleType, true)))
+       dataframe.withColumn("jsonData", from_json($"jsonStr", schema))

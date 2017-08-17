@@ -100,3 +100,5 @@ fi
      or manually, copy public key to ~/.ssh/authorized_key
      (chmod 700 ~/.ssh and chmod 640 ~/.ssh/authorized_key)
 
+# add specific key via ssh-add
+  ssh-add ~/.ssh/[private_key_name] (ex. ssh-add ~/.ssh/id_rsa.git)

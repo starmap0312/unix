@@ -1,0 +1,5 @@
+# where does Hive store files in HDFS?
+  1) specified in file: $HIVE_HOME/conf/hive-default.xml or hive-site.xml
+     property: hive.metastore.warehouse.dir
+     ex. /user/hive/warehouse
+  2) a table name is just a folder (with partitions)

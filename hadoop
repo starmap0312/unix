@@ -1,9 +1,9 @@
 # hadoop fs <args>
   1) list a folder (option -ls -R: list recursively)
      ex. hadoop fs -ls /path/to/hadoop/folder
-         hls /path/to/hadoop/folder
+         hadoop fs -ls /path/to/hadoop/folder
      ex. hadoop fs -ls -R /path/to/hadoop/folder
-         hls /path/to/hadoop/folder
+     ex. hadoop fs -ls hdfs://[cluster_url]:8020/path/to/hadoop/folder (list hdfs folder via the full hdfs path) 
   2) download a hadoop folder
      ex. hadoop fs -get /path/to/folder
   3) upload a local folder / file to hadoop
