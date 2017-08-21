@@ -1,11 +1,14 @@
 # Apache Spark vs. Apache Hadoop (Map-Reduce)
 
 # dataframe.cache():
-  cache() RDD's and DataFrames in the following cases
+  Spark SQL cache tables using an in-memory columnar format by calling spark.catalog.cacheTable("tablename") or dataframe.cache()
+  use cache() for DataFrame and tables in the following cases:
   1) reusing them in an iterative loop (ex. ML algos)
   2) reusing the RDD multiple times in a single application, job, or notebook
   3) when the cost to regenerate the RDD partitions is costly (i.e. HDFS, after a complex set of map(), filter(), etc.)
      this helps in the recovery process if a Worker node dies
+  
+  
 
 # spark-shell & spark-submit commands
 1) spark-submit
