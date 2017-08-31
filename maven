@@ -40,6 +40,8 @@
      create .war file (packaging) based on pom.xml, which will be deployed to Tomcat/JBoss server
   6) clean/remove target folder
      mvn clean
+  ex. mvn -DskipTests=true clean package # skip Tests when packaging at target/ folder, ex. target/storm-starter-0.9.3-incubating-SNAPSHOT.jar
+  ex. mvn -DskipTests=true clean install # skip Tests when installing package at local repo, ex. ~/.m2/repository/org/apache/storm/
 
 # Maven Lifecycle
   1) Clean lifecycle
@@ -128,7 +130,7 @@
   4) Declare an open-ended version range (resolve to 2.0.0):
      <version>[1.0.0,)</version>
 
-# add dependency
+# add 3rd-party dependency
 ex. import backtype.storm.LocalCluster; # if storm is not found in the dependencies
     1) add the dependency in pom.xml:
     <dependencies>
@@ -136,8 +138,10 @@ ex. import backtype.storm.LocalCluster; # if storm is not found in the dependenc
             <groupId>org.apache.storm</groupId>
             <artifactId>storm-core</artifactId>
             <version>0.10.0</version>
-            <scope>provided</scope>     # Use "provided" scope to keep storm out of the jar-with-dependencies
+            #<scope>provided</scope>            # Use "provided" scope to keep storm out of the jar-with-dependencies (remove this to include the dependency with default scope "compile")
         </dependency>
     </dependencies>
-    2) reimport All maven libraries at intellij
+    2) reimport All maven libraries at intellij # resolve the dependencies again
+    3) run mvn -DskipTests package              # run packaging the library to verify if the current library can be built
 
+# 
