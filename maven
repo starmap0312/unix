@@ -128,3 +128,16 @@
   4) Declare an open-ended version range (resolve to 2.0.0):
      <version>[1.0.0,)</version>
 
+# add dependency
+ex. import backtype.storm.LocalCluster; # if storm is not found in the dependencies
+    1) add the dependency in pom.xml:
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.storm</groupId>
+            <artifactId>storm-core</artifactId>
+            <version>0.10.0</version>
+            <scope>provided</scope>     # Use "provided" scope to keep storm out of the jar-with-dependencies
+        </dependency>
+    </dependencies>
+    2) reimport All maven libraries at intellij
+
