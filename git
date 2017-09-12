@@ -157,8 +157,12 @@
      git merge --no-ff <new-branch-for-merge>
      git push origin master
 
-# diff two branches
-  git diff <branch1> <branch2>
+# git diff
+  git diff <branch1> <branch2>: diff two branches
+  git diff --numstat:
+    similar to --stat, but shows number of added and deleted lines in decimal notation and pathname without abbreviation
+    ex. 2       0       filename1 (2 added lines and 0 deleted line)
+        2       1       filename2 (2 added lines and 1 deleted line)
 
 # git rebase [branch]
   ex. git history 
