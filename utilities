@@ -227,6 +227,7 @@
 # wget
   wget http://www.google.com ==> download file from the internet
   wget -O filename http://www.google.com ==> download and save as filename from the internet
+  wget -rp -l3 -np -nH --cut-dirs=2 http://[uri] 
 
 # ldd: print shared library dependencies
   ldd filename ==> list all dynamic libraries used by an executable
