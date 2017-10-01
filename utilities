@@ -70,6 +70,9 @@
   uncompress .gz file and write the uncompressed data on standard output
   zcat filename.gz
 
+# bzcat
+  bzcat filename.bz2
+
 # bzip2
   bzip2 filename ==> create a filename.bz2 compressed file
   bzip2 -d filename.bz2 ==> uncompress filename.bz2 file

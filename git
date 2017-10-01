@@ -201,3 +201,12 @@
   3) git stash drop stash@{0}   : drop the specified stashed state
   4) git stash show -p stash@{2}: show git diff against a specific stash
 
+# Webhooks
+  whenever some event is triggered, GitHub sends a HTTP POST payload to the configured URL
+  1) Webhooks allow you set up GitHub Apps which subscribe to certain events on GitHub.com
+     ex. a PR event triggers a CI build
+  2) Each webhook can be configured to an organization or a specific repository
+  Github Events:
+  1) pull_request: a pull request is assigned, unassigned, opened, closed, etc. 
+  2) issues: an Issue is assigned, opened, closed, etc. 
+  3) pull_request_review: a pull request review is submitted, edited, or dismissed
