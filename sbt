@@ -48,3 +48,8 @@
      java $SBT_OPTS -jar `dirname $0`/sbt-launch.jar "$@"
   3) make the script executable:
      $ chmod u+x ~/bin/sbt
+
+# sbt publish
+  1) sbt publish
+  2) sbt publishLocal
+     publish your project to a local Ivy repository
