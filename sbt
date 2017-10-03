@@ -53,3 +53,15 @@
   1) sbt publish
   2) sbt publishLocal
      publish your project to a local Ivy repository
+
+# libraryDependencies
+  1) "test" scope:
+     if you want a dependency to show up in the classpath only for the Test configuration and not the Compile configuration, add % "test"
+     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "test"
+  2) "provided" scope:
+     this excludes the dependency from the assembly artifact
+  1) changing():
+     this specifies that the dependency can change and that it ivy must download it on each update
+     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "test" changing()
+     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "provided" changing()
+     
