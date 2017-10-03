@@ -63,6 +63,8 @@
 # commonly execute goals
   1) mvn compile
   2) mvn test
+     mvn -Dtest=[TestClass] verify              # run a specific test
+     mvn -Dtest=[TestClass]#[testMethod] verify # run a specific test method of a test
   3) mvn package
   4) mvn install: install package into local repository
   5) mvn source:jar: pack the source code into a .jar
