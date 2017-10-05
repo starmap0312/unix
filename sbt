@@ -1,3 +1,14 @@
+# install on Mac
+  1) search & install older version (NO NEED TO DO THIS, specify the version as below)
+     brew search sbt
+       sbt@0.13 
+     brew install sbt@0.13 
+  2) install latest version
+     brew install sbt
+
+# specify in project/build.properties what sbt version you would like to use
+  sbt.version=0.13.15 # use an older version of sbt
+  
 # SBT (simple build tool) commands
   an interactive build tool
   a) Project-level tasks
@@ -52,7 +63,9 @@
 # sbt publish
   1) sbt publish
   2) sbt publishLocal
-     publish your project to a local Ivy repository
+     publish your developping library to a local Ivy repository
+     ex. /.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/poms/[artifact_id].pom
+         /.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/jars/[artifact_id]-assembly.jar
 
 # libraryDependencies
   1) "test" scope:
