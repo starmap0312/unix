@@ -6,8 +6,13 @@
   2) install latest version
      brew install sbt
 
-# specify in project/build.properties what sbt version you would like to use
-  sbt.version=0.13.15 # use an older version of sbt
+# specify sbt version to use
+  edit project/build.properties
+    sbt.version=0.13.15 # use an older version of sbt
+
+# specify artifact version
+  edit version.sbt
+    version := "0.1.6-SNAPSHOT"
   
 # SBT (simple build tool) commands
   an interactive build tool
