@@ -60,8 +60,18 @@
      ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "test"
   2) "provided" scope:
      this excludes the dependency from the assembly artifact
-  1) changing():
+  3) changing():
      this specifies that the dependency can change and that it ivy must download it on each update
      ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "test" changing()
      ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "provided" changing()
      
+# add local/remote snapshot repo for development:
+  create file "dev.sbt" with the following content:
+    resolvers in ThisBuild += "My artifactory Snaps" at "http://artifactory.mydomain.com:4080/artifactory/maven-local-snapshot" # remote snapshot repo
+    resolvers in ThisBuild += "Local Maven Repository" at Path.userHome.asFile.toURI.toURL + ".m2/repository"                   # local snapshot repo
+  or
+    resolvers ++= Seq(
+      "My artifactory Snaps" at "http://artifactory.mydomain.com:4080/artifactory/maven-local-snapshot" # remote snapshot repo
+      "Local Maven Repository" at "file:///Users/kuanyu/.m2/repository"                                 # local snapshot repo
+    )
+
