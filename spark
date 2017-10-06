@@ -123,3 +123,8 @@ spark-shell \
    ex. val rdd = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1)))    // RDD[(String, Int)]
        rdd.reduceByKey                                                                // RDD[(String, Int)] 
        rdd.reduceByKey.collect // Array[(String, Int)] = Array((z,1), (x,3), (y,3)) 
+4) rdd.coalesce([numPartitions: Int]) vs. rdd.repartition([numPartitions: Int]):
+   coalesce(); return a new RDD that is reduced into numPartitions partitions
+   repartition(): coalesce with performing a shuffle 
+     i.e. def repartition(numPartitions: Int) = coalesce(numPartitions, shuffle = true)
+   note: if you are decreasing the number of partitions in this RDD, consider using coalesce which can avoid performing a shuffle
