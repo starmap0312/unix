@@ -26,7 +26,7 @@ spark-shell \
 --jars ~/.ivy2/local/mydomain/mylib_2.11/0.1.1-SNAPSHOT/jars/mylib_2.11-assembly.jar \
 -i MyScalaClass.scala  # ex. println("Hello world") ... line-by-line code in MyScalaClass.scala, no need to define object with main() function 
 
-# Saving to Persistent Tables
+# Saving DataFrame to Persistent Hive Tables
   DataFrames can also be saved as persistent tables into Hive metastore using the saveAsTable command
   1) Spark will create a default local Hive metastore (using Derby) for you
   2) saveAsTable will materialize the contents of the DataFrame and create a pointer to the data in the Hive metastore
@@ -61,7 +61,7 @@ spark-shell \
                  └── gender=female
                      ├── ...
 
-# Saving to Parquet Files
+# Saving DataFrame to Parquet Files
   1) Parquet is a columnar format that is supported by many other data processing systems
   2) Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data
   3) When writing Parquet files, all columns are automatically converted to be nullable for compatibility reasons
@@ -70,7 +70,7 @@ spark-shell \
          ...
          val parquetFileDF = spark.read.parquet("people.parquet") # Read in the parquet file created above (schema is preserved)
 
-# spark coding examples
+# DataFrame operations
 1) def repartition(numPartitions: Int): Dataset[T]
    returns a new DataFrame that has exactly 20 partitions # ex. part-00000, part-00001, ..., part-00020
    ex. dataframe.repartition(20)
@@ -86,10 +86,25 @@ spark-shell \
 5) def from_json(e: Column, schema: StructType): Column
    import org.apache.spark.sql.functions.from_json
    parses a column containing a JSON string into a StructType with the specified schema (returns null, in the case of an unparseable string)
-6) def withColumn(colName: String, col: Column): DataFrame 
+
+# DataFrame methods
+1) def withColumn(colName: String, col: Column): DataFrame 
    returns a new DataFrame by adding a column or replacing the existing column that has the same name
    ex. val schema = StructType(Seq(StructField("key", StringType, true), StructField("value", DoubleType, true)))
        dataframe.withColumn("jsonData", from_json($"jsonStr", schema))
+   ex. val toUpperCaseUDF = udf(
+         (str: String) => str.toUpperCase
+       )
+       dataframe.withColumn("UpperCaseColumn", toUpperCaseUDF(col("col1")))
+2) def filter(condition: Column): DataFrame
+   filters rows using the given condition
+   ex. dataframe.filter(col("age") > 15)
+       dataframe.filter(col("name").equalTo("John"))                  // shopping_list
+       dataframe.filter(array_contains(col("shopping_list"), "book")) // [tv, book, cd]
+   ex. val isHigherUDF = udf(
+         (score: Int, threshold: Int) => score > threshold            // (Int, Int) => Boolean
+       )
+       dataframe.filter(isHigherUDF(col("scores")))
 
 # RDD methods
 1) rdd.map([function: Int => Int]) vs. rdd.mapPartitions([function: Iterator[Int] => Iterator[Int]]):
