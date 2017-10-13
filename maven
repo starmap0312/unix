@@ -167,4 +167,15 @@ ex. import backtype.storm.LocalCluster; # if storm is not found in the dependenc
     2) reimport All maven libraries at intellij # resolve the dependencies again
     3) run mvn -DskipTests package              # run packaging the library to verify if the current library can be built
 
-# 
+# mvn dependency:tree
+mvn dependency:tree: list dependency tree of a maven project
+ex. 
+[INFO] com.yahoo.nuwa:nuwa-storm-cafeeder:jar:1.5.15-SNAPSHOT
+[INFO] +- org.apache.storm:storm-core:jar:0.10.0:provided
+[INFO] |  +- com.esotericsoftware.kryo:kryo:jar:2.21:provided
+[INFO] |  |  +- com.esotericsoftware.reflectasm:reflectasm:jar:shaded:1.07:provided
+[INFO] |  |  |  \- org.ow2.asm:asm:jar:4.0:compile
+[INFO] |  |  \- com.esotericsoftware.minlog:minlog:jar:1.2:provided
+[INFO] |  +- org.clojure:clojure:jar:1.6.0:provided
+[INFO] |  +- com.googlecode.disruptor:disruptor:jar:2.10.4:provided
+

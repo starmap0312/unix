@@ -80,8 +80,9 @@
      this excludes the dependency from the assembly artifact
   3) changing():
      this specifies that the dependency can change and that it ivy must download it on each update
-     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "test" changing()
-     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7-SNAPSHOT" % "provided" changing()
+     i.e. marks this dependency as "changing".  Ivy will always check if the metadata has changed and then if the artifact has changed, redownload it
+          sbt configures all -SNAPSHOT dependencies to be changing
+     ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7.20" % "provided" changing()
      
 # add local/remote snapshot repo for development:
   create file "dev.sbt" with the following content:
@@ -92,4 +93,38 @@
       "My artifactory Snaps" at "http://artifactory.mydomain.com:4080/artifactory/maven-local-snapshot" # remote snapshot repo
       "Local Maven Repository" at "file:///Users/kuanyu/.m2/repository"                                 # local snapshot repo
     )
+
+# list dependency tree
+sbt "inspect tree clean": list dependency tree of a sbt project
+ex.
+[info]       +-*:projectInfo = ModuleInfo(feeding-spark,feeding-spark,None,None,List(),com.yahoo.nuwa,None,None,List())
+[info]         +-*:description = feeding-spark
+[info]         | +-*:name = feeding-spark
+[info]         | 
+[info]         +-*/*:developers = List()
+[info]         +-*/*:homepage = None
+[info]         +-*/*:licenses = List()
+
+# shading support
+sbt-assembly can shade classes from your projects or from the library dependencies
+ex.
+assemblyShadeRules in assembly := Seq(
+  ShadeRule.rename("org.apache.commons.io.**" -> "shadeio.@1").inAll
+)
+ex.
+if you take on the dependencies as managed dependencies, you can shade them both in the library itself and inside your project
+suppose that I have a project which takes dependency on com.typesafe.config
+then I can shade it inside it's own library, meaning inside the code of com.typesafe.config, and also in the my consuming project
+assemblyShadeRules in assembly ++= Seq(
+  ShadeRule.rename("com.typesafe.config.**" -> "my_conf.@1")
+    .inLibrary("com.typesafe" % "config" % "1.3.0")
+    .inProject
+)
+1) the above basically means:
+   take anything that beings with com.typesafe.config and shade it to my_conf
+2) inLibrary("com.typesafe" % "config" % "1.3.0") means:
+   change the package names inside com.typesafe.config
+3) inProject means:
+   change all references to com.typesafe.config inside my code
+4) or you can use inAll, which applies to both inLibrary & inProject
 
