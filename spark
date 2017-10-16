@@ -143,3 +143,16 @@ spark-shell \
    repartition(): coalesce with performing a shuffle 
      i.e. def repartition(numPartitions: Int) = coalesce(numPartitions, shuffle = true)
    note: if you are decreasing the number of partitions in this RDD, consider using coalesce which can avoid performing a shuffle
+
+# debug spark
+  the --master option specifies the master URL for a distributed cluster, use local mode for debugging
+1) spark-shell --master local[N]: run locally with N threads
+   ex. spark-shell --master local[2]
+2) spark-shell --master yarn --deploy-mode client: run as client mode
+   --master yarn: deploy Spark on top of Hadoop NextGen (YARN)
+     this starts a YARN client program which starts the default Application Master
+     the application will be run as a child thread of Application Master
+     the client will periodically poll the Application Master for status updates and display them in the console, and will exit once 
+       the application has finished running
+   --deploy-mode client: launch a Spark application in client mode (default: cluster mode)
+
