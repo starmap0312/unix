@@ -77,3 +77,11 @@
     i.e. Close all projects and re-open intellij application
          Click "Import Project" and select the build.sbt file
     3.2) rm -rf target/ and run "sbt test" at console (Compiling Scala sources and Java sources to target/)
+
+# auto-import
+1) Use auto-import option:
+   when you imported your project than your dependency is imported automatically
+2) No auto-import option:
+   after you have added your dependency in the build.sbt file,
+   press Refresh all SBT projects button in the SBT tool window to import the dependency
+
