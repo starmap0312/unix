@@ -44,7 +44,8 @@
      this must be larger than any object you attempt to serialize and must be less than 2048m  
 3) jars:
    --conf spark.jars=path/to/file1.jar,path/to/file2.jar
-   jar files needs to be specified as a relative path of current working folder
+   note: jar files needs to be specified as a relative path of current working folder, and
+         they need to be in the same --conf spark.jars=... or --jars ...; otherwise, only the last one will be loaded
 
 # spark-shell & spark-submit commands
 1) spark-submit
@@ -199,3 +200,11 @@ spark-shell \
 4) spark-shell --conf "spark.executor.extraJavaOptions=-verbose:class" --conf "spark.driver.extraJavaOptions=-verbose:class"
    the --verbose:class option reveals the classes loaded by the driver and executor 
    (since Spark application runs on JVM, the --verbose and the --verbose:class options are both available)
+
+# exceptions
+1) java.lang.OutOfMemoryError: Java heap space
+   ex. when using spark Accumulator/AccumulatorV2, it may produce OutOfMemoryError error
+       the accumulator takes too much memory space, so that the driver exhausts its memory space
+2) java.lang.OutOfMemoryError: Java heap space + DAGScheduler: Executor lost: 6 (epoch 8)
+   ex. when worker exhausts its memory space
+
