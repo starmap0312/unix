@@ -176,7 +176,7 @@ spark-shell \
 3) rdd.reduceByKey([function: (value1, value2) => merged_value]):
    merge the values for each key using an associative and commutative reduce function //      [key] [value]
    ex. val rdd = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1)))    // RDD[(String, Int)]
-       rdd.reduceByKey                                                                // RDD[(String, Int)] 
+       rdd.reduceByKey                                                                // RDD[(String, SumOfInt)] 
        rdd.reduceByKey.collect // Array[(String, Int)] = Array((z,1), (x,3), (y,3)) 
 4) rdd.coalesce([numPartitions: Int]) vs. rdd.repartition([numPartitions: Int]):
    coalesce(); return a new RDD that is reduced into numPartitions partitions
