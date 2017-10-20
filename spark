@@ -207,4 +207,6 @@ spark-shell \
        the accumulator takes too much memory space, so that the driver exhausts its memory space
 2) java.lang.OutOfMemoryError: Java heap space + DAGScheduler: Executor lost: 6 (epoch 8)
    ex. when worker exhausts its memory space
+3) java.io.IOException: Failed to send RPC 7892527227848920745 to /10.216.141.37:42360: java.nio.channels.ClosedChannelException
+   ex. when there is no sufficient disk space (if you are getting this error, make some disk space)
 
