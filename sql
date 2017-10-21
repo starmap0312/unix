@@ -433,3 +433,32 @@
   MySQL:
     SELECT id, MAX(column_name) FROM table_name GROUP BY id;
 
+# GROUP BY
+  SELECT column_name(s), aggregate_function(column_name)
+  FROM table_name
+  WHERE column_name operator value
+  GROUP BY column_name1, column_name2...;
+
+  scala groupBy analogy, i.e. group a map of (key, value) tuples by the keys
+  ex. { (1, 100), (2, 100), (1, 200), (2, 300) }
+        if group by ._1, it produces a set of (key, [grouped values]) as below
+      { (1, [100, 200]), (2, [100, 300]) }
+
+  in sql, we then apply an aggregate_function, ex. SUM, AVG, MAX, etc., to the grouped values
+    this creates a new group column, ex. SUM(column), AVG(column), MAX(column), etc.
+
+  ex. sql table: orders
+
+    id   price  customer 
+    -    -      -
+    1    100    John
+    2    100    Joe
+    3    100    Wang
+    4    100    Joe
+    5    200    Wang
+
+  SELECT customer, SUM(price) FROM orders GROUP BY customer;
+    customer   SUM(price)
+    John       100
+    Joe        200
+    Wang       300

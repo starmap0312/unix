@@ -29,6 +29,13 @@
   3) when the cost to regenerate the RDD partitions is costly (i.e. HDFS, after a complex set of map(), filter(), etc.)
      this helps in the recovery process if a Worker node dies
 
+# yarn-client vs. yarn-cluster mode
+1) yarn-client mode:
+   the driver runs in the client process, and the AM (application master) is only used for requesting resources from YARN
+2) yarn-cluster mode:
+   the Spark driver runs inside an AM (application master) process which is managed by YARN on the cluster
+   the client can go away after initiating the application
+
 # spark config
 1) memory:
    (driver)
@@ -187,7 +194,13 @@ spark-shell \
 # debug spark
   the --master option specifies the master URL for a distributed cluster, use local mode for debugging
 1) spark-shell --master local[N]: run locally with N threads
-   ex. spark-shell --master local[2]
+   ex. spark-shell --master local[4]\
+         --num-executors 4\
+         --driver-memory 4g\
+         --executor-memory 4g\
+         --conf spark.jars=local/path/to/mylib1.jar,local/path/to/mylib2.jar\
+         --conf spark.authenticate.secret=xxxxxx
+         -i MyScript.scala
 2) spark-shell --master yarn --deploy-mode client: run as client mode
    --master yarn: deploy Spark on top of Hadoop NextGen (YARN)
      this starts a YARN client program which starts the default Application Master
@@ -200,13 +213,22 @@ spark-shell \
 4) spark-shell --conf "spark.executor.extraJavaOptions=-verbose:class" --conf "spark.driver.extraJavaOptions=-verbose:class"
    the --verbose:class option reveals the classes loaded by the driver and executor 
    (since Spark application runs on JVM, the --verbose and the --verbose:class options are both available)
+5) yarn logs -applicationId [application_id]
+   show log file of all containers and AM (Application Master) logs
+   ex. yarn logs -applicationId application_1508368153923_55604
+6) yarn logs -containerId [container_id]
+   show a single container logs
+   ex. yarn logs -applicationId application_1508368153923_55368 -containerId container_e33_1480922439133_0845_02_000002
 
 # exceptions
-1) java.lang.OutOfMemoryError: Java heap space
+1) org.apache.spark.SparkException: Job aborted due to stage failure: Task 2 in stage 13.0 failed 1 times, most recent failure: Lost task 2.0 in stage 13.0
+     Driver stacktrace: at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1564)
+   ex. when your script throws exceptions, it causes a job aborted and task lost
+2) java.lang.OutOfMemoryError: Java heap space
    ex. when using spark Accumulator/AccumulatorV2, it may produce OutOfMemoryError error
        the accumulator takes too much memory space, so that the driver exhausts its memory space
-2) java.lang.OutOfMemoryError: Java heap space + DAGScheduler: Executor lost: 6 (epoch 8)
+3) java.lang.OutOfMemoryError: Java heap space + DAGScheduler: Executor lost: 6 (epoch 8)
    ex. when worker exhausts its memory space
-3) java.io.IOException: Failed to send RPC 7892527227848920745 to /10.216.141.37:42360: java.nio.channels.ClosedChannelException
+4) java.io.IOException: Failed to send RPC 7892527227848920745 to /10.216.141.37:42360: java.nio.channels.ClosedChannelException
    ex. when there is no sufficient disk space (if you are getting this error, make some disk space)
 

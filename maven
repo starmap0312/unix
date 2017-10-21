@@ -188,3 +188,59 @@ ex.
 [INFO] |  +- org.clojure:clojure:jar:1.6.0:provided
 [INFO] |  +- com.googlecode.disruptor:disruptor:jar:2.10.4:provided
 
+# Uber JAR: a JAR containing everything
+1) an artifact contains only the classes/resources of itself, so Maven will be responsible to find out all artifacts (JARs) that the project depends on when the project is built
+2) an uber-jar takes all dependencies and extract the content of the dependencies and put them with the classes/resources of the project itself, in one big JAR
+3) it is easy for execution, because you will need only one big JAR instead of many small JARs to run your app
+
+# maven libary shading
+1) create uber-jar for ease of deployment is one use case of shade plugin
+   ex. 
+   problem:
+
+     Qux -> Bar:2.0
+         -> Foo -> Bar:1.0
+
+     Foo library depends on a specific version (ex. 1.0) of Bar library and cannot make use of other version of Bar lib (because of API change, etc.)
+     Qux project depends on Foo and a newer version Bar:2.0 (because Qux needs to use new feature in Bar:2.0)
+     then either Qux using Bar:2.0 or Foo using Bar:1.0 will not work
+   solution:
+     use shade plugin to rename the usage of Bar:1.0, so that all classes in Bar:1.0 jar are embedded in Foo jar
+
+     Qux -> Bar:2.0
+         -> Foo -> Bar:1.0 (shaded, ex. renamed to com.shaded.bar, and embeded in Foo jar)
+2) edit pom.xml
+    <build>
+        <extensions>
+            <extension>
+                <groupId>org.apache.maven.wagon</groupId>
+                <artifactId>wagon-ssh-external</artifactId>
+                <version>2.8</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.4.1</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>net.minidev</pattern>
+                                    <shadedPattern>net.minidev.shade</shadedPattern>
+                                </relocation>
+                            </relocations>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+3) review the built library is indeed shaded
+   jar tf target/foo.jar
+   

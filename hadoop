@@ -86,7 +86,7 @@
     hadoop fs -setfacl -m user:hadoop:rw- /path/to/file
 
 # run hadoop mapreduce jobs
-1) command
+1) run python script command
 $HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/tools/lib/hadoop-streaming.jar\
   -Dmapred.child.env="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:."\
   -Dmapred.child.java.opts="-Xmx10000m"\
@@ -102,10 +102,29 @@ $HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/tools/lib/hadoop-strea
   -output "/path/to/hdfs/output_folder/"\ # the output folder cannot exist (i.e. execute before submission: hadoop fs rm -r)
   -mapper "python mapper.py"\
   -reducer "python reducer.py"
-2) check mapreduce job error log
+2) run java main class command:
+$HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/tools/lib/hadoop-streaming.jar\
+  -Dmapred.child.env="LD_LIBRARY_PATH=$LD_LIBRARY_PATH:."\
+  -Dmapred.child.java.opts="-Xmx10000m"\
+  -Dmapreduce.job.queuename=default\
+  -Dmapreduce.job.reduces=0\
+  -Dmapreduce.task.timeout=6000000\
+  -Dmapreduce.map.speculative=true\
+  -Dmapreduce.map.memory.mb=40960\
+  -Dmapred.map.tasks=1000\
+  -libjars ./mylib-5.54-SNAPSHOT-jar-with-dependencies.jar\
+  -files "mylib-5.54-SNAPSHOT-jar-with-dependencies.jar"\
+  -input "/path/to/hdfs/input_folder/*"\
+  -output "/path/to/hdfs/output_folder"\
+  -mapper "java -cp ./mylib-5.54-SNAPSHOT-jar-with-dependencies.jar com.mydomain.mypackage.MyClass" # run MyClass's main()
+  (to debug locally)
+  htxt /path/to/hdfs/inputfile.gz | java -cp ./mylib-5.54-SNAPSHOT-jar-with-dependencies.jar com.mydomain.mypackage.MyClass
+
+# debug logs
+1) check mapreduce job error log
    yarn logs -applicationId application_[app_id]
    ex. yarn logs -applicationId application_1496686551678_490456
-3) kill a mapreduce job
+2) kill a mapreduce job
    yarn application -kill application_[app_id]
    ex. yarn application -kill application_1496686551678_502502
 
@@ -113,13 +132,11 @@ $HADOOP_PREFIX/bin/hadoop jar $HADOOP_PREFIX/share/hadoop/tools/lib/hadoop-strea
 (hadoop streaming jobs)
 1) Error: java.io.IOException: Broken pipe
      at java.io.FileOutputStream.writeBytes(Native Method)
-   the streaming process (your script) is terminating prematurely
-   this may be due to the input is considered complete (ex. interpreting an EOF) or a swallowed exception
-     either way, Hadoop is trying to feed into via STDIN to your script, but since the application has terminated (and thus STDIN is no longer a valid File Descriptor)
-     so we get a BrokenPipe error
-   solution: add stderr traces in your script to see what line of input is causing the problem
-
-
+   ex. the streaming process (your script) is terminating prematurely
+       this may be due to the input is considered complete (ex. interpreting an EOF) or a swallowed exception
+       either way, Hadoop is trying to feed into via STDIN to your script, but since the application has terminated
+       thus STDIN is no longer a valid File Descriptor, and we get a BrokenPipe error
+   solution: add stderr traces in your script to see what line of input is causing the problem (exception)
 
 # hadoop command alias
 alias htxt='hadoop fs -text'
