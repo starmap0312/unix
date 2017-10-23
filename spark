@@ -185,16 +185,56 @@ spark-shell \
    ex. val rdd = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1)))    // RDD[(String, Int)]
        rdd.groupBy(e => e._1)                                                         // RDD[(String, Iterable[Int])]
        rdd.groupBy(e => e._1).collect  // Array[(String, Iterable[Int])] = Array((z,CompactBuffer(1)), (x,CompactBuffer(1, 2)), (y,CompactBuffer(1, 2)))
-3) rdd.reduceByKey([function: (value1, value2) => merged_value]):
+4) rdd.reduceByKey([function: (value1, value2) => merged_value]):
    merge the values for each key using an associative and commutative reduce function //      [key] [value]
    ex. val rdd = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1)))    // RDD[(String, Int)]
        rdd.reduceByKey((value1, value2) => value1 + value2)                           // RDD[(String, SumOfInt)] 
-       rdd.reduceByKey.collect // Array[(String, Int)] = Array((z,1), (x,3), (y,3)) 
-4) rdd.coalesce([numPartitions: Int]) vs. rdd.repartition([numPartitions: Int]):
+       rdd.reduceByKey.collect         // Array[(String, Int)] = Array((z,1), (x,3), (y,3)) 
+5) rdd.coalesce([numPartitions: Int]) vs. rdd.repartition([numPartitions: Int]):
    coalesce(); return a new RDD that is reduced into numPartitions partitions
    repartition(): coalesce with performing a shuffle 
      i.e. def repartition(numPartitions: Int) = coalesce(numPartitions, shuffle = true)
    note: if you are decreasing the number of partitions in this RDD, consider using coalesce which can avoid performing a shuffle
+
+# DataFrame methods
+1) df.collect():
+   return an Array that contains all of Rows in the DataFrame
+   ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value")
+       df.collect                      // Array[Row] = Array([x,1], [x,2], [y,1], [y,2], [z,1])
+1) df.groupBy([Column]):
+   group the Dataset using the specified columns, so we can run aggregation on them
+   it returns class RelationalGroupedDataset, which has a set of methods for aggregations on a DataFrame, ex. count(), max(), min(), avg(), etc.
+2) df.groupBy([Column]).count():
+   count the number of rows for each group of the DataFrame
+   i.e. it maps each group into an integer (count)                                                                    [key]    [value]
+   ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value") // DataFrame[(string, integer)]
+       +---+-----+
+       |key|value|
+       +---+-----+
+       |  x|    1|
+       |  x|    2|
+       |  y|    1|
+       |  y|    2|
+       |  z|    1|
+       +---+-----+                                                                                                    [key] [count]
+       df.groupBy(col("key")).count                                                                    // DataFrame[(string, long)]
+       +---+-----+                                                                     
+       |key|count|
+       +---+-----+
+       |  x|    2|
+       |  z|    1|
+       |  y|    2|
+       +---+-----+                                                                                                    [key]  [value] [count]
+       df.groupBy(col("key"), col("value")).count                                                      // DataFrame[(string, integer, long)]
+       +---+-----+-----+                                                               
+       |key|value|count|
+       +---+-----+-----+
+       |  y|    2|    1|
+       |  x|    2|    1|
+       |  y|    1|    1|
+       |  x|    1|    1|
+       |  z|    1|    1|
+       +---+-----+-----+
 
 # debug spark
   the --master option specifies the master URL for a distributed cluster, use local mode for debugging
