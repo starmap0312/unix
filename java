@@ -46,3 +46,21 @@
         it does not require locking mechanisms blocking the current thread and context switching
   4) it uses the Actor model to hide all the thread-related code
      this gives you simple interfaces to implement a scalable and fault-tolerant system
+
+# java decompile
+  1) convert .class to bytecode
+     ex. javap -c com/jayway/jsonpath/spi/json/JsonSmartJsonProvider.class
+     public class com.jayway.jsonpath.spi.json.JsonSmartJsonProvider extends com.jayway.jsonpath.spi.json.AbstractJsonProvider {
+
+     public com.jayway.jsonpath.spi.json.JsonSmartJsonProvider();
+     Code:
+       0: aload_0
+       1: iconst_m1
+       2: getstatic     #18                 // Field net/minidev/shade/json/JSONValue.defaultReader:Lnet/minidev/shade/json/writer/JsonReader;
+       5: getfield      #23                 // Field net/minidev/shade/json/writer/JsonReader.DEFAULT_ORDERED:Lnet/minidev/shade/json/writer/JsonReaderI;
+       8: invokespecial #26                 // Method "<init>":(ILnet/minidev/shade/json/writer/JsonReaderI;)V
+      11: return
+     ...
+  2) covert .class to .java
+     need to use a third-party java decompiler tool
+

@@ -46,8 +46,29 @@
 # build the libraries with dependencies
   1) add dependencies in a jar:
      you can put both log4j.jar and jodatime.jar inside the final.jar, but your classes are unable to call other classes which is inside the unpack log4j.jar
-     unless you create a special class loader like one-jar plugin, or use maven-assembly-plugin to extract all dependency jars into raw classes, and group it together
-  2) with Maven 2, the right way to do this is to use the Maven2 Assembly Plugin which has a pre-defined descriptor file
+     use maven-assembly-plugin to extract all dependency jars into raw classes, and group it together
+  2) use maven-assembly-plugin to extract all dependency jars into raw classes, and group it together
+     add the following configuration to pom.xml
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>package-with-dependencies</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+  3) with Maven 2, the right way to do this is to use the Maven2 Assembly Plugin which has a pre-defined descriptor file
      just run command:
        mvn assembly:assembly -DdescriptorId=jar-with-dependencie -DskipTests
        (the descriptorId is appended to the built library: ex. mylib-5.54-SNAPSHOT-jar-with-dependencies.jar)
