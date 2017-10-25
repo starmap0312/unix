@@ -107,10 +107,22 @@ spark-shell \
                  └── gender=female
                      ├── ...
 
-# Saving DataFrame to Parquet Files
-  1) Parquet is a columnar format that is supported by many other data processing systems
-  2) Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data
-  3) When writing Parquet files, all columns are automatically converted to be nullable for compatibility reasons
+# Saving DataFrame
+  def write: DataFrameWriter[T]
+    interface for saving the content of the non-streaming Dataset out into external storage
+    ex. dataframe.repartition(20).write
+1) Save as TSV/TextFile: 
+   def dataFrameWriter.option(key: String, value: String): DataFrameWriter[T]
+     adds an output option for the underlying data source
+     ex. dataframe.repartition(20).write.option("sep", "\t")
+2) Save as CSV File: 
+   def csv(path: String): Unit
+     saves the content of the DataFrame in CSV format at the specified path
+     ex. dataframe.repartition(20).write.csv("filepath")
+3) Save as Parquet File:
+   Parquet is a columnar format that is supported by many other data processing systems
+   Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data
+   When writing Parquet files, all columns are automatically converted to be nullable for compatibility reasons
      ex. 
          peopleDF.write.parquet("people.parquet") # saved as Parquet files, maintaining the schema information
          ...
@@ -120,15 +132,6 @@ spark-shell \
 1) def repartition(numPartitions: Int): Dataset[T]
    returns a new DataFrame that has exactly 20 partitions # ex. part-00000, part-00001, ..., part-00020
    ex. dataframe.repartition(20)
-2) def write: DataFrameWriter[T]
-   interface for saving the content of the non-streaming Dataset out into external storage
-   ex. dataframe.repartition(20).write
-3) def dataFrameWriter.option(key: String, value: String): DataFrameWriter[T]
-   adds an output option for the underlying data source
-   ex. dataframe.repartition(20).write.option("sep", "\t")
-4) def csv(path: String): Unit
-   saves the content of the DataFrame in CSV format at the specified path
-   ex. dataframe.repartition(20).write.option("sep", "\t").csv("filepath")
 5) def from_json(e: Column, schema: StructType): Column
    import org.apache.spark.sql.functions.from_json
    parses a column containing a JSON string into a StructType with the specified schema (returns null, in the case of an unparseable string)
@@ -201,10 +204,10 @@ spark-shell \
    return an Array that contains all of Rows in the DataFrame
    ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value")
        df.collect                      // Array[Row] = Array([x,1], [x,2], [y,1], [y,2], [z,1])
-1) df.groupBy([Column]):
+2) df.groupBy([Column]):
    group the Dataset using the specified columns, so we can run aggregation on them
    it returns class RelationalGroupedDataset, which has a set of methods for aggregations on a DataFrame, ex. count(), max(), min(), avg(), etc.
-2) df.groupBy([Column]).count():
+3) df.groupBy([Column]).count():
    count the number of rows for each group of the DataFrame
    i.e. it maps each group into an integer (count)                                                                    [key]    [value]
    ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value") // DataFrame[(string, integer)]
@@ -235,6 +238,24 @@ spark-shell \
        |  x|    1|    1|
        |  z|    1|    1|
        +---+-----+-----+
+4) df.groupBy([Column]).max([String]): DataFrame
+   ex. df.groupBy(col("key")).max("value").show
+       +---+----------+
+       |key|max(value)|
+       +---+----------+
+       |  x|         2|
+       |  z|         1|
+       |  y|         2|
+       +---+----------+
+       i.e. sqlContext.sql("select key, max(value), from tempTable group By key")
+5) df.agg([Column]): returns DataFrame
+   ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value")
+       df.agg(min(col("key")), max(col("value"))).show
+       +--------+----------+
+       |min(key)|max(value)|
+       +--------+----------+
+       |       x|         2|
+       +--------+----------+
 
 # debug spark
   the --master option specifies the master URL for a distributed cluster, use local mode for debugging
