@@ -128,3 +128,26 @@ assemblyShadeRules in assembly ++= Seq(
    change all references to com.typesafe.config inside my code
 4) or you can use inAll, which applies to both inLibrary & inProject
 
+# add plugins to projects
+1) release & snapshot repo support plugins:
+resolvers += Resolver.typesafeRepo("releases")
+resolvers += Resolver.sbtPluginRepo("snapshots")
+
+2) other plugins
+addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
+addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
+addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % "0.2.0")
+
+2) equivalent to maven's release plugin used by java platform
+addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.4")
+addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
+
+# show dependency tree (i.e. mvn dependency:tree)
+1) add plugin to project/plugins.sbt
+   addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
+2) add sbt setting in build.sbt (can be skipped)
+   net.virtualvoid.sbt.graph.Plugin.graphSettings
+3) run sbt commond
+   sbt dependencyTree: shows an ASCII tree representation of the project's dependencies
+   sbt dependencyGraph: shows an ASCII graph of the project's dependencies on the sbt console (only supported on sbt 0.13)
+   sbt dependencyBrowseGraph: show the dependency graph on browser

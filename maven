@@ -198,7 +198,9 @@ ex. import backtype.storm.LocalCluster; # if storm is not found in the dependenc
     3) run mvn -DskipTests package              # run packaging the library to verify if the current library can be built
 
 # mvn dependency:tree
-mvn dependency:tree: list dependency tree of a maven project
+mvn dependency:tree
+ shows all dependencies (including transitive dependencies) of your project
+ this is very helpful for debugging dependency version issues.
 ex. 
 [INFO] com.yahoo.nuwa:nuwa-storm-cafeeder:jar:1.5.15-SNAPSHOT
 [INFO] +- org.apache.storm:storm-core:jar:0.10.0:provided
@@ -208,6 +210,14 @@ ex.
 [INFO] |  |  \- com.esotericsoftware.minlog:minlog:jar:1.2:provided
 [INFO] |  +- org.clojure:clojure:jar:1.6.0:provided
 [INFO] |  +- com.googlecode.disruptor:disruptor:jar:2.10.4:provided
+
+note: sbt "inspect tree clean" (for sbt project)
+
+# mvn -X <package-name>
+mvn -X <package-name>
+  shows all explicit and transitive dependencies for a package
+  this helps to identify conflicts
+ex. mvn -X org.apache:org.apache.commons
 
 # Uber JAR: a JAR containing everything
 1) an artifact contains only the classes/resources of itself, so Maven will be responsible to find out all artifacts (JARs) that the project depends on when the project is built
@@ -265,3 +275,22 @@ ex.
 3) review the built library is indeed shaded
    jar tf target/foo.jar
    
+# add repository in pom.xml
+<project ...>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>maven-local-snapshot</id>
+            <url>scpexe://myartifactory.mydomain.com:4443/maven-local-snapshot/</url>
+        </snapshotRepository>
+        <repository>
+            <id>maven-local-release</id>
+            <url>scpexe://myartifactory.mydomain.com:4443/maven-local-release/</url>
+        </repository>
+    </distributionManagement>
+    <repositories>
+        <repository>
+            <id>My another maven dist</id>
+            <url>http://artifactory.mydomain.com:9999/proximity/repository/public</url>
+        </repository>
+    </repositories>
+</project>

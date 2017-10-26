@@ -11,7 +11,7 @@
 # Import Project from build.sbt
   1) run "Import projects/modules from existing sources"
   2) select JDK 1.8
-  3) select file build.sbt & check auto-import on the fly
+  3) select file build.sbt & DO NOT check auto-import on the fly
 
 # Change Scheme and Font sizes
   Preferences -> Appearance & Behavior -> Appearance
@@ -39,7 +39,7 @@
      Replace keyword in file: Cmd + R
      Find keyword in project: Shift + Cmd + F
      Search Everywhere (ex. filename): Shift + Shift
-  5)
+  5) Reimport
      Enter Action or Option Name: Shift + Cmd + A (ex. reimport all Maven libraries)
 
 # Install intellij PlugIns
@@ -80,6 +80,8 @@
     then 
     3.1) click the highlighted dependency in pom.xml -> update maven indices
     3.2) Right-Click at pom.xml -> Maven -> reimport
+    3.3) File -> Invalidate Caches / Restart
+         if reimport does not solve the problem, run Invalidate Caches & Restart to clean the caches and restart the project
  4) Disable "Optimize imports on the fly"
     problem: enabling this option will produce a lot of diffs if team members are using different IDEs, so it is disabled by default
     intellij shortcut: Shift + Cmd + A (enter & click "Default settings")
@@ -98,4 +100,8 @@
    press Refresh all SBT projects button in the SBT tool window to import the dependency
 
 # add scala to project
-  in Menu, select File -> Project Structure -> Platform Setting -> Global Libraries -> Scala SDK 
+  1) in Menu, select File -> Project Structure -> Platform Setting -> Global Libraries -> Scala SDK 
+  2) create scala folder under src/main & right-click the folder and select "Mark directories as sources root"
+
+# analyze dependencies
+  Menu -> Analyze -> Aanalyze Dependencies
