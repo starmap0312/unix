@@ -64,3 +64,8 @@
   2) covert .class to .java
      need to use a third-party java decompiler tool
 
+# java tests
+  1) org.testng vs. org.junit
+     both Testng and Junit are Testing framework used for Unit Testing
+     TestNG is similar to JUnit, with few more functionalities added to make it more powerful than JUnit
+

@@ -151,3 +151,50 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
    sbt dependencyTree: shows an ASCII tree representation of the project's dependencies
    sbt dependencyGraph: shows an ASCII graph of the project's dependencies on the sbt console (only supported on sbt 0.13)
    sbt dependencyBrowseGraph: show the dependency graph on browser
+
+# issues
+1) sbt test: [info] No tests were executed
+   unlike Scala testing frameworks like ScalaTest (which can also run JUnit test cases),
+     both JUnit and this adapter are pure Java, so you can run JUnit tests with any Scala version supported by sbt
+     without having to build a binary-compatible test framework first
+   solution: 
+     junit-interface: an implementation of sbt's test interface for JUnit 4. This allows you to run JUnit tests from sbt.
+     add the following dependency to build.sbt:
+       libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+     set default options in build.sbt file:
+       testOptions += Tests.Argument(TestFrameworks.JUnit, "-a")
+       # this shows stack traces and exception class name for AssertionErrors (thrown by all assert* methods in JUnit)
+
+# sbt plugins
+in project/plugin.sbt
+1) sbt-scalariform:
+   an sbt plugin adding support for source code formatting using Scalariform
+   in project/plugin.sbt, add:
+     addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.8.1")
+   in build.sbt, add:
+     import scalariform.formatter.preferences._              # imports
+     scalariformPreferences := scalariformPreferences.value. # set preferences
+       setPreference(AlignSingleLineCaseStatements, true).
+       setPreference(DoubleIndentConstructorArguments, true).
+       setPreference(DanglingCloseParenthesis, Preserve)
+   then sources will automatically formatted on compile and test:compile by default
+2) sbt-java-formatter:
+   an sbt plugin for formating Java code
+   in project/plugin.sbt, add:
+     addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % JavaFormatterVersion)
+   prepare a formatting-java.xml using Eclipse or find a setting online
+   in build.sbt, add:
+     javaFormattingSettingsFilename := "my-little-formatting-settings.xml"
+3) sbt-assembly:
+   a sbt plugin originally ported inspired by Maven's assembly plugin
+     the goal is to create a fat JAR of the project with all of its dependencies
+   in project/plugin.sbt, add:
+     addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
+4) sbt-release:
+   this sbt plugin provides a customizable release process that you can add to your project
+   equivalent to maven's release plugin used by java platform
+   in project/plugin.sbt, add:
+     addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.4")
+   in version.sbt, add:
+     version := "1.2.3" or
+     version in ThisBuild := "1.5-SNAPSHOT"
