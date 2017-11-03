@@ -2,6 +2,11 @@
 1) run Pig script locally
    pig -x local -p INPUT_PATH=/path/to/local/input_folder -p OUTPUT_PATH=/path/to/local/output_folder
 
+# pig scripting
+1) %DEFAULT [PARAM] [value]: define parameters in Pig script:
+   ex.
+     %DEFAULT INPUT_PATH '/path/to/hdfs/'
+
 # use external jar when running Pig script
 1) register the jar file in the Pig script:
    REGISTER ./mylib.jar;

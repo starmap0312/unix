@@ -69,8 +69,8 @@
   1) sbt publish
   2) sbt publishLocal
      publish your developping library to a local Ivy repository
-     ex. /.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/poms/[artifact_id].pom
-         /.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/jars/[artifact_id]-assembly.jar
+     ex. ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/poms/[artifact_id].pom
+         ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/jars/[artifact_id]-assembly.jar
 
 # libraryDependencies
   1) "test" scope:
