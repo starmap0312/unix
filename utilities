@@ -299,6 +299,20 @@
    -f, --fail: (HTTP) Fail silently (no output at all) on server errors (in case we get the HTTP error page and treats it as normal)
      ex. curl http://www.google.com/xxxxx    (get Error 404 page, but return code = 0)
          curl -f http://www.google.com/xxxxx (get error: curl: (22) 404 Not Found, return code = 22)
+   -L, --location: instructs cURL to follow any redirect to reach the eventual endpoint (3XX response code)
+     ex. curl -L https://www.example.com/document.html
+         HTTP/1.1 302 Found
+         Date: Tue, 07 Nov 2017 06:47:48 GMT
+         ...
+         HTTP/1.1 301 Moved Permanently
+         Date: Tue, 07 Nov 2017 06:47:48 GMT
+         ...
+         HTTP/1.1 200 OK
+         Date: Tue, 07 Nov 2017 06:47:48 GMT
+         ...
+   -X, --request <command>: specifies a custom request method to use when communicating with the HTTP server
+     ex. curl -X DELETE http://example.com:8080/document/docid/1 (suppose that example.com supports DELETE request method which deletes a docuemnt by its id)
+
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw
   ex.

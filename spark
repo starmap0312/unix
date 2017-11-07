@@ -21,6 +21,17 @@
    Standalone: a simple cluster manager included with Spark that makes it easy to set up a cluster
    Hadoop YARN: the resource manager in Hadoop 2
 
+# How to paste and load blocks of code in the Scala REPL?
+  1) :paste command
+     paste a block of code to the console
+  2) :load command
+     read code from an external file into the REPL environment
+     in file Person.scala:
+       case class Person(name: String)
+     :load Person.scala
+       Loading /Users/Al/ScalaTests/Person.scala...
+       defined class Person
+
 # dataframe.cache():
   Spark SQL cache tables using an in-memory columnar format by calling spark.catalog.cacheTable("tablename") or dataframe.cache()
   use cache() for DataFrame and tables in the following cases:
@@ -286,7 +297,15 @@ spark-shell \
    show a single container logs
    ex. yarn logs -applicationId application_1508368153923_55368 -containerId container_e33_1480922439133_0845_02_000002
 
-# exceptions
+# Spark troubleshooting and exceptions
+0) WARN TaskSchedulerImpl: Initial job has not accepted any resources; check your cluster ui to ensure that workers are registered and have sufficient memory
+   an application is requesting more resources from the cluster than the cluster can currently provide
+   i.e. Cores: the number of open executor slots that your cluster provides for execution
+        Ram  : the amount of free Ram required on any worker running your application
+        (note: the maximum value of both resources is not your System's max, it is the max as set by the your Spark configuration)
+   solution:
+     make sure you aren’t requesting more resources from your cluster than exist or to shut down any apps that are unnecessarily using resources
+     if you need to run multiple Spark apps simultaneously then you’ll need to adjust the amount of cores being used by each app
 1) org.apache.spark.SparkException: Job aborted due to stage failure: Task 2 in stage 13.0 failed 1 times, most recent failure: Lost task 2.0 in stage 13.0
      Driver stacktrace: at org.apache.spark.scheduler.DAGScheduler.org$apache$spark$scheduler$DAGScheduler$$failJobAndIndependentStages(DAGScheduler.scala:1564)
    ex. when your script throws exceptions, it causes a job aborted and task lost
