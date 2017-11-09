@@ -56,14 +56,14 @@
   500 Server Error: server is broke and cannot handle the request
 
 # HTTP verbs (CRUD)
-  POST (Create): not idempotent, not cacheable
+  POST (Create): not idempotent (repeat the operations 2 times produces different results, i.e. adding 2 records), not cacheable
     sends data to a specific URI and expects the resource at that URI to handle the request
     the web server determines what to do with the data
     ex. posting a message to a bulletin board, submitting a form to a data-handling process
   GET (Read): idempotent
-  PUT (Update): not idempotent, cacheable
+  PUT (Update): not idempotent (repeat the operation 2 times produces the same result, i.e. override 1 record), cacheable
     puts a resource at a specific URI, and exactly at that URI
-    update or create: if there's already, PUT replaces that resource; otherwise, it creates one
+    update or create: if there's a resource already, PUT replaces that resource; otherwise, it creates one
     POST responses are cacheable if server sets the appropriate Cache-Control and Expires headers
   DELETE (Delete): idempotent
 
