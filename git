@@ -89,7 +89,23 @@
   git reset HEAD: unstage all staged modified files
     HEAD: a reference to the last commit in the current branch
   git reset HEAD <filename>: unstage a staged modified file
-  git reset --hard HEAD~3: the last 3 versions: HEAD, HEAD^, and HEAD~2 are dropped
+  git reset --hard HEAD~3: the last 3 versions: HEAD, HEAD^ (shorthand for HEAD^1 or HEAD~1), and HEAD~2 (HEAD^1^1) are dropped
+  git reset HEAD^1
+  git reset --hard HEAD^1
+
+
+# reference parent commit
+  because git commits can have more than one parent, we can refer in the order from left-to-right (HEAD^1: leftmost parent, HEAD^2: second parent, HEAD^3: third parent)
+  ex.
+  D   E   F
+    B   C
+      A
+
+  A
+  B = A^    = A^1 = A~1
+  C =       = A^2
+  D = A^^   = A^1^1 = A~2
+  E = A^^2  = A^1^2
 
 # git reset --soft <commit> vs. git reset --hard <commit>
 
@@ -183,7 +199,7 @@
 
 # git rebase -i [commit]
   ex.
-  1) git history
+  1) git log
      commit 919f085276696c26a818a50c8d5652fb16625e28
      commit 1b5228ee490ea9986575c0cc51e644d8204f91c8
      commit eb62c7b27edbaf54502c80fd0ae4e040117c87ef 
@@ -210,3 +226,43 @@
   1) pull_request: a pull request is assigned, unassigned, opened, closed, etc. 
   2) issues: an Issue is assigned, opened, closed, etc. 
   3) pull_request_review: a pull request review is submitted, edited, or dismissed
+
+# git config
+1) config file:
+   edit .git/config file:
+     [remote "origin"]   # remote repo (personal project)
+        url = https://github.com/starmap0312/storm.git
+        fetch = +refs/heads/*:refs/remotes/origin/*
+     [remote "upstream"] # remote repo (upstream project)
+        url = https://github.com/apache/storm.git
+        fetch = +refs/heads/*:refs/remotes/upstream/*
+     [branch "master"]   # set local branch master associated with remote origin master
+        remote = origin
+        merge = refs/heads/master
+2) command:
+   git config name value: replace one line matching the key
+     i.e. git config --replace-all name value
+   git config --add name value: add a new line to the option without altering any existing values
+     ex.
+     git config remote.origin.url https://github.com/starmap0312/storm.git
+     git config --add remote.origin.fetch +refs/heads/*:refs/remotes/origin/*
+   git branch.<name>.remote [remote_repo]:
+     when on branch [name], it tells git fetch and git push which [remote_repo] to fetch from/push to
+     ex. git config branch.master.remote origin
+   git branch.<name>.merge [refspec]: define the upstream branch for the given branch
+     it tells git fetch, git pull, git rebase which branch to merge and can also affect git push
+     when on branch [name], it tells git fetch the default refspec to be marked for merging in FETCH_HEAD
+     ex. git config branch.master.merge refs/heads/master
+
+# git rev-list
+  git rev-list [commit]: lists commit objects in reverse chronological order, starting from [commit]
+  ex. 
+    git log
+     commit 919f085276696c26a818a50c8d5652fb16625e28
+     commit 1b5228ee490ea9986575c0cc51e644d8204f91c8
+     commit eb62c7b27edbaf54502c80fd0ae4e040117c87ef 
+     ...
+    git rev-list 1b5228ee490ea9986575c0cc51e644d8204f91c8
+     commit 1b5228ee490ea9986575c0cc51e644d8204f91c8
+     commit eb62c7b27edbaf54502c80fd0ae4e040117c87ef
+     ...
