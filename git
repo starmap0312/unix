@@ -143,6 +143,25 @@
          |                             |
          ------> Local (master) <-------
 
+# git merge
+  git checkout feature        (on feature branch)
+  1) git merge --ff-only      (merge master branch by fast-forward and error out if not possible)
+     ex. git pull --ff-only   (a safe way to merge the origin/master branch)
+         (is equal to)
+         git fetch origin
+         git merge --ff-only origin/master
+  2) git merge --ff master    (default: merge master branch by fast-forward if possible; otherwise, keep the feature branch)
+  3) git merge --no-ff master (always merge master branch without fast-forward)
+     this keeps the commit feature at a separate branch even though it can be fast-forward merged
+     ex.
+         (--no-ff)             (-ff)
+         master feature        master
+           x                     x
+           |        x            x     feature
+           |        x            x
+           --- x ---|            x
+               x                 x
+
 # answering a pull request: merge devel branch into master branch
   Step 1)
     git fetch origin
@@ -150,7 +169,7 @@
     git merge master
   Step 2)
     git checkout master
-    git merge --no-ff devel (no fast-forward when merging)
+    git merge --no-ff devel (no fast-forward when merging, used for new feature branch)
     git push origin master (update on GitHub)
 
 # show git log graph
@@ -266,3 +285,10 @@
      commit 1b5228ee490ea9986575c0cc51e644d8204f91c8
      commit eb62c7b27edbaf54502c80fd0ae4e040117c87ef
      ...
+  git rev-list [currentBranch]..[trackingRemote]/[trackingBranch]
+  ex.
+    git rev-list master..upstream/master
+    9ab3f9edb37c7b5c0cc1479424719aa330381e83 (upstream/master)
+    ...
+    f40f9468ceb7d6fac5687a1f6fed9522e3aacb1a
+    a0765b5f9bdcefcd9eb95d436bb5c24455a54458 (HEAD -> master, only show the above, not shown here)

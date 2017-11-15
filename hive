@@ -18,3 +18,24 @@
          LOAD DATA LOCAL INPATH /tmp/local/pv_2008-06-08_us.txt INTO TABLE page_view PARTITION(date='2008-06-08', country='US')
          LOAD DATA INPATH '/user/data/pv_2008-06-08_us.txt' INTO TABLE page_view PARTITION(date='2008-06-08', country='US') 
 
+# LATERAL VIEW
+  lateral view with explode() can be used to convert adid_list into separate rows using the query
+  ex.
+    (table: pageAds)
+    pageid:    STRING
+    adid_list: Array<int>
+
+    (rows)
+    [pageid]     [adid_list]
+    front_page   [1, 2]
+    contact_page [3, 4]
+
+    (query)
+    SELECT id, adid FROM pageAds LATERAL VIEW explode(adid_list) adTable AS adid;
+
+    (result)
+    [pageid(string)] [adid(int)]
+    "front_page"     1
+    "front_page"     2
+    "contact_page"   3
+    "contact_page"   4
