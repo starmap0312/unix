@@ -19,8 +19,26 @@
   -A, --all: all files in the entire working tree are updated
 
 # git pull: fetch from and integrate with a local branch
-  git pull == git fetch origin + git merge origin/master
-  git push == git push origin master
+  git pull [--rebase] [repo] [branch]
+  1) merge remote origin/master
+     git pull
+     (is equal to)
+     git pull origin master
+     (is equal to)
+     git fetch origin master
+     git merge origin/master
+  2) merge remote upstream/master
+     git pull upstream master
+     (is equal to)
+     git fetch upstream master
+     git merge upstream/master
+  3) with --rebase, it runs git rebase instead of git merge
+     git pull --rebase upstream master
+     (is equal to)
+     git fetch upstream master
+     git rebase upstream/master
+
+# git push == git push origin master
 
 # git remote -v: view all remote repos
 
