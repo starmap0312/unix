@@ -310,3 +310,29 @@
     ...
     f40f9468ceb7d6fac5687a1f6fed9522e3aacb1a
     a0765b5f9bdcefcd9eb95d436bb5c24455a54458 (HEAD -> master, only show the above, not shown here)
+
+# alias
+  1) edit ~/.gitconfig
+     [alias]
+     st = status
+     ci = commit
+     co = checkout
+     br = branch
+     unstage = reset HEAD --
+     last = log -1 HEAD
+  2) edit ~/.profile
+     alias gst='git status'
+     alias gl='git pull'
+     alias gp='git push'
+     alias gd='git diff | mate'
+     alias gau='git add --update'
+     alias gc='git commit -v'
+     alias gca='git commit -v -a'
+     alias gb='git branch'
+     alias gba='git branch -a'
+     alias gco='git checkout'
+     alias gcob='git checkout -b'
+     alias gcot='git checkout -t'
+     alias gcotb='git checkout --track -b'
+     alias glog='git log'
+     alias glogp='git log --pretty=format:"%h %s" --graph'

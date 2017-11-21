@@ -83,6 +83,15 @@ spark-shell \
 --jars ~/.ivy2/local/mydomain/mylib_2.11/0.1.1-SNAPSHOT/jars/mylib_2.11-assembly.jar \
 -i MyScalaClass.scala  # ex. println("Hello world") ... line-by-line code in MyScalaClass.scala, no need to define object with main() function 
 
+# Reading hdfs file
+1) load csv file from hdfs as a List[String]
+   sparkSession.read.
+     format("com.databricks.spark.csv").
+     option("header", "true").option("inferSchema", "true").
+     load("path/to/hdfs/filename.csv").
+     select(col("colname")).rdd.map(row => row(0).asInstanceOf[String]).
+     collect.toList
+
 # Saving DataFrame to Persistent Hive Tables
   DataFrames can also be saved as persistent tables into Hive metastore using the saveAsTable command
   1) Spark will create a default local Hive metastore (using Derby) for you
@@ -138,6 +147,13 @@ spark-shell \
          peopleDF.write.parquet("people.parquet") # saved as Parquet files, maintaining the schema information
          ...
          val parquetFileDF = spark.read.parquet("people.parquet") # Read in the parquet file created above (schema is preserved)
+4) Save as Apache Optimized Row Columnar (ORC) file format
+   ORC is a self-describing type-aware columnar file format designed for Hadoop ecosystem workloads
+   the columnar format lets the reader read, decompress, and process only the columns that are required for the current query 
+     ex.
+       peopleDf.write.format("orc").save("people.orc")
+       ...
+       val people = sqlContext.read.format("orc").load("people.orc")
 
 # DataFrame operations
 1) def repartition(numPartitions: Int): Dataset[T]
