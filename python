@@ -4,9 +4,12 @@
   pip install <python_pkg> 
 
 # pip commands
-  pip search <pkg_name>
-  pip install <pkg_name>
-    install a single package
+  pip search <pkg_name>: search PyPI for packages
+  pip show <pkg_name>: show information about installed packages
+  pip list: list installed packages
+  pip install <pkg_name>: install a single package
+  pip install <pkg_name>==<version>: install a single package with a specific version
+    ex. pip install django_modeltranslation==0.4.0
   pip freeze > requirements.txt
     output a package manifest to the terminal (requirements.txt should have specific versions for each package)
     ex.

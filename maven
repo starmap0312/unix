@@ -74,7 +74,11 @@
        (the descriptorId is appended to the built library: ex. mylib-5.54-SNAPSHOT-jar-with-dependencies.jar)
 
 # mvn install
-  this installs the developping library to local repo:
+  it checks the dependency tree based on configuration of pom.xml on all the subprojects under the super pom.xml (the root POM)
+  it downloads and compiles all the needed components under ~/.m2/ 
+  the build life cycle of the mvn:
+    process-resources -> compile -> process-test-resources -> test-compile -> test (to skip this step: -DskipTests=true) -> package -> install -> deploy
+  it will then install the developping library to local repo:
     ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].jar
     ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].pom
   ex.
@@ -294,3 +298,10 @@ ex. mvn -X org.apache:org.apache.commons
         </repository>
     </repositories>
 </project>
+
+# options
+1) -B,--batch-mode: run in non-interactive (batch)
+2) -D,--define <arg>: define a system property
+   ex. mvn archetype:generate -DgroupId=com.myMaven.app
+       mvn exec:java -Dexec.mainClass=com.myMaven.app.App
+       mvn -DskipTests=true clean package
