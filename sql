@@ -1,6 +1,11 @@
 # MySQL client
   mysql -u[username] -p[password] -h [hostname] -D [database_name]
 
+# basic commands
+  SHOW databases;
+  USE [dbname];
+  DESC [dbname].[tablename];
+
 # MySQL queries
 
   SELECT DATE(a.col_time), c.`col_name`, count(*) FROM \

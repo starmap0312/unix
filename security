@@ -43,3 +43,32 @@
   2) a user logs in with a single ID and password to gain access to a connected system or systems without using
      different usernames or passwords
   3) implementation: achieved over IP networks using cookies but only if the sites share a common DNS parent domain
+
+# TLS: Transport Layer Security
+  1) SSL (Secure Sockets Layer) is TLS's predecessor
+  2) it is a cryptographic protocol that provide communications security over a computer network
+  3) it provides privacy and data integrity between two communicating computer applications
+     it supports many different methods for exchanging keys, encrypting data, and authenticating message integrity
+  4) it is used in applications: ex. web browsing, email, Internet faxing, instant messaging, and voice-over-IP (VoIP)
+     websites use TLS to secure all communications between their servers and web browsers
+
+# RBAC: role-based access control
+  1) an approach to restricting system access to authorized users
+  2) a policy neutral access control mechanism defined around roles and privileges
+  3) within an organization, roles are created for various job functions
+     the permissions to perform certain operations are assigned to specific roles
+  4) users are not assigned permissions directly, but only acquire them through their role (or roles), so
+     management of individual user rights becomes a matter of simply assigning appropriate roles to the user's account
+  5) three primary rules
+     i) role assignment
+        a subject (person) can exercise a permission only if the subject (person) has selected or been assigned a role
+    ii) role authorization
+        a subject's (person) active role must be authorized for the subject
+        with rule 1 above, this rule ensures that users can take on only roles for which they are authorized
+   iii) permission authorization
+        a subject (person) can exercise a permission only if the permission is authorized for the subject's active role
+        with rules 1 and 2, this rule ensures that users can exercise only permissions for which they are authorized
+   Subject (S): a person or automated agent (ex. a server)
+   Role (R): Job function or title which defines an authority level
+   Permissions (P): An approval of a mode of access to a resource
+
