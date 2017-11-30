@@ -312,7 +312,7 @@
     a0765b5f9bdcefcd9eb95d436bb5c24455a54458 (HEAD -> master, only show the above, not shown here)
 
 # alias
-  1) edit ~/.gitconfig
+  1) edit ~/.gitconfig to add git command shortcuts for each individual repo
      [alias]
      st = status
      ci = commit
@@ -320,7 +320,7 @@
      br = branch
      unstage = reset HEAD --
      last = log -1 HEAD
-  2) edit ~/.profile
+  2) edit ~/.profile to add system shortcuts
      alias gst='git status'
      alias gl='git pull'
      alias gp='git push'
