@@ -52,7 +52,7 @@
   3) SELECT ... FROM ... WHERE col_name LIKE '%keyword%'
   4) SELECT ... FROM ... WHERE col_name LIKE '___'
     (find col_name with exactly three characters)
-# II) REGEXP
+# II) REGEXP or RLIKE
   .: match one character
   [abc]: match a, or b, or c
   [0-9]*: match any number of digits
@@ -65,6 +65,7 @@
      SELECT ... FROM ... WHERE col_name REGEXP '^.{3}$'
     (find col_name with exactly three characters)
   5) SELECT * FROM table_name WHERE (col_name REGEXP '^[a-zA-Z0-9]+$');
+  6) SELECT * FROM table_name WHERE (col_name REGEXP '(foo|bar) (short )?story'); # match: this is foo story, this is foo short story, this is bar story, etc.
 
 # TRUNC function
   TRUNC(n1): returns n1 truncated to integer number

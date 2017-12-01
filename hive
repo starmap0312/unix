@@ -39,3 +39,11 @@
     "front_page"     2
     "contact_page"   3
     "contact_page"   4
+
+# regular expression in hive
+1) Relational Operators: LIKE, RLIKE, REGEXP
+   ex. SELECT * FROM [tablename] where NOT([colnmn] REGEXP '([\ \ u4e00-\ \ u9fa5])+')
+2) regexp_extract(string subject, string pattern, int index)
+   ex. regexp_extract('foothebar', 'foo(.*?)(bar)', 2) returns 'bar'
+   ex. SELECT regexp_extract(pageUrl,'(?<=p-)\\d+(?=\\.html)',0) AS pid
+       FROM [tablename] WHERE date = '20171130'
