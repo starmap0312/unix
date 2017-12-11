@@ -139,6 +139,7 @@ spark-shell \
    def csv(path: String): Unit
      saves the content of the DataFrame in CSV format at the specified path
      ex. dataframe.repartition(20).write.csv("filepath")
+     ex. dataframe.coalesce(1).write.option("header", "true").write.csv("filepath") # repartition to one file without shuffling and write the header
 3) Save as Parquet File:
    Parquet is a columnar format that is supported by many other data processing systems
    Spark SQL provides support for both reading and writing Parquet files that automatically preserves the schema of the original data
@@ -343,4 +344,10 @@ spark-shell \
    ex. when worker exhausts its memory space
 4) java.io.IOException: Failed to send RPC 7892527227848920745 to /10.216.141.37:42360: java.nio.channels.ClosedChannelException
    ex. when there is no sufficient disk space (if you are getting this error, make some disk space)
+5) WARN: Truncated the string representation of a plan since it was too large
+   it is a warning when using manually created aggregation expression
+     ex. df.groupBy([Column1]).agg(collect_list([Column2]) as "colname")
+   you can safely ignore it if you are not interested in seeing the sql schema logs, or
+   you can set the following property to a higher value:
+     spark.debug.maxToStringFields=100 (Default value is: DEFAULT_MAX_TO_STRING_FIELDS = 25)
 

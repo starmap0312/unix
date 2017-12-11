@@ -1,0 +1,8 @@
+# create a new table using django model
+1) python manage.py showmigrations [appname]
+   this shows all the existing migrations
+   ex.
+     [X] 0001_initial                      ([X] means applied)
+2) python manage.py makemigrations [appname]
+   this makes a new migration file for your new model (ex. 00002_...)
+3) python manage.py migrate <appname> 00002
