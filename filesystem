@@ -7,3 +7,8 @@
     3) /var/spool/uucp: UUCP files are spooled for transmission to UUCP neighbors
     5) /var/spool/at, /var/spool/cron/:
          at and cron jobs are spooled for delayed execution by the cron daemon
+
+# "stale file handle" error
+  when a directory is deleted, the inode for that directory (and the inodes for its contents) are recycled
+    so the pointer your shell has to that directory inode (and its contents inodes) are now no longer valid
+  if you attempt to access the contents of the directory, you may get a "stale file handle" erro message due to nonexistence of data

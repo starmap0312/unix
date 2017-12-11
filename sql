@@ -343,6 +343,11 @@
      c) database's data is collectively stored in the datafiles that constitute each tablespace of the
         database
 
+# mysql: MySQL DB client
+  1) mysql -u root:
+     login localhost as root
+  2) mysql -u <user> -p <password> -e "SELECT * FROM tablename"
+
 # sqlplus: Oracle DB client
   1) display query result more clearly
      set lines 128: the length of the line

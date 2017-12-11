@@ -283,6 +283,17 @@ spark-shell \
        +--------+----------+
        |       x|         2|
        +--------+----------+
+6) df.groupBy([Column1]).agg(collect_list([Column2]) as "columns2"): returns DataFrame
+   ex. val df = sc.makeRDD(Array(("x", 1), ("x", 2), ("y", 1),("y", 2),("z", 1))).toDF("key", "value")
+       df.groupBy(col("key")).agg(collect_list(col("value")) as "values").show
+       +---+------+                                                                    
+       |key|values|
+       +---+------+
+       |  x|[1, 2]|
+       |  z|   [1]|
+       |  y|[2, 1]|
+       +---+------+
+   df.groupBy([Column1]).agg(collect_list([Column2]) as "colname1", collect_list([Column3]) as "colname2"): returns DataFrame
 
 # debug spark
   the --master option specifies the master URL for a distributed cluster, use local mode for debugging

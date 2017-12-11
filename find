@@ -1,7 +1,7 @@
 # find: find files
-  1) find . -mtime -1  ==> find files modified less than 1 day
+  1) find . -mtime -1          ==> find files modified less than 1 day
      find . -mtime -1 -ls (-ls: list details)
-     find . -mmin -10  ==> find files modified less than 10 mins
+     find . -mmin -10 -type f  ==> find files modified less than 10 mins
   2) find . -mtime 1   ==> find files modified exactly 1 day
   3) find . -mtime +1  ==> find files modified more than 1 day
   4) find . -perm 644  ==> find files with permission exactly the 644
