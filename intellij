@@ -45,11 +45,22 @@
 # Install intellij PlugIns
   Preferences -> PlugIns -> ex. search for "Scalariform"
 
-# issues
+# general issues
   1) Cannot find declaration to go to:
      rm -rf .idea/ & re-open the project
      then it will re-resolving all the dependencies again
-  2) Import SNAPSHOT libraries for use of another developing library:
+  2) Disable "Optimize imports on the fly"
+     problem: enabling this option will produce a lot of diffs if team members are using different IDEs, so it is disabled by default
+     intellij shortcut: Shift + Cmd + A (enter & click "Default settings")
+     uncheck "Auto Import" -> "Optimize imports on the fly"
+  3) No "Run All Tests" when right clicking a project folder, or code shows warning of "Cannot resolve symbol"
+    3.1) need to import the project by build.sbt with "JDK 1.8" specified as the JDK version
+         i.e. Close all projects and re-open intellij application
+         Click "Import Project" and select the build.sbt file
+    3.2) rm -rf target/ and run "sbt test" at console (Compiling Scala sources and Java sources to target/)
+
+# maven issues
+  1) import SNAPSHOT libraries for use of another developing library:
      1.1) publish the library to be used, mylib_2.11, to "maven-local-snapshot"
      1.2) edit the pom.xml of the developing library
        <distributionManagement>
@@ -71,33 +82,32 @@
      1.3) reimport all Maven libraries to get the latest published SNAPSHOT library
           intellij shortcut: Shift + Cmd + A (enter & click "reimport all Maven libraries"), or
           Go to pom.xml, right-click "Maven", click "reimport all Maven libraries"/"Download Sources and Documentations"
- 3) Cannot find dependencies:
+ 2) Cannot find dependencies:
+    3.1) add a new dependency to pom.xml
     ex. <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-core</artifactId>
             <version>2.1.0</version> # highlighted
         </dependency>
-    then 
-    3.1) click the highlighted dependency in pom.xml -> update maven indices
-    3.2) Right-Click at pom.xml -> Maven -> reimport
-    3.3) File -> Invalidate Caches / Restart
+    3.2) click the highlighted dependency in pom.xml -> update maven indices
+    3.3) Right-Click at pom.xml -> Maven -> reimport
+    3.4) File -> Invalidate Caches / Restart
          if reimport does not solve the problem, run Invalidate Caches & Restart to clean the caches and restart the project
- 4) Disable "Optimize imports on the fly"
-    problem: enabling this option will produce a lot of diffs if team members are using different IDEs, so it is disabled by default
-    intellij shortcut: Shift + Cmd + A (enter & click "Default settings")
-    uncheck "Auto Import" -> "Optimize imports on the fly"
- 5) No "Run All Tests" when right clicking a project folder, or code shows warning of "Cannot resolve symbol"
-    3.1) need to import the project by build.sbt with "JDK 1.8" specified as the JDK version
-    i.e. Close all projects and re-open intellij application
-         Click "Import Project" and select the build.sbt file
-    3.2) rm -rf target/ and run "sbt test" at console (Compiling Scala sources and Java sources to target/)
 
-# auto-import
+# sbt issues
+ 1) Cannot find dependencies:
+    3.1) add a new dependency to build.sbt
+         ex. libraryDependencies += "com.typesafe" % "config" % "1.2.1"
+    3.2) click "Refresh all SBT projects" button in the SBT tool window to import the dependency, or
+         use shortcut: Shift + Shift + "Refresh all external projects"
+
+# enable/disable auto-import
 1) Use auto-import option:
-   when you imported your project than your dependency is imported automatically
+   when you add an external library to your project code, then the external dependency is imported automatically
 2) No auto-import option:
-   after you have added your dependency in the build.sbt file,
-   press Refresh all SBT projects button in the SBT tool window to import the dependency
+   you need to manually add the external dependency in the build.sbt file,
+   then press "Refresh all SBT projects" button in the SBT tool window to import the dependency, or
+   use shortcut: Shift + Shift + "Refresh all external projects"
 
 # add scala to project
   1) in Menu, select File -> Project Structure -> Platform Setting -> Global Libraries -> Scala SDK 

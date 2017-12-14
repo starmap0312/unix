@@ -64,6 +64,9 @@
    --conf spark.jars=path/to/file1.jar,path/to/file2.jar
    note: jar files needs to be specified as a relative path of current working folder, and
          they need to be in the same --conf spark.jars=... or --jars ...; otherwise, only the last one will be loaded
+4) files: comma-separated list of files to be placed in the working
+  --files FILES
+  ex. --files "/path/to/local/filename"
 
 # spark-shell & spark-submit commands
 1) spark-submit

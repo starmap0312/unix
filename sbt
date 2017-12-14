@@ -25,12 +25,15 @@
      sbt test         : runs all tests detected during test compilation
      sbt "test-only [test_name]": run a specific test, ex. sbt "test-only com.my_package.MyTest"
      sbt package      : creates jar file containing files in src/main/resources and classes compiled from
-                        src/main/scala and src/main/java
+                        src/main/scala and src/main/java (only project classes will be included in the jar)
      sbt war          : package for Java container sbt war
      sbt dist         : package for standalone Play package (build a standalone project issue)
      sbt run <args>*  : runs main class of project in the same virtual machine as sbt (run an application)
      sbt -jvm-debug <port>:  Turn on JVM debugging, open at the given port (in IDE, select Run -> Attach to Local Process)
        ex. sbt -jvm-debug 5005 run
+     sbt assembly     : build standalone jar with all dependencies 
+       requires plugin: add a line to file project/plugins.sbt
+         addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.6")
   c) run sbt commands in batch: ex. sbt clean compile test)
      ex.
        sbt "project project_name" clean format compile test package

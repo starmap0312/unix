@@ -21,7 +21,7 @@
 # MySQL backquotes/backticks
   allow spaces and other special characters in table/column names
 
-# MySQL dates:
+# function DATE([expr]): parse a date string
   1) function DATE(expr):
      extracts the date part of the date or datetime expression expr
      ex.
@@ -31,6 +31,9 @@
      ex.
        INSERT INTO table_name(COL1, COL2) VALUES('abc', sysdate);
        (COL2 must be of DATE type)
+
+# MySQL LENGTH([Column]): return the length of a column string
+  SELECT * FROM table_name WHERE LENGTH(col_name) < 10;
 
 # WHERE col_name IN ('val1', 'val2', ...)
   ex.
@@ -65,7 +68,9 @@
      SELECT ... FROM ... WHERE col_name REGEXP '^.{3}$'
     (find col_name with exactly three characters)
   5) SELECT * FROM table_name WHERE (col_name REGEXP '^[a-zA-Z0-9]+$');
-  6) SELECT * FROM table_name WHERE (col_name REGEXP '(foo|bar) (short )?story'); # match: this is foo story, this is foo short story, this is bar story, etc.
+  6) SELECT * FROM table_name WHERE (col_name REGEXP 'foo|bar|baz');                      # match words: this is foo story, this is foo short story, this is bar story, etc.
+  7) SELECT * FROM table_name WHERE (col_name REGEXP '(foo|bar) (short )?story');         # match phrases: this is foo story, this is foo short story, this is bar story, etc.
+  8) SELECT * FROM table_name WHERE (col_name REGEXP '(this is a book)|(this is a pen)'); # match phrases: this is a book, this is a pen 
 
 # TRUNC function
   TRUNC(n1): returns n1 truncated to integer number
