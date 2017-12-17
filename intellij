@@ -43,7 +43,17 @@
      Enter Action or Option Name: Shift + Cmd + A (ex. reimport all Maven libraries)
 
 # Install intellij PlugIns
-  Preferences -> PlugIns -> ex. search for "Scalariform"
+  Preferences (Settings) -> PlugIns
+  ex. Preferences (Settings) -> PlugIns -> search for "Scalariform"
+  ex. create a Scala project
+      1) Install scala plugin:
+         Preferences (Settings) -> PlugIns -> search for "Scala"
+      2) Restart intellij
+      3) Set up JDK:
+         Configure -> Project defaults -> Project structure: ex. JDK 1.8
+      4) Create a project:
+         Create New Project -> select "Scala" -> select "SBT project"
+         after all dependencies are downloaded, you will see the src/ folder
 
 # general issues
   1) Cannot find declaration to go to:
