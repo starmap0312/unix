@@ -44,6 +44,8 @@
      projects            : list projects
      project project_name: set current project to project_name
      testOnly MyTest     : run MyTest only
+     ex.
+       sbt "project project_name" testOnly com.mydomain.MyClassTest
      run                 : run the project
 
 # sbt dependency management flow
@@ -155,19 +157,6 @@ addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
    sbt dependencyGraph: shows an ASCII graph of the project's dependencies on the sbt console (only supported on sbt 0.13)
    sbt dependencyBrowseGraph: show the dependency graph on browser
 
-# issues
-1) sbt test: [info] No tests were executed
-   unlike Scala testing frameworks like ScalaTest (which can also run JUnit test cases),
-     both JUnit and this adapter are pure Java, so you can run JUnit tests with any Scala version supported by sbt
-     without having to build a binary-compatible test framework first
-   solution: 
-     junit-interface: an implementation of sbt's test interface for JUnit 4. This allows you to run JUnit tests from sbt.
-     add the following dependency to build.sbt:
-       libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
-     set default options in build.sbt file:
-       testOptions += Tests.Argument(TestFrameworks.JUnit, "-a")
-       # this shows stack traces and exception class name for AssertionErrors (thrown by all assert* methods in JUnit)
-
 # sbt plugins
 in project/plugin.sbt
 1) sbt-scalariform:
@@ -201,3 +190,20 @@ in project/plugin.sbt
    in version.sbt, add:
      version := "1.2.3" or
      version in ThisBuild := "1.5-SNAPSHOT"
+
+# issues
+1) sbt test: [info] No tests were executed
+   unlike Scala testing frameworks like ScalaTest (which can also run JUnit test cases),
+     both JUnit and this adapter are pure Java, so you can run JUnit tests with any Scala version supported by sbt
+     without having to build a binary-compatible test framework first
+   solution:
+     junit-interface: an implementation of sbt's test interface for JUnit 4. This allows you to run JUnit tests from sbt.
+     add the following dependency to build.sbt:
+       libraryDependencies += "com.novocode" % "junit-interface" % "0.11" % "test"
+     set default options in build.sbt file:
+       testOptions += Tests.Argument(TestFrameworks.JUnit, "-a")
+       # this shows stack traces and exception class name for AssertionErrors (thrown by all assert* methods in JUnit)
+2) Waiting for lock on /Users/username/.ivy2/.sbt.ivy.lock to be available...
+   when resolving dependancies and there are conflicts due to launching two Play consoles
+   solution:
+     rm /Users/username/.ivy2/.sbt.ivy.lock
