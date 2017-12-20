@@ -43,6 +43,9 @@
 
 # disable entering yes when making the first-time connection to a host not in .ssh/known_hosts
   add a new line in .ssh/config: StrictHostKeyChecking no
+  ex.
+    Host *.mydomain.com
+    StrictHostKeyChecking no
 
 # ssh-agent
 

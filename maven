@@ -43,6 +43,14 @@
   ex. mvn -DskipTests=true clean package # skip Tests when packaging at target/ folder, ex. target/storm-starter-0.9.3-incubating-SNAPSHOT.jar
   ex. mvn -DskipTests=true clean install # skip Tests when installing package at local repo, ex. ~/.m2/repository/org/apache/storm/
 
+# path of resolved/downloaded dependency jars
+(maven)
+  ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].jar
+  ex. ~/.m2/repository/mydomain/mylib/5.54-SNAPSHOT/mylib-5.54-SNAPSHOT.jar
+(sbt)
+  ~/.ivy2/cache/[groupId]/[artifactId]/jars/[artifactId]-[version].jar
+  ex. ~/.ivy2/cache/mydomain/mylib/jars/mylib-5.54-SNAPSHOT.jar .
+
 # build the libraries with dependencies
   1) add dependencies in a jar:
      you can put both log4j.jar and jodatime.jar inside the final.jar, but your classes are unable to call other classes which is inside the unpack log4j.jar
