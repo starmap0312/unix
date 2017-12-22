@@ -54,3 +54,23 @@
        submit your CSR to a certificate authority (ex. Verisign, Thawte and RapidSSL)
        when CA approves the certificate, the person who requested the certificate gets a .crt file
        this is the actual certificate that needs to be installed on the web server
+
+# Privacy Enhanced Mail (PEM): ex. xxx.pem or xxx.key files
+  1) xxx.csr file:
+     a Certificate Signing Request
+     applications can generate these for submission to certificate-authorities (CA)
+     it includes some/all of the key details of the requested certificate such as subject, organization, state, whatnot, and
+       the "public key" of the certificate to get signed
+     these get signed by the CA and a certificate is returned, i.e. .crt file
+       the returned certificate is the public certificate (which includes the "public key" but not the private key)
+  2) xxx.crt file:
+     .pem (or rarely .der) formatted file with a different extension
+     it is recognized by Windows Explorer as a certificate, which .pem is not
+  3) xxx.pem file:
+     a container format that may:
+       include just the "public certificate" (ex. with Apache installs, and CA certificate files /etc/ssl/certs), or
+       include an entire "certificate chain" including "public key, private key, and root certificates"
+     it it is a base64 translation of the x509 ASN.1 keys
+  4) xxx.key file:
+     a PEM formatted file containing just the "private-key" of a specific certificate, ex. /etc/ssl/private of Apache installs
+     the rights on these files are very important, and some programs will refuse to load these certificates if they are set wrong
