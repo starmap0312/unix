@@ -72,3 +72,6 @@
    Role (R): Job function or title which defines an authority level
    Permissions (P): An approval of a mode of access to a resource
 
+# Authentication vs. Authorization
+  1) Authentication: the process of verifying who you are
+  2) Authorization : the process of verifying that you have access to a resource

@@ -1,0 +1,22 @@
+# Amazon S3 (Simple Storage Service) Basics:
+  1) Amazon S3 stores data as objects within buckets
+     an object consists of a file (optionally, any metadata that describes that file)
+     buckets are the containers for objects, and there is an "unlimited" storage for each bucket
+  2) When you upload a file, you can set permissions on the object (as well as any metadata)
+  3) you can control access to it (who can create, delete, and list objects in the bucket)
+     files can be served privately (via signed URLs), or
+     files can be served publicly via an appropriately configured ACL (Access Control List) or ACP (Access Control Policy)
+  4) you can view access logs for the bucket and its objects
+  5) you can choose the geographical region where Amazon S3 will store the bucket and its contents
+
+# Metadata vs. Tag
+  1) Metadata is part of object and it is immutable, whereas Tag is not part of object
+  2) Metadata will be returned in the HTTP headers, whereas Tags will not be returned in headers
+  3) S3 encryption will not encrypt metadata and tag, so do NOT leave any digital footprint
+
+# Restrictions
+  1) No object locking
+     if PUTs are simultaneously to the same key, the latest timestamp wins
+  2) No atomic updates across keys
+     you can not make the update of one key dependent on the update of another
+
