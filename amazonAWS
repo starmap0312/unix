@@ -1,3 +1,15 @@
-# What Is IAM
+# What Is IAM (Identity and Access Management)
   1) Identity and Access Management (IAM) is a web service that helps you securely control access to AWS resources
-  2) you use IAM to control who is authenticated (signed in) and authorized (has permissions) to use resources.
+     Manage user access and encryption keys
+  2) you use IAM to control who is authenticated (signed in) and authorized (has permissions) to use resources
+  ex. you can create a IAM role that you would like to obtain temporary credentials for, and then
+      you can setup a trust relationship for that role whenever someone presents a temporary credential
+
+# What are IAM roles?
+  1) a secure way to grant permissions to entities that you trust
+     examples of entities:
+       IAM user in another account
+       application code running on an EC2 instance that needs to perform actions on AWS resources
+       an AWS service that needs to act on resources in your account to provide its features
+       users from a corporate directory who use identity federation with SAML
+  2) IAM roles issue keys that are valid for short durations, making them a more secure way to grant access

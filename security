@@ -42,7 +42,7 @@
   1) SSO (Single Sign-On) is a property of access control of multiple related, but independent software systems
   2) a user logs in with a single ID and password to gain access to a connected system or systems without using
      different usernames or passwords
-  3) implementation: achieved over IP networks using cookies but only if the sites share a common DNS parent domain
+  3) implementation: achieved over IP networks using "cookies" but only if the sites share a "common DNS parent domain"
 
 # TLS: Transport Layer Security
   1) SSL (Secure Sockets Layer) is TLS's predecessor
