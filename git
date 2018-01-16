@@ -315,6 +315,28 @@
     f40f9468ceb7d6fac5687a1f6fed9522e3aacb1a
     a0765b5f9bdcefcd9eb95d436bb5c24455a54458 (HEAD -> master, only show the above, not shown here)
 
+# plumbing vs. porcelain commands
+  "porcelain" is the material from which toilets are made, git uses this terminology in analogy, to separate the low-level and high-level commands
+  1) plumbing commands : low-level commands that users don not usually need to use directly
+     porcelain commands: high-level commands that are more user-friendly
+  2) programmatically, never rely on porcelain commands, but rely on plumbing commands instead
+     because they produce a more stable and/or more machine-readable output
+  3) note: you can use in script a --porcelain option to get plumbing command output ()
+     i.e. --porcelain option means I am implementing porcelain so please give me plumbing-style output
+     ex. git status --porcelain
+         git push --porcelain
+  4) plumbing command output
+     ex. git status --porcelain
+         the output status line for each ref will be tab-separated and sent to stdout instead of stderr
+           M file1
+           M file2
+     status format
+     ??: untracked
+     A : new
+      D: deleted project file
+      M: Modified but not added
+     M : Modified and added
+
 # alias
   1) edit ~/.gitconfig to add git command shortcuts for each individual repo
      [alias]
@@ -340,3 +362,4 @@
      alias gcotb='git checkout --track -b'
      alias glog='git log'
      alias glogp='git log --pretty=format:"%h %s" --graph'
+
