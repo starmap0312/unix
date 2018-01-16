@@ -103,3 +103,12 @@
      a remote server, loads the raw bytecode files via HTTP, and turns them into classes inside the JVM
   6) other ClassLoader ideas:
      used for Security, Encryption, Archiving, Self-extracting programs, Dynamic generation, etc.
+
+# command line tool
+1) jps: Java Virtual Machine Process Status Tool
+   jps [options] [hostid]
+     the tool is limited to reporting information on JVMs for which it has the access permissions
+     options:
+       -m: output the arguments passed to the main method. The output may be null for embedded JVMs
+     ex. jps -m
+

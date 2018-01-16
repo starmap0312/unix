@@ -16,7 +16,9 @@
 
 # git add
   git add -A
-  -A, --all: all files in the entire working tree are updated
+    -A, --all: all files in the entire working tree are updated
+  git add --update
+    -u, --update: all tracked files in the entire working tree are updated
 
 # git pull: fetch from and integrate with a local branch
   git pull [--rebase] [repo] [branch]
@@ -137,6 +139,7 @@
   git reset --mixed B (default)
     HEAD points to B
     git status: unstaged (the index still has the changes from C, waiting to be staged)
+    i.e. git reset B = git reset --mixed B = git reset --soft B + git reset HEAD [all staged files]
   git reset --hard B
     HEAD points to B
     git status: lose changes permanently
@@ -247,12 +250,13 @@
   used to switch between branches without commiting the changes
   1) git stash list             : list all stashed states 
      ex.
-       stash@{0}: WIP on master : 049d078 added the index file
+       stash@{0}: WIP on master : 049d078 added the index file (the most recent stash)
        stash@{1}: WIP on master : c264051 Revert "added file_size"
   2) git stash apply: restore to the most-recent stashed state
      git stash apply stash@{2}  : restore to the specified stashed state
   3) git stash drop stash@{0}   : drop the specified stashed state
   4) git stash show -p stash@{2}: show git diff against a specific stash
+     git stash show -p          : show git diff against the most recent stash
 
 # Webhooks
   whenever some event is triggered, GitHub sends a HTTP POST payload to the configured URL

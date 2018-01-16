@@ -40,3 +40,14 @@ ex2. 2-level nested classes
   }
   // note: you cannnot construct Baz instance in Java: new Foo.Bar.Baz()
   // therefore, it is not recommended to have 2-level nested classes
+
+# scala REPL (Read-Eval-Print Loop)
+1) the Scala REPL is a tool (scala) for evaluating expressions in Scala
+2) the scala command will execute a source script by wrapping it in a template and then compiling and executing
+   the resulting program
+3) in interactive mode, the REPL reads expressions at the prompt, wraps them in an executable template, and then
+   compiles and executes the result
+4) previous results are automatically imported into the scope of the current expression as required
+5) Ammonite: an alternative REPL 
+   Ammonite project provides a richer shell environment
+

@@ -313,3 +313,11 @@ ex. mvn -X org.apache:org.apache.commons
    ex. mvn archetype:generate -DgroupId=com.myMaven.app
        mvn exec:java -Dexec.mainClass=com.myMaven.app.App
        mvn -DskipTests=true clean package
+
+# META-INF/
+  an internal meta inormation directory
+  1) MANIFEST.MF
+     manifest file used to define extension and package related data
+  2) .DSA: ex. META-INF/BC1024KE.DSA, META-INF/BC2048KE.DSA
+     signature block file associated with the signature file with the same base file name
+     this file stores the digital signature of the corresponding signature file

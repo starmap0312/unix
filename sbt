@@ -139,14 +139,21 @@ assemblyShadeRules in assembly ++= Seq(
 resolvers += Resolver.typesafeRepo("releases")
 resolvers += Resolver.sbtPluginRepo("snapshots")
 
-2) other plugins
+2) other plugins: ex. show dependency graph
 addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
 addSbtPlugin("org.scalariform" % "sbt-scalariform" % "1.6.0")
 addSbtPlugin("com.lightbend.sbt" % "sbt-java-formatter" % "0.2.0")
 
-2) equivalent to maven's release plugin used by java platform
+3) equivalent to maven's release plugin used by java platform
 addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.4")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
+
+4) dependency resolver:
+a Scala library to fetch dependencies from Maven / Ivy repositories
+addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
+
+5) documentation:
+addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.3.+")
 
 # show dependency tree (i.e. mvn dependency:tree)
 1) add plugin to project/plugins.sbt

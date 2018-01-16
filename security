@@ -45,7 +45,7 @@
   3) implementation: achieved over IP networks using "cookies" but only if the sites share a "common DNS parent domain"
 
 # TLS: Transport Layer Security
-  1) SSL (Secure Sockets Layer) is TLS's predecessor
+  1) SSL (Secure Sockets Layer) is TLS's predecessor (TLS is the next generation protocol after SSL)
   2) it is a cryptographic protocol that provide communications security over a computer network
   3) it provides privacy and data integrity between two communicating computer applications
      it supports many different methods for exchanging keys, encrypting data, and authenticating message integrity
@@ -75,3 +75,23 @@
 # Authentication vs. Authorization
   1) Authentication: the process of verifying who you are
   2) Authorization : the process of verifying that you have access to a resource
+
+# Token based vs.Certificate based authentication 
+  0) Cookie:
+     when authenticated, the client gets a response with header: set-cookie
+     every time the client requests, the client uses the cookies by putting the cookie in its request header: set-cookie
+  1) Tokens: a symmetric key, i.e. the same key has to be both on the client and the server to be able to authenticate users
+     when authenticated, the client gets a token
+     every time the client requests, the client uses the token by putting the token in its request header: Authentication
+     (cookie vs. token)
+     stateless: token contains some extra information, so the servers needs not to maintain the session in a shared memory (easier to scale up to multiple servers)
+     domain:    cookie is restricted to a specific domain, whereas token has no such limitation
+  2) Certificates: an asymmetric set of keys, i.e. certificates are based on public-key cryptography and the client has the private key that is never shared by anyone else
+     the public key is sent to the Certificate Authority (CA) to be signed and stamped into a certificate
+     the client then get the certificate (signed public key) from server and verifies it with CA, and then uses it to encrypt its message 
+     as only the server has the private key (the one never shared) and the client also verifies with CA that the server is trusted, so the message is safe to send to the server
+
+# X.509 Certificate
+  1) a digital certificate that uses the widely accepted international X.509 public key infrastructure (PKI) standard
+  2) it is used to verify that a public key contained within the certificate belongs to some trusted entity (ex. user, computer or service identity)
+
