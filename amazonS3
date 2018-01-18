@@ -20,3 +20,7 @@
   2) No atomic updates across keys
      you can not make the update of one key dependent on the update of another
 
+# ObjectMetadata.getETag() vs. ObjectMetadata.getContentMD5()
+  1) getETag()      : the metadata represents the "hex encoded 128-bit MD5 digest" as computed by Amazon S3 server
+  2) getContentMD5(): the metadata represents the "base64-encoded 128-bit MD5 digest" as computed  by the client (use ObjectMetadata.setContentMD5() when sending the request)
+                      it returns null if the MD5 hash of the content has not been set

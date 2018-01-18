@@ -1,0 +1,2 @@
+# to inspect requests and responses headers
+  Right-Click "Inspect" -> "Network" tab -> Reoload the page -> find the page file: ex. index.html
