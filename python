@@ -55,3 +55,6 @@
     >>> text.encode('utf8')
         b'\xc3\xa1'    <== bytes literal 
 
+# command-line json.tool
+  1) validate json file:
+     python -m 'json.tool' /path/to/json/file 

@@ -1,0 +1,99 @@
+# Akka Dispatchers vs. Java Executor framework
+  1) in Akka, dispatchers are based on the Java Executor framework (part of java.util.concurrent):
+       class Dispatcher has a subtype of java.util.concurrent.ExecutorService (which extends java.util.concurrent.Executor, used to execute a Runnable, i.e. a task)
+  2) Java Executor provides the framework for the execution of asynchronous tasks
+     it is based on the "producer–consumer model":
+       the act of task submission (producer) is decoupled from the act of task execution (consumer)
+       the threads that submit tasks are different from the threads that execute the tasks
+  3) Akka Dispatcher usage:
+     i.e. Java's Executor contexts supported by Akka 
+     i) java.util.concurrent.ThreadPoolExecutor:
+        the idea is to create a pool of worker threads
+        * this minimizes the "overhead" of allocation/deallocation of threads
+        * tasks are assigned to the pool using a queue
+        * if the number of tasks exceeds the number of threads, then the tasks are queued up until any thread in the pool is available
+     ii) java.util.concurrent.ForkJoinPool:
+        the idea is to divide a large task into smaller tasks whose solutions are then combined for the final answer
+        * this maximizes the "throughput" of processor cores
+        * tasks need to be independent to be able run in parallel
+        * "work stealing": threads in the pool will execute tasks created by other active tasks (pending thread execution)
+  4) java.util.concurrent.ThreadPoolExecutor and java.util.concurrent.ForkJoinPool
+     "ThreadPoolExecutor" extends AbstractExecutorService extends ExecutorService extends Executor
+     "ForkJoinPool"       extends AbstractExecutorService extends ExecutorService extends Executor
+     i) "Executor":
+        // it is an object that executes submitted Runnable tasks
+        public interface Executor {
+          void execute(Runnable command);
+        }
+    ii) "ExecutorService" extends "Executor":
+        // it is an Executor that provides methods to manage termination and methods that can produce a Future for tracking progress of one or more asynchronous tasks
+        // it can be shut down, which will cause it to reject new tasks
+        // upon termination, it has no tasks actively executing, no tasks awaiting execution, and no new tasks can be submitted
+        public interface ExecutorService extends Executor {
+            void shutdown();
+            <T> Future<T> submit(Callable<T> task);
+        }
+   iii) "ThreadPoolExecutor" extends "AbstractExecutorService" extends "ExecutorService":
+        // it is an ExecutorService that executes each submitted task using one of possibly several pooled threads
+        // Thread pools provide improved performance when executing large numbers of asynchronous tasks
+        // they provide a means of bounding and managing the resources, including threads, consumed when executing a collection of tasks
+        public class ThreadPoolExecutor extends AbstractExecutorService {
+            public void execute(Runnable command) {
+                ... implementation ...
+            }
+        }
+        // you can construct FixedThreadPool (using Executors.newFixedThreadPool) or CachedThreadPool (using Executors.newCachedThreadPool)
+
+        "ForkJoinPool" extends "AbstractExecutorService" extends "ExecutorService":
+        // it is an ExecutorService for running ForkJoinTasks
+        // it provides the entry point for submissions from non-ForkJoinTask clients, as well as management and monitoring operations
+        public class ForkJoinPool extends AbstractExecutorService {
+            public <T> ForkJoinTask<T> submit(ForkJoinTask<T> task) {
+                ... implementation ...
+            }
+        }
+        // suitable for recursive calculations
+  5) Akka Dispatcher:
+     i) it has a ExecutorServiceFactoryProvider, which can be used to create ExecutorServiceFactory, which can be used to create a Java "ExecutorService"
+        so you may think of Akka dispatcher as one (also an Executor) that can be used to create different types of thread pools
+    ii) depending on the nature of actors, you can create a ForkJoinPool (most common) or a CachedThreadPool (a ThreadPoolExecutor, for I/O tasks), etc.
+
+# Akka Dispatcher
+  1) in Akka, the dispatcher controls and coordinates the message dispatching to the actors mapped on the underlying threads
+     they make sure that the resources (threads) are optimized and messages (in mailbox) are processed (by actors) as fast as possible
+  2) Akka provides multiple dispatch policies (customized according to number of cores or memory available and type of application workload)
+     Threads are the underlying resources, which can be optimized based on the available CPU cores and the type of application workload
+  3) types of Akka dispatchers:
+     i) Dispatcher (default):
+        an event-based dispatcher that binds a set of actors to a thread pool backed up by a "BlockingQueue"
+        * "every actor has its own mailbox"                                     (i.e. possibly unbalanced load)
+        * "all actors share threads from the same thread pool"                  (i.e. better throughput for non-blocking operations)
+        * the dispatcher is backed by either a ThreadPoolExecutor or ForkJoinPool (w/ work stealing) executor
+    ii) Pinned dispatcher:
+        the dispatcher dedicates a unique thread for each actor using the thread
+        the dispatcher is useful when the actors are doing I/O operations or performing long-running calculations
+        * "every actor has its own mailbox"                                     (i.e. possibly unbalanced load)
+        * "each actor has a dedicated thread from its own thread pool"          (i.e. good for blocking operations)
+          ex. if the code is making I/O calls or database calls, then such actors will wait until the task is finished
+              for such blocking operation, the pinned dispatcher performs better than the default dispatcher
+        * the dispatcher is backed by a ThreadPoolExecutor
+    ii) Balancing dispatcher:
+        an event-based dispatcher that redistributes work from busy actors and allocate work to idle ones
+          i.e. the dispatcher looks for idle actors and dispatches the messages to them for processing
+        task redistribution is similar to "work stealing" of "fork join pool"
+        * "all actors share the same mailbox"                                   (i.e. possibly balanced load)
+        * "all actors of the same type share threads from the same thread pool" (i.e. better throughput for non-blocking operations)
+        * the dispatcher is backed by a either a ThreadPoolExecutor or ForkJoinPool (w/ work stealing) executor
+  4) mailboxes are related to "queue" implementation from the Java concurrent package
+     types of queues:
+     i) Blocking queue:
+        a queue that waits for space to become available before putting in an element
+        a queue that waits for the queue to become non-empty before retrieving an element
+    ii) Bounded queue:
+        queue that limits the size of the queue (i.e. you cannot add more elements than the specified size)
+     types of mailbox:
+     i) Unbounded mailbox         : java.util.concurrent.ConcurrentLinkedQueue (non-Blocking, non-Bounded)
+    ii) Bounded mailbox           : java.util.concurrent.LinkedBlockingQueue   (    Blocking,     Bounded)
+   iii) Unbounded priority mailbox: java.util.concurrent.PriorityBlockingQueue (    Blocking, non-Bounded)
+    iv) Bounded priority mailbox  : java.util.concurrent.PriorityBlockingQueue (    Blocking,     Bounded)
+
