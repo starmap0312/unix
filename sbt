@@ -215,3 +215,23 @@ in project/plugin.sbt
    when resolving dependancies and there are conflicts due to launching two Play consoles
    solution:
      rm /Users/username/.ivy2/.sbt.ivy.lock
+
+# sbt-native-packager plugin
+  SBT native packager lets you build application packages in native formats
+  1) it offers different archetypes for common configurations, ex. simple Java apps or server applications
+  2) it attempts to make building packages for different operating systems easier
+     ex. play framework can rely on the plugin to deploy to different operating systems
+  3) you need to add the plugin: edit plugins.sbt
+       addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "x.y.z")
+     you need to enable the archetype: edit build.sbt
+       enablePlugins(JavaAppPackaging)
+  4) create a package
+     universal:packageBin: this generates a universal zip file
+     rpm:packageBin      : this generates an rpm
+     docker:publishLocal : this builds a Docker image using the local Docker server
+  5) the autoplugin hierarchy
+     SbtNativePackager - Universal - Linux - RPM / Debian
+                                   - Docker
+  6) Universal Plugin:
+     output Zip format: sbt universal:packageBin
+     output Tar format: sbt universal:packageZipTarball
