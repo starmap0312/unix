@@ -6,3 +6,51 @@
 2) python manage.py makemigrations [appname]
    this makes a new migration file for your new model (ex. 00002_...)
 3) python manage.py migrate <appname> 00002
+
+# django.db.models fields: CharField vs. TextField
+ex.
+  models.CharField(max_length=500, blank=False) # the default form widget for this field is a TextInput
+  models.TextField(max_length=500)              # the default form widget for this field is a Textarea
+1) CharField() should be used for smaller strings and TextField() should be used for larger strings
+2) use CharField when you need to limit the maximum length, TextField otherwise
+3) they are just like in RDBMS, we have VARCHAR vs. TEXT
+   VAR : specified with a maximum length and is more efficient in terms of performance or storage 
+   TEXT: limited only by hardcoded implementation limits (not a DB schema)
+
+# django.db.models field parameters: null vs. blank
+ex.
+  models.CharField(max_length=100, null=True, blank=True)
+1) null is for the database column value
+   null=True sets NULL on the column in database (versus NOT NULL)
+2) blank is for the field requirement in forms
+   it determines whether the field will be required in forms (this includes the admin and your own custom forms)
+   if blank=True then the field will not be required, whereas if it's False the field cannot be blank
+3) blank values for Django field types such as DateTimeField or ForeignKey will be stored as NULL in the database 
+
+# usage: manage.py sqlmigrate
+  python manage.py sqlmigrate [app_label] [migration_name]
+    it prints the SQL statements for the named migration
+  ex.
+  1) add a model file:
+     ex. edit my_model.py 
+         class MyModel(models.Model)
+  2) run django makemigrations command to create the migration .py file
+     ex. python manage.py makemigrations myapp
+         Migrations for 'myapp':
+           0001_initial.py:
+             - Create model MyModel 
+  3) run django migrate command to change the database schema
+     ex. python manage.py migrate myapp
+  *) show all the django migrations
+     ex. python manage.py showmigrations
+         myapp
+           [X] 0001_initial
+  *) show the corresponding sql commands of the migration
+     ex. python manage.py sqlmigrate myapp 0001_initial
+         BEGIN;
+         --
+         -- Create model NavTerm
+         --
+         CREATE TABLE `myapp_mymodel` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `some_field` varchar(500) NOT NULL, `foreign_key_table_id` integer NOT NULL);
+         ALTER TABLE `myapp_mymodel` ADD CONSTRAINT `myapp_model_foreign_id_ce935d65_fk_myapp_foreign_id` FOREIGN KEY (`foreign_key_table_id`) REFERENCES `myapp_foreign_key_table` (`id`);
+         COMMIT;
