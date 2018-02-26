@@ -86,3 +86,22 @@
 # command-line json.tool
   1) validate json file:
      python -m 'json.tool' /path/to/json/file 
+
+# common issues
+1) 'ascii' codec cannot encode character:
+   python str is ascii encoded, so it cannot encode unicode character, ex. u'中'
+   ex.
+     >>> u'中'
+     u'\u4e2d'
+
+     # a unicode char cannot be converted into an ascii str
+     >>> str(u'中')
+     UnicodeEncodeError: 'ascii' codec cannot encode character u'\u4e2d' in position 0: ordinal not in range(128)
+
+   solution:
+     # a utf8 char can be converted into an ascii str
+     >>> str(u'中'.encode('utf8'))
+     '\xe4\xb8\xad'
+     # or simply
+     >>> '中'
+     '\xe4\xb8\xad'
