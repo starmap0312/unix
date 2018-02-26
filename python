@@ -105,3 +105,6 @@
      # or simply
      >>> '中'
      '\xe4\xb8\xad'
+     # decode an ascii str of utf8 char to a unicode char
+     >>> '\xe4\xb8\xad'.decode('utf8')
+     u'\u4e2d'
