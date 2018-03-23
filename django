@@ -49,7 +49,7 @@ ex.
      ex. python manage.py sqlmigrate myapp 0001_initial
          BEGIN;
          --
-         -- Create model NavTerm
+         -- Create model MyModel
          --
          CREATE TABLE `myapp_mymodel` (`id` integer AUTO_INCREMENT NOT NULL PRIMARY KEY, `some_field` varchar(500) NOT NULL, `foreign_key_table_id` integer NOT NULL);
          ALTER TABLE `myapp_mymodel` ADD CONSTRAINT `myapp_model_foreign_id_ce935d65_fk_myapp_foreign_id` FOREIGN KEY (`foreign_key_table_id`) REFERENCES `myapp_foreign_key_table` (`id`);

@@ -74,3 +74,24 @@
   4) xxx.key file:
      a PEM formatted file containing just the "private-key" of a specific certificate, ex. /etc/ssl/private of Apache installs
      the rights on these files are very important, and some programs will refuse to load these certificates if they are set wrong
+
+# digital signature
+1) definition: 
+   sender:
+     message digest = hash(clear message)
+     digital signature = encrypt_by_private_key(message digest)
+   receiver:
+     message digest = hash(clear message)
+     decrypt_by_public_key(digital signature)
+     check if the above two are identical, if so, then the clear message is not modified
+2) http://david50.pixnet.net/blog/post/28798505-%5B%E7%AD%86%E8%A8%98%5Ddigital-signature-%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0
+
+# SSL X.509 Certificate
+1) hierarchical
+   Root CA -> some trusted CA -> Certificate
+2) public key certificate: 
+   (public key certificate) = some trusted CA provides a (digital signature) of the (public key of domain abc.com)
+   user uses (public key of some trusted CA) to verify if the (public key of domain abc.com) is modified
+   if not, then user can be sure that (public key of domain abc.com) is not modified, provided the trusted CA's guarantee
+   use then send encrpt_by_public_key(secret data) to domain abc.com, since only domain abc.com can decrpt_by_private_key(encrpted_secret_data)
+3) http://www.study-area.org/tips/certs/certs.html

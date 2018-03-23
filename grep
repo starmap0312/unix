@@ -41,7 +41,7 @@
   grep "pattern" *substring*
     grep "pattern" for all files with filenames containing substring
 
-  grep -r "pattern" --include="*.py" . (grep -r "pattern" --include=\*.py .)
+  grep -r "pattern" --include="*.py" . (or grep -r "pattern" --include=\*.py .)
     grep "pattern" for file extenstion *.py recursively (need quotes/backslash to avoid * being expanded)
     i.e. grep -r "pattern" --include="*.py" . (similiar to: find . -name \*.py or find . -name "*.pyc")
   grep -r "pattern" --exclude="*.py" .
