@@ -86,17 +86,23 @@
      decrypt_by_public_key(digital signature)
      check if the above two are identical, if so, then the clear message is not modified
 2) digital certificate:
-   when you send a digitally-signed message (i.e. clear message + digital signature), you also send your certificate and public key
-   certificates are issued by a certification authority (CA), which are usually valid for a year (the signer must renew yearly)
+   when you send a digitally-signed message (i.e. clear message + digital signature), you also send your (public key + digital certificate)
 3) http://david50.pixnet.net/blog/post/28798505-%5B%E7%AD%86%E8%A8%98%5Ddigital-signature-%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0
 
 # digital signature vs. digital certificate
-1) a digital signature is used to verify a message
+1) a digital signature is used to verify a message is not altered
    the receiver uses the digital signature to check if the message is altered
    by hashing the clear message and then comparing it with the decrypted digital signature using the public key
-2) a digital certificate is used to bind public keys to persons or other entities
+2) a digital certificate is used to verify a public key is not altered (bind the public key to an entity)
    the receiver uses check if the public key used to decrypt the signature belongs to the sender
+     digital certificates are issued by a certification authority (CA), which are usually valid for a year (the signer must renew yearly)
    the certificate itself is signed by a trusted third party (i.e. Certificate Authority, CA)
+     it contains the digital signature of the Certifier, i.e. a (digital signature) of the (public key of domain abc.com)
+     (digital signature) = encrpyt_by_CA_private_key(public key of domain abc.com)
+     the receiver uses CA's public key to verify that the (public key of domain abc.com) is not altered
+3) with (digital signature) + (digital certificate)
+   the receiver can use the correct & certified (public key of domain abc.com) to verify that the clear message is not altered
+4) https://www.quora.com/What-is-the-difference-between-a-digital-certificate-a-digital-signature
 
 # SSL X.509 Certificate
 1) hierarchical
