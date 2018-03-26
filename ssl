@@ -34,8 +34,7 @@
 
   openssl command [ command_opts ] [ command_args ]
 
-  example:
-    Generate a CSR with OpenSSL
+  example1: Generate a CSR with OpenSSL
     a) Generate the RSA key
        openssl genrsa: generation of RSA Private Key (default: 1024 bit long modulus)
        openssl genrsa -out server.key 2048
@@ -54,6 +53,16 @@
        submit your CSR to a certificate authority (ex. Verisign, Thawte and RapidSSL)
        when CA approves the certificate, the person who requested the certificate gets a .crt file
        this is the actual certificate that needs to be installed on the web server
+
+ example2: Check the expiration date of the certificate of a remote server
+   </dev/null openssl s_client -connect [hostname]:[port] 2>/dev/null | openssl x509 -noout -issuer -enddate
+   ex. </dev/null openssl s_client -connect www.google.com:443 2>/dev/null | openssl x509 -noout -issuer -enddate
+
+       issuer= /C=US/O=Google Inc/CN=Google Internet Authority G2
+       notAfter=Jun  5 18:17:00 2018 GMT
+
+ example3: Test the certificate of a remote server using the installed local .crt files in /etc/ssl/certs/ (CA's .crt that you trusted and installed)
+ 
 
 # Privacy Enhanced Mail (PEM): ex. xxx.pem or xxx.key files
   1) xxx.csr file:

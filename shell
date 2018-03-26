@@ -502,3 +502,11 @@
   ...
   COMMENT
 
+# /dev/null
+  1) </dev/null [some commnad]:
+     used to send EOF to the program, so that it does not wait for input 
+     ex. </dev/null openssl s_client -connect www.google.com:443
+  2) [some command] 2>/dev/null:
+     redirect stderr to /dev/null, so that error will not be outputed in console
+     ex. </dev/null openssl s_client -connect www.google.com:443 2>/dev/null
+  3) openssl s_client -connect [hostname]:[port] 2>/dev/null </dev/null | openssl x509 -noout -enddate
