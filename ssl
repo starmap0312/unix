@@ -76,7 +76,8 @@
      the rights on these files are very important, and some programs will refuse to load these certificates if they are set wrong
 
 # digital signature
-1) definition: 
+1) digital signature: 
+   a digital signature confirms that the information originated from the signer and has not been altered
    sender:
      message digest = hash(clear message)
      digital signature = encrypt_by_private_key(message digest)
@@ -84,7 +85,18 @@
      message digest = hash(clear message)
      decrypt_by_public_key(digital signature)
      check if the above two are identical, if so, then the clear message is not modified
-2) http://david50.pixnet.net/blog/post/28798505-%5B%E7%AD%86%E8%A8%98%5Ddigital-signature-%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0
+2) digital certificate:
+   when you send a digitally-signed message (i.e. clear message + digital signature), you also send your certificate and public key
+   certificates are issued by a certification authority (CA), which are usually valid for a year (the signer must renew yearly)
+3) http://david50.pixnet.net/blog/post/28798505-%5B%E7%AD%86%E8%A8%98%5Ddigital-signature-%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0
+
+# digital signature vs. digital certificate
+1) a digital signature is used to verify a message
+   the receiver uses the digital signature to check if the message is altered
+   by hashing the clear message and then comparing it with the decrypted digital signature using the public key
+2) a digital certificate is used to bind public keys to persons or other entities
+   the receiver uses check if the public key used to decrypt the signature belongs to the sender
+   the certificate itself is signed by a trusted third party (i.e. Certificate Authority, CA)
 
 # SSL X.509 Certificate
 1) hierarchical
