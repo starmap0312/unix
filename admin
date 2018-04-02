@@ -78,6 +78,10 @@
   lsof filename: display users currently using filename
     (ex. /usr/bin/vim ==> display users currently using vim)
   lsof -n: inhibits the conversion of network numbers to host names for network files (run faster)
+  lsof -p <PID>: check the open files of a process
+    ex. lsof -p 22061
+      java    22061 john 26u  IPv6          210270138        0t0       TCP host1.com: 37422->host2.com (ESTABLISHED)
+      (socket file is opened for tcp connection from host1.com (local) to host2.com (remote))
 
   when delete file does not release the space, it might be caused by some process opening the file:
     sudo lsof | grep delete              (find out what process is blocking the space release)
