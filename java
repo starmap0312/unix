@@ -112,3 +112,39 @@
        -m: output the arguments passed to the main method. The output may be null for embedded JVMs
      ex. jps -m
 
+# daemon thread
+1) a daemon thread is a thread that does not prevent the JVM from exiting when the program finishes, i.e. the thread is still running when program finishes
+   ex. a daemon thread of the garbage collection
+2) you can use the setDaemon(boolean) method to change the Thread daemon properties before the thread starts
+   ex.
+public class SimpleThread { 
+    public static void main(String[] args) { 
+        Thread thread = new Thread(new Runnable() {
+            public void run() { 
+                while(true) { 
+                    System.out.print("a created normal thread."); 
+                } 
+            }        
+        }); 
+        thread.start(); 
+        # the main program is about to finish, but the created normal thread is still running
+        #   the program cannot exit unless you abruptly call System.exit();
+        # if you want to exit the main program even though the created thread is not finished yet, you need to set the created thread as a Daemon thread
+    }
+}
+  ex.
+public class SimpleThread {
+     public static void main(String[] args){  
+         Thread thread = new Thread(new Runnable() {
+             public void run() {                        
+                 while(true) { 
+                     System.out.print("a created normal thread.");
+                 } 
+             }                                          
+         });
+         # note: if you want to make a user thread as Daemon, it must not be started otherwise it will throw IllegalThreadStateException
+         thread.setDaemon(true);  # setting the thread to be a daemon thread before starting it
+         thread.start();          # starting the thread
+         # the main program will finish normally here, as all non-daemon threads finish
+     }  
+}
