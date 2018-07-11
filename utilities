@@ -295,7 +295,9 @@
    -k, --insecure: allows curl to perform "insecure" SSL connections and transfers
      ex. curl -v -k https://www.example.com
    -d, --data-binary <data>: HTTP POST binary data (H), i.e. post data exactly as specified without extra processing
-     ex. curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://localhost:9000/api/
+     ex. curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' http://example.com:9000/upload/
+   -T, --upload-file <file>: this transfers the specified local file to the remote URL
+     ex. curl -T "filename.txt" http://example.com:9000/upload/
    -f, --fail: (HTTP) Fail silently (no output at all) on server errors (in case we get the HTTP error page and treats it as normal)
      ex. curl http://www.google.com/xxxxx    (get Error 404 page, but return code = 0)
          curl -f http://www.google.com/xxxxx (get error: curl: (22) 404 Not Found, return code = 22)
@@ -312,6 +314,13 @@
          ...
    -X, --request <command>: specifies a custom request method to use when communicating with the HTTP server
      ex. curl -X DELETE http://example.com:8080/document/docid/1 (suppose that example.com supports DELETE request method which deletes a docuemnt by its id)
+   -b, --cookie <data>: pass the data to the HTTP server in the Cookie header (received from the server in a "Set-Cookie:" line). The data is in the format "NAME1=VALUE1; NAME2=VALUE2"
+     ex. curl --cookie "userid=john; ip=1.2.3.4" http://www.google.com.tw
+   -c, --cookie-jar <filename>: specify to which file you want curl to write all cookies after a completed operation
+     ex. curl --cookie-jar cookie.txt  http://example.com:8080/document (write all cookies to file cookie.txt at completion)
+         curl --cookie     cookie.txt  http://example.com:8080/document (use the saved cookies in cookie.txt at a later time)
+   -x, --proxy [protocol://]host[:port]: use the specified proxy
+     ex. curl -x proxy-server.com:4080 'https://destination.com:4443/document'
 
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw

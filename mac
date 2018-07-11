@@ -1,0 +1,4 @@
+# /usr/local/Cellar/
+where the packages are installed
+  ex. /usr/local/Cellar/sbt/1.1.6/
+  ex. /usr/local/Cellar/scala/2.12.3/

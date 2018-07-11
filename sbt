@@ -5,9 +5,12 @@
      brew install sbt@0.13 
   2) install latest version
      brew install sbt
+     (/usr/local/Cellar/sbt/1.1.6: 500 files, 52.5MB, built in 4 seconds)
+  3) uninstall sbt
+     brew uninstall sbt
 
-# specify sbt version to use
-  edit project/build.properties
+# specify sbt version to use: it will fetch the sbt version from internet
+  edit project/build.properties (if this file is not provided, it will use the default sbt installed at your mac)
     sbt.version=0.13.15 # use an older version of sbt
 
 # specify artifact version
@@ -17,14 +20,17 @@
 # SBT (simple build tool) commands
   an interactive build tool
   a) Project-level tasks
-     sbt clean: deletes all generated files (the target directory)
+     sbt clean: deletes all generated files (the target directory: i.e. rm -rf target/ projects/target)
   b) Configuration-level tasks
      sbt              : load project (under the same folder of build.sbt), fetch dependencies, and enter console
      sbt compile      : compile the main sources (in the src/main/scala directory)
-     sbt test:compile : compile test sources only (in the src/test/scala/ directory)
-     sbt test:run     : run tests only             (in the src/test/scala/ directory)
+     sbt run          : this runs the project, i.e. the main classes in the main sources (i.e. src/main/scala)
      sbt test         : compile and run all tests detected during test compilation
-     sbt "test-only [test_name]": run a specific test, ex. sbt "test-only com.my_package.MyTest"
+     sbt test:compile : compile test sources only without running the tests (i.e. src/test/scala/)
+     sbt test:run     : test:run runs main classes defined in the test sources (i.e. src/test/scala/), i.e. similar to "sbt run" which runs main classes in the main sources (i.e. src/main/scala/)
+       ex. sbt -Darg=value test:run
+       ex. sbt debug clean -Darg=value test:run (this provides debug information and clean the target/ before running the test)
+     sbt "testOnly [test_name]": run a specific test, ex. sbt "testOnly com.my_package.MyTest"
      sbt package      : creates jar file containing files in src/main/resources and classes compiled from
                         src/main/scala and src/main/java (only project classes will be included in the jar)
      sbt war          : package for Java container sbt war
@@ -89,6 +95,9 @@
      i.e. marks this dependency as "changing".  Ivy will always check if the metadata has changed and then if the artifact has changed, redownload it
           sbt configures all -SNAPSHOT dependencies to be changing
      ex. libraryDependencies += "org.specs2" %% "specs2" % "1.7.20" % "provided" changing()
+
+# Forking tests: specifies that all tests will be executed in a single external JVM
+fork in Test := true
      
 # add local/remote snapshot repo for development:
   create file "dev.sbt" with the following content:
