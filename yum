@@ -23,3 +23,8 @@
        enabled=1
        gpgcheck=0
      sudo yum-config-manager --enable ==> set enabled=1 for [chef_rpms-release]
+
+# enable extra repo & install pip
+  wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  sudo rpm -ivh epel-release-latest-7.noarch.rpm
+  sudo yum install python-pip

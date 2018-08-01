@@ -52,3 +52,6 @@
        enabled=1
        gpgcheck=0
      sudo yum-config-manager --enable ==> set enabled=1 for [chef_rpms-release]
+
+# install pip
+

@@ -48,3 +48,17 @@
       require user to use sudo or be root
 
   ex. docker run -it -v filepath -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login
+
+# docker run: run a command in a new container
+1) docker run --rm: automatically remove the container when it exits
+   this runs the container at console which is removed when stopped
+   ex. docker run --rm -v `pwd`/logs:/opt/docker/logs
+2) docker run -d, --detach: detached mode
+   this runs the container in the background 
+   ex. docker run -d -v `pwd`/logs:/opt/docker/logs
+
+# docker exec: run a command in a running (existing) container
+options:
+  -i, --interactive: keep STDIN open even if not attached
+  -t: --tty: allocate a pseudo-TTY
+  ex. sudo docker exec -i -t 665b4a1e17b6 /bin/bash

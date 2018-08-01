@@ -35,6 +35,7 @@
                         src/main/scala and src/main/java (only project classes will be included in the jar)
      sbt war          : package for Java container sbt war
      sbt dist         : package for standalone Play package (build a standalone project issue)
+       this create a zip file: target/universal/<pkg-ver>.zip, which can be deploy to another machine and run the server via the unzipped script: <pkg-ver>/bin/<pkg> 
      sbt run <args>*  : runs main class of project in the same virtual machine as sbt (run an application)
      sbt -jvm-debug <port>:  Turn on JVM debugging, open at the given port (in IDE, select Run -> Attach to Local Process)
        ex. sbt -jvm-debug 5005 run
@@ -79,10 +80,13 @@
 
 # sbt publish
   1) sbt publish
-  2) sbt publishLocal
-     publish your developping library to a local Ivy repository
+  2) sbt publishLocal (publish to local repo and test the local library)
+     first, publish your developping library to a local Ivy repository: it will publish to
      ex. ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/poms/[artifact_id].pom
          ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/jars/[artifact_id]-assembly.jar
+     next, specify the local repository in build.sbt:
+       resolvers ++= Seq("Local Maven Repository" at "file:///Users/username/.ivy2/repository")
+       # add maven local repo: resolvers ++= Seq("Local Maven Repository" at "file:///Users/username/.m2/repository")
 
 # libraryDependencies
   1) "test" scope:
@@ -244,3 +248,21 @@ in project/plugin.sbt
   6) Universal Plugin:
      output Zip format: sbt universal:packageBin
      output Tar format: sbt universal:packageZipTarball
+
+# override property values in application.conf
+  ex. in application.conf, we have:
+
+  akka {
+    cluster {
+      seed-nodes = ["akka.tcp://TestApp@host1:2552"]
+    }
+  }
+
+  sbt run -D akka.cluster.seed-nodes=["akka.tcp://TestApp@host1:2552", "akka.tcp://TestApp@host2:2552"]
+  
+  (similarly, in Java, we can pass parameters to main function as such)
+
+  java [-options] -jar jarfile [args...]
+
+  ex. java -Darg1=true -jar myApplication.jar
+
