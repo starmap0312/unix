@@ -285,3 +285,10 @@
      (only prints the strings from the initialized and loaded sections of object files)
   8) sudo tcpdump -A -vvv 'port 4080'
      -v, -vv, -vvv: verbose output
+
+# watch active connections' statistics, as well as receive & send buffers (queues)
+  watch -d -n 1 netstat -n -p tcp
+    watch -n 1: refresh with interval 1 second (i.e. --interval)
+    watch -d:   highlight the differences between successive updates (i.e. --differences)
+    netstat -p tcp: show statistics about protocol tcp
+    netstat -n:     show network addresses as numbers

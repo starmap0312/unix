@@ -326,6 +326,7 @@
   kill -9 [PID] ==> kill a process
     signals: 9  ==> KILL, non-catchable, non-ignorable kill
              15 ==> TERM, software termination signal (default)
+             3  ==> SIGQUIT, Quit from keyboard
 
 # suspend process:
   CTRL + z to suspend running process and fg 1, fg 2 to bring it on foreground
