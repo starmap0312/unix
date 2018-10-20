@@ -321,6 +321,8 @@
          curl --cookie     cookie.txt  http://example.com:8080/document (use the saved cookies in cookie.txt at a later time)
    -x, --proxy [protocol://]host[:port]: use the specified proxy
      ex. curl -x proxy-server.com:4080 'https://destination.com:4443/document'
+   --cacert, --key, --cert:
+     ex. curl --cacert ./ca.cert.pem --key ./key.pem --cert ./cert.pem https://example/api/
 
   ex.
     curl -v -H "Host:www.google.com.tw" http://www.google.com.tw

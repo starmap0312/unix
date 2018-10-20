@@ -18,7 +18,7 @@
      groupId:artifactId:version specifies a unique package
        a group can have multiple artifacts (projects)
        a artifact (project) can have multiple versions
-  3) compile source (at the folder of pom.xml)
+  3) compile source (at the folder of pom.xml): this generates class files in target/
      mvn compile
      - HelloMaven
        - pom.xml
@@ -34,14 +34,30 @@
                System.out.println("Hello Maven!");
            }
        }
-  5) create package file
+  5) create package file: this generates .jar file in target/
      mvn package
      create .jar file (packaging) based on pom.xml
      create .war file (packaging) based on pom.xml, which will be deployed to Tomcat/JBoss server
-  6) clean/remove target folder
+  6) clean/remove target folder: this removes target/ folder
      mvn clean
   ex. mvn -DskipTests=true clean package # skip Tests when packaging at target/ folder, ex. target/storm-starter-0.9.3-incubating-SNAPSHOT.jar
   ex. mvn -DskipTests=true clean install # skip Tests when installing package at local repo, ex. ~/.m2/repository/org/apache/storm/
+
+  7) show dependencies: this shows all dependencies (including transitive dependencies) of your project
+     mvn dependency:tree
+     it is very helpful for debugging dependency version issues.
+     ex.
+     [INFO] mygroup:myartifact:jar:1.0-SNAPSHOT
+     [INFO] +- com.yahoo.vespa:vespa-http-client:jar:6.248.120:compile
+     [INFO] |  +- com.google.code.findbugs:annotations:jar:1.3.9:compile
+     [INFO] |  +- com.google.guava:guava:jar:18.0:compile
+     [INFO] |  +- org.apache.httpcomponents:httpclient:jar:4.4.1:compile
+     [INFO] |  |  +- commons-logging:commons-logging:jar:1.2:compile
+     [INFO] |  |  \- commons-codec:commons-codec:jar:1.9:compile
+
+     in the above tree, it means you add a dependency of artifect vespa-http-client:6.248.120 to the pom.xml file, and it furthur depends on other artifacts such as httpclient:4.4.1
+
+     (note: in sbt project, run command: add "sbt-dependency-graph" plugin, and then run command: sbt dependencyTree)
 
 # path of resolved/downloaded dependency jars
 (maven)
@@ -54,9 +70,10 @@
 # build the libraries with dependencies
   1) add dependencies in a jar:
      you can put both log4j.jar and jodatime.jar inside the final.jar, but your classes are unable to call other classes which is inside the unpack log4j.jar
-     use maven-assembly-plugin to extract all dependency jars into raw classes, and group it together
   2) use maven-assembly-plugin to extract all dependency jars into raw classes, and group it together
-     add the following configuration to pom.xml
+     add "maven-assembly-plugin" plugin & configure at pom.xml (need to reimport maven project to take effect)
+    <build>
+        <plugins>
             <plugin>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.6</version>
@@ -76,10 +93,26 @@
                     </descriptorRefs>
                 </configuration>
             </plugin>
+        </plugins>
+    </build>
   3) with Maven 2, the right way to do this is to use the Maven2 Assembly Plugin which has a pre-defined descriptor file
      just run command:
        mvn assembly:assembly -DdescriptorId=jar-with-dependencie -DskipTests
        (the descriptorId is appended to the built library: ex. mylib-5.54-SNAPSHOT-jar-with-dependencies.jar)
+     then, the jar file will include all class files of the dependencies
+       ex. 
+├── org
+│   ├── apache
+│   │   ├── commons
+│   │   └── http
+│   │       ├── impl
+│   │       │   ├── AbstractHttpClientConnection.class
+│   │       │   ├── PrivateKeyDetails.class
+│   │       │   ├── PrivateKeyStrategy.class
+│   │       │   ├── SSLContextBuilder$KeyManagerDelegate.class
+│   │       │   ├── SSLContextBuilder$TrustManagerDelegate.class
+│   │       │   ├── SSLContextBuilder.class
+│   │       │   ├── SSLContexts.class       (the class is defined in "package org.apache.http.ssl;", to use the class we write "import org.apache.http.ssl.SSLContexts")
 
 # mvn install
   it checks the dependency tree based on configuration of pom.xml on all the subprojects under the super pom.xml (the root POM)
@@ -209,22 +242,6 @@ ex. import backtype.storm.LocalCluster; # if storm is not found in the dependenc
     2) reimport All maven libraries at intellij # resolve the dependencies again
     3) run mvn -DskipTests package              # run packaging the library to verify if the current library can be built
 
-# mvn dependency:tree
-mvn dependency:tree
- shows all dependencies (including transitive dependencies) of your project
- this is very helpful for debugging dependency version issues.
-ex. 
-[INFO] com.yahoo.nuwa:nuwa-storm-cafeeder:jar:1.5.15-SNAPSHOT
-[INFO] +- org.apache.storm:storm-core:jar:0.10.0:provided
-[INFO] |  +- com.esotericsoftware.kryo:kryo:jar:2.21:provided
-[INFO] |  |  +- com.esotericsoftware.reflectasm:reflectasm:jar:shaded:1.07:provided
-[INFO] |  |  |  \- org.ow2.asm:asm:jar:4.0:compile
-[INFO] |  |  \- com.esotericsoftware.minlog:minlog:jar:1.2:provided
-[INFO] |  +- org.clojure:clojure:jar:1.6.0:provided
-[INFO] |  +- com.googlecode.disruptor:disruptor:jar:2.10.4:provided
-
-note: sbt "inspect tree clean" (for sbt project)
-
 # mvn -X <package-name>
 mvn -X <package-name>
   shows all explicit and transitive dependencies for a package
@@ -242,7 +259,7 @@ ex. mvn -X org.apache:org.apache.commons
    problem:
 
      Qux -> Bar:2.0
-         -> Foo -> Bar:1.0
+         -> Foo -> Bar:1.0 (version conflicts)
 
      Foo library depends on a specific version (ex. 1.0) of Bar library and cannot make use of other version of Bar lib (because of API change, etc.)
      Qux project depends on Foo and a newer version Bar:2.0 (because Qux needs to use new feature in Bar:2.0)
