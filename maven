@@ -1,3 +1,11 @@
+# path of resolved/downloaded dependency jars or installed local SNAPSHOT jar
+(maven)
+  ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].jar
+  ex. ~/.m2/repository/mydomain/mylib/5.54-SNAPSHOT/mylib-5.54-SNAPSHOT.jar
+(sbt)
+  ~/.ivy2/cache/[groupId]/[artifactId]/jars/[artifactId]-[version].jar
+  ex. ~/.ivy2/cache/mydomain/mylib/jars/mylib-5.54-SNAPSHOT.jar .
+
 # Maven
   1) generate project (download packages from internet to local repository)
      mvn archetype:generate
@@ -59,14 +67,6 @@
 
      (note: in sbt project, run command: add "sbt-dependency-graph" plugin, and then run command: sbt dependencyTree)
 
-# path of resolved/downloaded dependency jars
-(maven)
-  ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].jar
-  ex. ~/.m2/repository/mydomain/mylib/5.54-SNAPSHOT/mylib-5.54-SNAPSHOT.jar
-(sbt)
-  ~/.ivy2/cache/[groupId]/[artifactId]/jars/[artifactId]-[version].jar
-  ex. ~/.ivy2/cache/mydomain/mylib/jars/mylib-5.54-SNAPSHOT.jar .
-
 # build the libraries with dependencies
   1) add dependencies in a jar:
      you can put both log4j.jar and jodatime.jar inside the final.jar, but your classes are unable to call other classes which is inside the unpack log4j.jar
@@ -97,22 +97,23 @@
     </build>
   3) with Maven 2, the right way to do this is to use the Maven2 Assembly Plugin which has a pre-defined descriptor file
      just run command:
+       mvn clean compile package, or
        mvn assembly:assembly -DdescriptorId=jar-with-dependencie -DskipTests
        (the descriptorId is appended to the built library: ex. mylib-5.54-SNAPSHOT-jar-with-dependencies.jar)
      then, the jar file will include all class files of the dependencies
-       ex. 
-├── org
-│   ├── apache
-│   │   ├── commons
-│   │   └── http
-│   │       ├── impl
-│   │       │   ├── AbstractHttpClientConnection.class
-│   │       │   ├── PrivateKeyDetails.class
-│   │       │   ├── PrivateKeyStrategy.class
-│   │       │   ├── SSLContextBuilder$KeyManagerDelegate.class
-│   │       │   ├── SSLContextBuilder$TrustManagerDelegate.class
-│   │       │   ├── SSLContextBuilder.class
-│   │       │   ├── SSLContexts.class       (the class is defined in "package org.apache.http.ssl;", to use the class we write "import org.apache.http.ssl.SSLContexts")
+       ex. all the class files of dependency: "org.apache.httpcomponents:httpcore:jar:4.4.1" are packed in the jar file in the following folders: 
+       ├── org
+       │   ├── apache
+       │   │   ├── commons
+       │   │   └── http
+       │   │       ├── ssl
+       │   │       │   ├── AbstractHttpClientConnection.class
+       │   │       │   ├── PrivateKeyDetails.class
+       │   │       │   ├── PrivateKeyStrategy.class
+       │   │       │   ├── SSLContextBuilder$KeyManagerDelegate.class
+       │   │       │   ├── SSLContextBuilder$TrustManagerDelegate.class
+       │   │       │   ├── SSLContextBuilder.class
+       │   │       │   ├── SSLContexts.class       (the class is defined in "package org.apache.http.ssl;", to use the class we write "import org.apache.http.ssl.SSLContexts")
 
 # mvn install
   it checks the dependency tree based on configuration of pom.xml on all the subprojects under the super pom.xml (the root POM)
@@ -254,6 +255,7 @@ ex. mvn -X org.apache:org.apache.commons
 3) it is easy for execution, because you will need only one big JAR instead of many small JARs to run your app
 
 # maven libary shading
+ref: https://softwareengineering.stackexchange.com/questions/297276/what-is-a-shaded-java-dependency
 1) create uber-jar for ease of deployment is one use case of shade plugin
    ex. 
    problem:
@@ -271,13 +273,6 @@ ex. mvn -X org.apache:org.apache.commons
          -> Foo -> Bar:1.0 (shaded, ex. renamed to com.shaded.bar, and embeded in Foo jar)
 2) edit pom.xml
     <build>
-        <extensions>
-            <extension>
-                <groupId>org.apache.maven.wagon</groupId>
-                <artifactId>wagon-ssh-external</artifactId>
-                <version>2.8</version>
-            </extension>
-        </extensions>
         <plugins>
             <plugin>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -290,9 +285,14 @@ ex. mvn -X org.apache:org.apache.commons
                         </goals>
                         <configuration>
                             <relocations>
+                                # ex. dependency "com.yahoo.vespa:vespa-http-client:jar:6.248.120" and its subdependency "com.yahoo.vespa:vespajlib:jar:6.248.120" has classes in package "com.yahoo.vespa"
+                                #     all references to these classes are renamed to classes of package "com.yahoo.vespa.shade" (and class files are moved to location: com/yahoo/vespa/shade/)
+                                #     this makes uses of package "com.yahoo.vespa" of this project to the packages with specific versions: "vespa-http-client:jar:6.248.120" and "vespajlib:jar:6.248.120"
+                                #     in other words, this project are "partly" depending on artifects "vespa-http-client:jar:6.248.120" and "vespajlib:jar:6.248.120"
+                                #     hence, when the project code are run on some environment with different dependencies installed, it won't break
                                 <relocation>
-                                    <pattern>net.minidev</pattern>
-                                    <shadedPattern>net.minidev.shade</shadedPattern>
+                                    <pattern>com.yahoo.vespa</pattern>
+                                    <shadedPattern>com.yahoo.vespa.shade</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
@@ -301,7 +301,9 @@ ex. mvn -X org.apache:org.apache.commons
             </plugin>
         </plugins>
     </build>
-3) review the built library is indeed shaded
+3) mvn clean compile package
+   package the project with shaded class files
+4) review the built library is indeed shaded
    jar tf target/foo.jar
    
 # add repository in pom.xml
