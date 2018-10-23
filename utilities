@@ -21,8 +21,8 @@
 # ls -ld */   OR ls -l | grep ^d
   ex. 
     ls -dl */
-    drwxr-xr-x  16 kuanyu  users   544 Jul 25 10:50 folder1/
-    drwxr-xr-x  51 kuanyu  users  1734 Mar 16  2016 folder2/
+    drwxr-xr-x  16 username  users   544 Jul 25 10:50 folder1/
+    drwxr-xr-x  51 username  users  1734 Mar 16  2016 folder2/
     option:
       -d: directories are listed as plain files (not searched recursively)
   ex.
@@ -35,6 +35,17 @@
 
     ls -d */
     folder1/	folder2/
+
+# ls -alhS folder/: list file in order of file sizes
+  ex.
+    ls -alS .
+    -rw-r--r--   1 username  staff    21K Jul 11 18:40 file1
+    -rw-r--r--   1 username  staff    20K Aug 17 13:26 file2
+    -rw-r--r--   1 username  staff    18K Oct 23 14:26 file3
+    ......
+    -rw-r--r--   1 username  staff   127B Jul 11 18:40 file4
+    -rw-r--r--   1 username  staff    25B Jul 11 18:40 file5
+    
 
 # scp: copy file from one host to other
   scp local_filepath username@xx.xx.xx.xx:/remote_folder_path
