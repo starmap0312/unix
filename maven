@@ -340,3 +340,17 @@ ref: https://softwareengineering.stackexchange.com/questions/297276/what-is-a-sh
   2) .DSA: ex. META-INF/BC1024KE.DSA, META-INF/BC2048KE.DSA
      signature block file associated with the signature file with the same base file name
      this file stores the digital signature of the corresponding signature file
+
+# artifactory vs. bintray
+1) artifactory: a development-time tool
+   for development you need features like:
+     support for snapshots
+     CI servers metadata integration (a.k.a. build-info)
+     on-prem install
+     integration with enterprise security systems like SAML
+2) bintray: a release, distribution-time tool
+   for distribution you need stuff like:
+     a global distribution network (CDN)
+     extreme throughput and redundancy for downloads
+     permission control for external users (entitlements)
+     product and EULA support

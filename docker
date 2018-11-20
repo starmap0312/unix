@@ -20,6 +20,9 @@
 # list local docker images
   docker images
 
+# remove all unused or dangling (not related to any tagged images) images
+  docker system prune
+
 # docker run
   1) Docker runs processes in isolated containers 
   2) A container is a process which runs on a host (local/remote). 

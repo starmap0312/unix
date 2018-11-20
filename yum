@@ -28,3 +28,20 @@
   wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
   sudo rpm -ivh epel-release-latest-7.noarch.rpm
   sudo yum install python-pip
+
+# download rpm and install
+1) method1:
+  wget http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+  sudo rpm -i epel-release-latest-7.noarch.rpm
+2) method2:
+  sudo rpm -i http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+3) method3:
+  sudo bash -c 'rpm -i <(wget -O - http://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm)'
+
+# rpm commands
+1) check the version of a package:
+   rpm -q <pkg_name>
+2) check which package a file belongs to:
+   rpm -qf <filename>
+3) list all package files:
+   rpm -ql <pkg_name>
