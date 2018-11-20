@@ -14,3 +14,6 @@
 # scroll up
   Ctrl+a [      # enter crollback/copy mode
   Ctrl+a ]      # to leave this mode 
+
+# kill an attached screen
+screen -X -S 23625 quit

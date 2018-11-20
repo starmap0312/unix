@@ -498,3 +498,8 @@
   ex. fuser -v -n tcp 22 (Check Processes Using TCP/UDP Sockets)
                            USER        PID ACCESS COMMAND
       22/tcp:              kuanyu    20366  F.... sshd
+
+# extend history size
+  edit ~/.bashrc and add the following definition:
+    HISTSIZE=10000
+    HISTFILESIZE=10000

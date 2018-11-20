@@ -98,6 +98,18 @@
    when you send a digitally-signed message (i.e. clear message + digital signature), you also send your (public key + digital certificate)
 3) http://david50.pixnet.net/blog/post/28798505-%5B%E7%AD%86%E8%A8%98%5Ddigital-signature-%E6%95%B8%E4%BD%8D%E7%B0%BD%E7%AB%A0
 
+use case:
+  ex. user (browser) sends request to a webserver with a cookie that declare who he is:
+    Cookie: AUTH=userid%3Djohn%26sign%3DCL.nyTO30Qdhn4NjQDucLYHG6n9Le0TgcUPyhMcW4QTOJWyQcY58MFZwbOsPMxXJV6xX
+      (i.e. AUTH=userid=john&sign=CL.nyTO30Qdhn4NjQDucLYHG6n9Le0TgcUPyhMcW4QTOJWyQcY58MFZwbOsPMxXJV6xX)
+    webserver gets the following information from the cookie:
+      userid%3Djohn (hash of clear message)
+      sign=CL.nyTO30Qdhn4NjQDucLYHG6n9Le0TgcUPyhMcW4QTOJWyQcY58MFZwbOsPMxXJV6xX (signature: hash of clear message encrypted by a trusted authentication server)
+    webserver then uses the public key of the trusted authentication server to decrypt the hash of clear message, and gets:
+      userid%3Djohn (i.e. userid=john)
+    webserver verifies that the decrypted hash of clear message is indeed the one in the cookie, so it is not altered by a middle-man
+    webserver can trust that: userid is indeed johh, and grant him the access permission
+
 # digital signature vs. digital certificate
 1) a digital signature is used to verify a message is not altered
    the receiver uses the digital signature to check if the message is altered
