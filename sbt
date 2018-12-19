@@ -268,3 +268,5 @@ in project/plugin.sbt
 
   ex. java -Darg1=true -jar myApplication.jar
 
+# where the packages are installed
+  ex. /usr/local/Cellar/sbt/1.1.6/

@@ -2,3 +2,59 @@
 where the packages are installed
   ex. /usr/local/Cellar/sbt/1.1.6/
   ex. /usr/local/Cellar/scala/2.12.3/
+
+# Shortcuts
+(MAC)
+Logout: Shift + Cmd + q
+Lock screen: Control + Shift + Power/Eject
+Close app: Cmd + q
+Input source switch: Control + Option + Space (Cmd + Space)
+Print screen: Command+Shift+ 3 (full screen) or 4 (region)
+
+(MAC Texting)
+1. Go to end of line: Cmd + right arrow (Control + right arrow)
+2. Go to end of current or next word: Option + right arrow
+3. Go to end of all the text: Cmd + down arrow
+
+(MAC Terminal / Bash)
+1. Go to line beginning: Shift + Fn + right arrow (Control + a)
+2. Go to line end: Shift + Fn + right arrow (Control + e)
+3. Remove command to the line beginning: Control + u
+4. Remove command to the line end: Control + k 
+5. Go to next word: Option + right arrow
+6. Enter full screen: Cmd + Control + f
+7. Delete a word backwards: Control + w
+8. Delete a char backwards: Control + h
+9. Copy the content of a file to your clipboard: pbcopy < filepath
+10. Direct the content of the paste to stdout: pbpaste | grep keyword
+11. Go to next tab: Shift + Cmd + } or right arrow
+12. Get full hostname on Mac: host `hostname`
+
+(Vim)
+1. Go to line beginning: Fn + left arrow
+2. Go to line end: Fn + right arrow
+3. Go to next word: w (normal mode)
+4. Page down: Fn + down arrow
+5. Go to beginning/end of all the text: gg/G
+* Go-End-of-Line
+    * Vim: Fn + right arrow
+    * MAC Terminal: Shift + Fn + right arrow
+    * MAC Texting: Cmd + right arrow
+
+(Chrome)
+1. Go the the next tab page: Option + Cmd + right arrow
+2. Open a new tab page: Cmd + t
+3. Close the current tab page: Cmd + w
+4. Enter full screen in chrome: Cmd + Shift + f
+
+(Safari)
+1. Go the the next tab page: Shift + Cmd + right arrow
+
+(SSH Session)
+1. Scroll up: Ctrl + a, then Esc, then up/down arrow or page up/down
+
+(Screen)
+Detach screen: Control + A, press d
+Scroll/Copy Mode: Control + A, press ESC
+
+
