@@ -43,16 +43,17 @@ edit: config/index.js
   proxyTable: {
     '/data': {
       target: 'http://SERVER/api/', // map all local (PROXY) calls to "/data" to remote (SERVER) calls "http://SERVER/api/"
-      changeOrigin: true,
+      changeOrigin: true,           // the ensures that the backend server 'http://SERVER/api/' does not need to serve CORS headers
       pathRewrite: {
         '^/data': ''
       }
     }
   }
 
-once the prxoy is set, we can then treat remote (SERVER) calls as local (PROXY) calls
+once the prxoy is set, we can then treat remote (SERVER) calls as local (PROXY) calls when developing the frontend js code
+ex.
 axios.get('/data/1').then((response) => {
   console.log(response.data)
 })
 
-when deploying the frontend js & css to the production, make sure that the production server also serves as a proxy server (ex. make it a apache proxy sever)
+when deploying the frontend js & css to the production, make sure that the production server also serves as a reverse proxy server (ex. a apache reverse proxy sever)
