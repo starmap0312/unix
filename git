@@ -1,4 +1,8 @@
-# revert to previous commit and make it a new commit
+# revert to previous commit and make it a new commit:
+  git revert [commit]
+
+  OR
+
   git rm -r .           # remove all files
   git checkout HEAD~3 . # path specifier: overwrite all matching files (all files match dot)
   git commit            # make a new commit

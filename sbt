@@ -85,7 +85,7 @@
      ex. ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/poms/[artifact_id].pom
          ~/.ivy2/local/[groupid]/[artifact_id]/[version]-SNAPSHOT/jars/[artifact_id]-assembly.jar
      next, specify the local repository in build.sbt:
-       resolvers ++= Seq("Local Maven Repository" at "file:///Users/username/.ivy2/repository")
+       resolvers ++= Seq("Local Maven Repository" at "file:///Users/username/.ivy2/local")
        # add maven local repo: resolvers ++= Seq("Local Maven Repository" at "file:///Users/username/.m2/repository")
 
 # libraryDependencies
@@ -270,3 +270,14 @@ in project/plugin.sbt
 
 # where the packages are installed
   ex. /usr/local/Cellar/sbt/1.1.6/
+
+# debugging a sbt project (running in a forked process) with Intelij breakpoints
+  sbt "project proj_name" -J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+  1) at project folder: edit build.sbt and add: (debugging a forked process)
+       fork in run := true
+       javaOptions in run += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
+  2) at mac console, run the project in a forked process to listen for transport dt_socket at address: 5005
+       sbt "project proj_name"
+  3) at intellij -> Edit Configurations ..., add a Remote configuration
+       + Remote (ex. Name = run server)
+  4) at intellij -> Run, Debug 'run server' to connect to the target VM with address: 'localhost:5005' and transport: 'socket'

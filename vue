@@ -1,3 +1,13 @@
+# change npm registry
+  npm config set registry <url>
+  ex. npm config set registry https://registry.npmjs.org/
+
+  npm config list: check registry url
+
+# check package version
+  npm view <pkg>
+  ex. npm view @vue/cli-service 
+
 # build webpack project:
   install brew: 
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
