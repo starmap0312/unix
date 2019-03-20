@@ -271,13 +271,22 @@ in project/plugin.sbt
 # where the packages are installed
   ex. /usr/local/Cellar/sbt/1.1.6/
 
-# debugging a sbt project (running in a forked process) with Intelij breakpoints
-  sbt "project proj_name" -J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+# debugging (with Intelij breakpoints) a sbt project when the project is a single process
+  option 1:
+  1) run the project at mac console which listens to port 5005
+       sbt "project proj_name" -J-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005
+  2) at intellij -> Edit Configurations ..., add a Remote configuration 
+       + Remote (ex. Name = "run server", with Port = "5005")
+  option 2: (only be applied to "sbt run", can not be applied to 'sbt "project proj_name" run')
+  1) at intellij -> Edit Configurations ..., add a sbt Task configuration 
+       + sbt Task (ex. Name = "run server", with Tasks = "run")
+
+# debugging (with Intelij breakpoints) a sbt project when the project runs in a forked process
   1) at project folder: edit build.sbt and add: (debugging a forked process)
        fork in run := true
        javaOptions in run += "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=5005"
   2) at mac console, run the project in a forked process to listen for transport dt_socket at address: 5005
        sbt "project proj_name"
   3) at intellij -> Edit Configurations ..., add a Remote configuration
-       + Remote (ex. Name = run server)
+       + Remote (ex. Name = "run server", with Port = "5005")
   4) at intellij -> Run, Debug 'run server' to connect to the target VM with address: 'localhost:5005' and transport: 'socket'
