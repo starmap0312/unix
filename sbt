@@ -56,6 +56,14 @@
        sbt "project project_name" testOnly com.mydomain.MyClassTest
      run                 : run the project
 
+# run server on different port
+  1) Dev Mode:
+     sbt "run 8080"
+  2) Zip Distribution:
+     sbt dist
+     unzip ./target/universal/[appname].zip
+     ./[appname]-1.0/bin/[appname] -Dhttp.port=8080
+
 # sbt dependency management flow
   1) update: resolves dependencies according to the settings of build.sbt file
      ex. libraryDependencies and resolvers
