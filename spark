@@ -380,3 +380,11 @@ spark-shell \
    {"_1":1,"_2":"one"}
    {"_1":2,"_2":"two"}
    {"_1":3,"_2":"three"}
+
+# Convert RDD to Dataframe
+val rdd: RDD[String] = ... # John,33\nChen,20\n ...
+val schema = StructType(Seq(StructField(name = "name", dataType = StringType, nullable = false), StructField(name = "age", dataType = IntegerType, nullable = false)))
+val data = rdd.map(_.split(",").to[List]).map(line => Row(line(0), line(1).toInt))
+val df = spark.createDataFrame(data, schema)
+df.write.parquet("folder_name")
+spark.read.parquet("folder_name")
