@@ -94,6 +94,8 @@ spark-shell \
      load("path/to/hdfs/filename.csv").
      select(col("colname")).rdd.map(row => row(0).asInstanceOf[String]).
      collect.toList
+2) load file from hdfs as a RDD[String]
+   sparkSession.textFile(filepath)
 
 # Saving DataFrame to Persistent Hive Tables
   DataFrames can also be saved as persistent tables into Hive metastore using the saveAsTable command

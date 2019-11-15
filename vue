@@ -7,6 +7,13 @@
 # check package version
   npm view <pkg>
   ex. npm view @vue/cli-service 
+  npm view <pkg> version
+  ex. npm view vuetify version
+
+# scoped packages
+  "@<pkg>" means scoped packages, which allow npm packages to be namespaced
+  ex. "@angular" means it was published by the Angular core team
+  ex. if package "http" is already taken in the main repository; however, Angular is able to have "@angular/http"
 
 # build webpack project:
   install brew: 

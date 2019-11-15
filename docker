@@ -1,3 +1,6 @@
+# install
+sudo yum install docker
+
 # Push an image or a repository to a Docker Registry
   sudo docker push [ip]:[port]/[repo_name]
 
@@ -75,3 +78,7 @@ sudo groupadd docker
 sudo gpasswd -a ${USER} docker
 sudo service docker restart
 (re-login the machine to take effect)
+
+# docker save & docker load
+  docker save -o filename.tar example.com:443/org/appname
+  docker load < filename.tar # load docker image from STDIN
