@@ -1,3 +1,15 @@
+# install nodejs
+  install Node Version Manager (nvm)
+    $ brew install nvm
+    $ nvm --version
+      0.35.1
+  install NodeJS
+    $ nvm ls-remote | grep LTS | tail -1
+      v10.16.0   (Latest LTS: Dubnium)
+    $ nvm install lts/dubnium
+  add registry to the ~/.npmrc file
+    $ npm config set registry https://registry.npm.vzbuilders.com:4443/npm-registry
+
 # change npm registry
   npm config set registry <url>
   ex. npm config set registry https://registry.npmjs.org/
