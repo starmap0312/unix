@@ -22,6 +22,14 @@
   npm view <pkg> version
   ex. npm view vuetify version
 
+# install npm packages
+  npm install --save-dev --package-lock=false jenkins-mocha supertest
+    --save-dev: save to the devDependencies section of package.json
+      dependencies: packages used in production
+      devDependencies: packages used for development
+    --package-lock=false: do not generate a package-lock.json file
+      package-lock.json: created for locking the dependency with the installed version (fix the version to what is specified in package-lock.json)
+
 # scoped packages
   "@<pkg>" means scoped packages, which allow npm packages to be namespaced
   ex. "@angular" means it was published by the Angular core team
