@@ -1,5 +1,8 @@
 # install
-sudo yum install docker
+  sudo yum install docker
+
+# list docker images
+  docker images
 
 # Push an image or a repository to a Docker Registry
   sudo docker push [ip]:[port]/[repo_name]
@@ -7,6 +10,9 @@ sudo yum install docker
 # Pull an image or a repository from a Docker Registry
   sudo docker pull [ip]:[port]/[repo_name]
   ex. docker pull xxx.yahoo.com:4443/xxx/yyy:latest
+
+# remove docker image
+  docker rmi <imageid>
 
 # Restart a running container
   docker restart 
