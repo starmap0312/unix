@@ -42,6 +42,7 @@
 
   General form
     $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+      ex. docker run --rm -v `pwd`/logs --net=host [image]:[tag] echo hello
     (must specify an IMAGE to derive the container from)
     ([OPTIONS] override the image defaults)
 
@@ -68,16 +69,17 @@
 # docker run: run a command in a new container
 1) docker run --rm: automatically remove the container when it exits
    this runs the container at console which is removed when stopped
-   ex. docker run --rm -v `pwd`/logs:/opt/docker/logs
+   ex. docker run --rm -v `pwd`/logs:/opt/docker/logs echo hello
 2) docker run -d, --detach: detached mode
    this runs the container in the background 
-   ex. docker run -d -v `pwd`/logs:/opt/docker/logs
+   ex. docker run -d -v `pwd`/logs:/opt/docker/logs echo hello
 
 # docker exec: run a command in a running (existing) container
 options:
   -i, --interactive: keep STDIN open even if not attached
   -t: --tty: allocate a pseudo-TTY
-  ex. sudo docker exec -i -t 665b4a1e17b6 /bin/bash
+  ex. docker run -it 665b4a1e17b6 /bin/bash
+      docker run -p 9999:9999/tcp -it [image-name] /bin/bash # run bash in a container
 
 # run docker command as normal user (not root)
 sudo groupadd docker
@@ -88,3 +90,60 @@ sudo service docker restart
 # docker save & docker load
   docker save -o filename.tar example.com:443/org/appname
   docker load < filename.tar # load docker image from STDIN
+
+# Build an image from a Dockerfile
+  Usage: docker build [OPTIONS] PATH | URL
+    ex. edit Dockerfile, and then run docker build:
+          FROM node:latest # pull base image: [ip]:[port]/[repo_name]
+          RUN echo hello
+        docker build -t [image_name] . --no-cache
+  options:
+    -t, --tag: Name and optionally a tag in the 'name:tag' format (default [])
+
+# Dockerfile commands
+1) RUN: execute command(s) in a new layer and creates a new image (ex. installing software packages)
+        use RUN instructions to build your image by adding layers on top of initial image
+   ex. RUN apt-get update
+       RUN apt-get install -y libgomp1
+2) CMD: set default command and parameters, which can be overwritten from command line when docker container runs
+   usage:
+     CMD command param1 param2              # shell form
+     CMD ["executable", "param1", "param2"] # exec form, preferred over shell form
+     CMD ["param1","param2"]                # specify default parameters to ENTRYPOINT
+   ex1. CMD echo "Hello world"
+   ex2. CMD ["/bin/echo", "Hello world"] # preferred
+3) ENTRYPOINT: configure a container that will run as an executable (Docker has a default entrypoint: /bin/sh -c)
+               so you could run the container just like an executable, ex.docker run -it imageecho “this is a test”
+               ex. when you run docker as: "docker run -i -t ubuntu bash", the entrypoint is the default /bin/sh -c and the command is bash  
+                  ("/bin/sh -c bash" will get executed under the image ubuntu in the container)
+               ex. docker run -it [image] "parameters for the container" # run container like an executable that take parameters
+               ex. ENTRYPOINT ["/bin/cat"] # Dockerfile
+                   docker run -it [image] "/etc/fstab" # i.e. "/bin/cat /etc/fstab" gets excuted when the container is run
+                   
+   usage:
+     ENTRYPOINT command param1 param2  # shell form
+     ENTRYPOINT ["executable", "param1", "param2"] # exec form, preferred
+   difference with CMD:
+     ENTRYPOINT command and parameters are not ignored when Docker container runs with command line parameters
+     prefer ENTRYPOINT to CMD when building executable
+     use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs
+   ex1. ENV name John
+        ENTRYPOINT echo "Hello, $name"
+        (when container runs as docker run -it <image> will produce output: Hello, John)  # normal shell processing happens
+   ex2. ENV name John
+        ENTRYPOINT ["/bin/echo", "Hello, $name"] # preferred, but here name is not substituted
+        (when container runs as docker run -it <image> will produce output: Hello, $name) # normal shell processing DOES NOT happen
+   ex3. ENV name John
+        ENTRYPOINT ["/bin/bash", "-c", "echo Hello, $name"]
+        (when container runs as docker run -it <image> will produce output: Hello, John)  # run bash 
+
+# Run Docker container
+  docker run -p 8081:8081 [image_name]
+    ex. docker run -p 9999:9999 [image_name] # publish port 9999 for the service
+  options:
+     -p, --publish: Publish a container's port(s) to the host (default [])
+       ex. docker run -p 127.0.0.1:80:8080/tcp ubuntu bash
+           this binds port 8080 of the container to TCP port 80 on 127.0.0.1 of the host machine
+  note: to stop the running container, execute
+     docker ps
+     docker stop b5f07b1fa1f7

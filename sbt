@@ -254,7 +254,6 @@ in project/plugin.sbt
      docker:publishLocal : this builds a Docker image using the local Docker server
   5) the autoplugin hierarchy
      SbtNativePackager - Universal - Linux - RPM / Debian
-                                   - Docker
   6) Universal Plugin:
      output Zip format: sbt universal:packageBin
      output Tar format: sbt universal:packageZipTarball

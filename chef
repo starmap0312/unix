@@ -1,3 +1,10 @@
+# install chef
+  1) install chefdk:
+     sudo rpm -i https://packages.chef.io/files/stable/chefdk/2.5.3/el/7/chefdk-2.5.3-1.el7.x86_64.rpm
+  2) shell-init: initialize your shell to use ChefDK as your primary ruby
+     eval "$(chef shell-init bash)"
+     note: copy the above line into ~/.bash_profile to avoid prepending all commands with chef exec
+
 # Chef terminology
 # I) Chef resource
   1) one part of the system, ex. a file, a template, or a package
@@ -57,7 +64,15 @@
   3) Chef applies resources in the order they appea
 
 # III) Chef Cookbook: make your recipe more manageable
-  provides structure to your recipes and enables you to more easily reference external files
+  the fundamental unit of configuration and policy distribution, and it defines:
+    i)  recipes/:
+        recipes specify the resources to use and the order in which they are to be applied
+    ii) attributes/:
+        an attribute value is a specific detail about a node
+        it can be defined in a cookbook (or a recipe) and then used to override the default settings on a node
+   iii) files/:
+
+  it provides structure to your recipes and enables you to more easily reference external files
     i.e. a cookbook helps you stay organized
 
 # IV) Chef Run-list
