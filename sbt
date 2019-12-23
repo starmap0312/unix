@@ -248,10 +248,14 @@ in project/plugin.sbt
        addSbtPlugin("com.typesafe.sbt" % "sbt-native-packager" % "x.y.z")
      you need to enable the archetype: edit build.sbt
        enablePlugins(JavaAppPackaging)
-  4) create a package
-     universal:packageBin: this generates a universal zip file
-     rpm:packageBin      : this generates an rpm
-     docker:publishLocal : this builds a Docker image using the local Docker server
+  4) create a package:
+     sbt universal:packageBin: this generates a universal zip file
+       this creates only the libary folder (all complied jar files) but also the executable foler (all executables of the classes with main method defined)
+       ex. ./app-0.1/bin/[app] # this executes the App class's main method
+     sbt rpm:packageBin      : this generates an rpm
+     sbt docker:publishLocal : this builds a Docker image using the local Docker server
+       by default, the built docker image has ENTRYPOINT ["/opt/docker/bin/[app]"], so you can run the docker just like an executable of the App main class
+       ex. docker run -it ffe9041f5f18 # this executes the App class's main method
   5) the autoplugin hierarchy
      SbtNativePackager - Universal - Linux - RPM / Debian
   6) Universal Plugin:

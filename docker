@@ -55,7 +55,7 @@
     -p: publish a container's port (or a range of ports) to the host
       ex. docker run -p 80:80 ...
     --entrypoint: default command to execute at runtime
-      ex. docker run --entrypoint='/bin/bash' ...
+      ex. docker run --entrypoint='/bin/bash' [image] # this overrides the entrypoint to execute shell instead (useful when a docker runs like an executable, this lets you execute its shell instead)
     --env VAR_NAME=value: set environment variable with value
     --login: register or login to a Docker Registry (i.e. Docker Hub)
       require user to use sudo or be root
