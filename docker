@@ -38,7 +38,7 @@
      when execute docker run, the container process that runs is isolated in that 
      it has its own file system, its own networking, and its own isolated process 
      tree separate from the host.
-  3) use the docker run command to define the container’s resources at runtime
+  3) use the docker run command to define the container's resources at runtime
 
   General form
     $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
@@ -113,7 +113,7 @@ sudo service docker restart
    ex1. CMD echo "Hello world"
    ex2. CMD ["/bin/echo", "Hello world"] # preferred
 3) ENTRYPOINT: configure a container that will run as an executable (Docker has a default entrypoint: /bin/sh -c)
-               so you could run the container just like an executable, ex.docker run -it imageecho “this is a test”
+               so you could run the container just like an executable, ex.docker run -it [image] echo "this is a test"
                ex. when you run docker as: "docker run -i -t ubuntu bash", the entrypoint is the default /bin/sh -c and the command is bash  
                   ("/bin/sh -c bash" will get executed under the image ubuntu in the container)
                ex. docker run -it [image] "parameters for the container" # run container like an executable that take parameters
@@ -147,3 +147,7 @@ sudo service docker restart
   note: to stop the running container, execute
      docker ps
      docker stop b5f07b1fa1f7
+
+# Run Docker shell
+  docker run -it [image] bash
+  docker run --entrypoint='/bin/bash' -it [image] # override entrypoint to bash
