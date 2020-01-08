@@ -63,6 +63,10 @@
       'bridge': create a network stack on the default Docker bridge (use private ip)
       'host': use the Docker host network stack                     (use public ip)
               Note: the host mode gives the container full access to local system services such as D-bus and is therefore considered insecure
+    --name=[name]: assign a name to the container
+      you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
+      ex. docker run --detach --publish=80:80 --name=webserver nginx
+          docker stop webserver
 
   ex. docker run -it -v filepath -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login
 
