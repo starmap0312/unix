@@ -68,7 +68,8 @@
       ex. docker run --detach --publish=80:80 --name=webserver nginx
           docker stop webserver
 
-  ex. docker run -it -v filepath -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login
+  ex. docker run -it -v `pwd`:/app -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login
+      (mount `pwd` to path /app inside docker container)
 
 # docker run: run a command in a new container
 1) docker run --rm: automatically remove the container when it exits
