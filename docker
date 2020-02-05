@@ -11,8 +11,9 @@
   sudo docker pull [ip]:[port]/[repo_name]
   ex. docker pull xxx.yahoo.com:4443/xxx/yyy:latest
 
-# remove docker image
+# remove/delete docker image
   docker rmi <imageid>
+  ex. docker images -a | grep "<pattern>" | awk '{print $3}' | xargs docker rmi # grep images with <pattern> and delete them all together
 
 # Restart a running container
   docker restart 

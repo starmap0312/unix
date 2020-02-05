@@ -71,6 +71,7 @@
       -v: Verbose i.e display progress while creating archive
       -f: Archive File name
       -x: Extract files
+      -C: Change to directory DIR (--directory=DIR)
 
 # gzip/gunzip:
   gzip filename ==> create a filename.gz compressed file
