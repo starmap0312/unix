@@ -17,8 +17,8 @@ Print screen: Command+Shift+ 3 (full screen) or 4 (region)
 3. Go to end of all the text: Cmd + down arrow
 
 (MAC Terminal / Bash)
-1. Go to line beginning: Shift + Fn + right arrow (Control + a)
-2. Go to line end: Shift + Fn + right arrow (Control + e)
+1. Go to line beginning: Shift + Fn + right arrow
+2. Go to line end: Shift + Fn + right arrow
 3. Remove command to the line beginning: Control + u
 4. Remove command to the line end: Control + k 
 5. Go to next word: Option + right arrow
@@ -29,6 +29,11 @@ Print screen: Command+Shift+ 3 (full screen) or 4 (region)
 10. Direct the content of the paste to stdout: pbpaste | grep keyword
 11. Go to next tab: Shift + Cmd + } or right arrow
 12. Get full hostname on Mac: host `hostname`
+
+(MAC Terminal / Zsh)
+1. Go to line beginning: Control + a
+2. Go to line end: Control + e
+3. Remove command to the line beginning: Control + u (but need to add a line "bindkey \^U backward-kill-line" to ~/.zshrc)
 
 (Vim)
 1. Go to line beginning: Fn + left arrow
