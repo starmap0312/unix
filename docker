@@ -13,6 +13,8 @@
 
 # remove/delete docker image
   docker rmi <imageid>
+  docker rmi -f <imageid> # force remove image that has dependent child images
+  docker image prune -a # this will remove all images without at least one container associated to them to clean up the disk space
   ex. docker images -a | grep "<pattern>" | awk '{print $3}' | xargs docker rmi # grep images with <pattern> and delete them all together
 
 # Restart a running container
