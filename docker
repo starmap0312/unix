@@ -14,14 +14,16 @@
 # remove/delete docker image
   docker rmi <imageid>
   docker rmi -f <imageid> # force remove image that has dependent child images
-  docker image prune -a # this will remove all images without at least one container associated to them to clean up the disk space
+  docker system df
+  docker image prune -a # this will remove all images without at least one container associated to them (clean up the disk space)
+  docker container prune # this will remove all stopped containers (clean up the disk space)
   ex. docker images -a | grep "<pattern>" | awk '{print $3}' | xargs docker rmi # grep images with <pattern> and delete them all together
 
 # Restart a running container
   docker restart 
 
 # List containers
-  docker ps
+  docker ps -a
 
 # Attach to a running container
   docker attach [container_name]
@@ -54,7 +56,9 @@
     -i: keep stdin open even if not attached
       ex. sudo docker run -t -i ubuntu:14.04 /bin/bash
       (initiate a bash terminal, allowing interactive mode)
-    -v: shared file system
+    -v, --volume=/tmp:/tmp: shared file system
+      ex. docker run -v "/tmp:/tmp" [image]:[tag]
+      ex. docker run -it -v `pwd`:/app -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login (mount `pwd` to path /app inside docker container)
     -p: publish a container's port (or a range of ports) to the host
       ex. docker run -p 80:80 ...
     --entrypoint: default command to execute at runtime
@@ -66,21 +70,26 @@
       'bridge': create a network stack on the default Docker bridge (use private ip)
       'host': use the Docker host network stack                     (use public ip)
               Note: the host mode gives the container full access to local system services such as D-bus and is therefore considered insecure
+      ex. docker run --network=host [image]:[tag]
     --name=[name]: assign a name to the container
       you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
       ex. docker run --detach --publish=80:80 --name=webserver nginx
           docker stop webserver
-
-  ex. docker run -it -v `pwd`:/app -p 8080:8080 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login
-      (mount `pwd` to path /app inside docker container)
+    -h, --hostname `hostname`: set the container host name (default container ID, ex. cf9b0cc060ad)
+      you can use this to override the hostname, but it only resolve with the internal docker DNS, not outside of the container
+    --restart=always: restart policy to apply when a container exits (default "no")
+      ex. docker run --network=host --restart=always [image]:[tag]
 
 # docker run: run a command in a new container
-1) docker run --rm: automatically remove the container when it exits
-   this runs the container at console which is removed when stopped
-   ex. docker run --rm -v `pwd`/logs:/opt/docker/logs echo hello
-2) docker run -d, --detach: detached mode
-   this runs the container in the background 
-   ex. docker run -d -v `pwd`/logs:/opt/docker/logs echo hello
+ 1) -d, --detach: run container in background and print container ID
+    you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
+    ex. docker run --detach --publish=80:80 --name=webserver nginx
+        docker stop webserver
+ 2) --rm: automatically remove the container when it exits
+    this runs the container at console which is removed when stopped
+    ex. docker run --network=host --rm [image]:[tag]
+    ex. docker run --network=host --rm [image]:[tag]
+    ex. docker run --rm -v `pwd`/logs:/opt/docker/logs echo hello
 
 # docker exec: run a command in a running (existing) container
 options:
