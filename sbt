@@ -77,6 +77,9 @@
     name := """play-java"""   # project name
     version := "1.0-SNAPSHOT" # project version
 
+# resolve OutOfMemoryError error
+  export SBT_OPTS="-XX:MaxPermSize=2G -Xmx2G" # raise maximum size for Permanent Generation space
+
 # install sbt manually
   1) put sbt-launch.jar in ~/bin
   2) create a script to run the jar, by creating ~/bin/sbt with these contents:
