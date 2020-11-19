@@ -1,9 +1,6 @@
 # install
   sudo yum install docker
 
-# list docker images
-  docker images
-
 # Push an image or a repository to a Docker Registry
   sudo docker push [ip]:[port]/[repo_name]
 
@@ -21,6 +18,19 @@
 
 # list local docker images
   docker images
+
+# list all container, remove container
+  docker container ls
+  docker rm CONTAINER_ID
+
+# fetch the logs of a container
+  docker logs CONTAINER_ID
+  ex. docker logs 015da0821bf1
+
+# docker save & docker load
+  docker save -o filename.tar example.com:443/org/appname
+  docker load i filename.tar # load docker image from local file 
+  docker load < filename.tar # load docker image from STDIN
 
 # remove all unused or dangling (not related to any tagged images) images
   docker system prune
@@ -84,7 +94,151 @@
   docker ps
     -a, --all: show all containers (default shows just running)
     ex. docker ps -a
-      list the running containers
+      list all the containers, including running and exited containers
+
+# Restart a running container
+  docker restart [container id]
+
+# Attach to a running container
+  docker attach [container_name]
+
+# detach from the container
+  Ctrl-p + Ctrl-q
+
+# docker exec: run a command in a running (existing) container
+options:
+  -i, --interactive: keep STDIN open even if not attached
+  -t: --tty: allocate a pseudo-TTY
+  ex. docker run -it 665b4a1e17b6 /bin/bash
+      docker run -p 9999:9999/tcp -it [image-name] /bin/bash # run bash in a container
+
+# run docker command as normal user (not root)
+sudo groupadd docker
+sudo gpasswd -a ${USER} docker
+sudo service docker restart
+(re-login the machine to take effect)
+
+# Build an image from a Dockerfile
+  Usage: docker build [OPTIONS] PATH | URL
+    ex. edit Dockerfile, and then run docker build:
+          FROM node:latest # pull base image: [ip]:[port]/[repo_name]
+          RUN echo hello
+        docker build -t [image_name] . --no-cache
+  options:
+    -t, --tag: Name and optionally a tag in the 'name:tag' format (default [])
+
+# Dockerfile commands
+1) RUN: execute command(s) in a new layer and creates a new image (ex. installing software packages)
+        use RUN instructions to build your image by adding layers on top of initial image
+   ex. RUN apt-get update
+       RUN apt-get install -y libgomp1
+2) CMD: set default command and parameters, which can be overwritten from command line when docker container runs
+   usage:
+     CMD command param1 param2              # shell form
+     CMD ["executable", "param1", "param2"] # exec form, preferred over shell form
+     CMD ["param1","param2"]                # specify default parameters to ENTRYPOINT
+   ex1. CMD echo "Hello world"
+   ex2. CMD ["/bin/echo", "Hello world"] # preferred
+3) ENTRYPOINT: configure a container that will run as an executable (Docker has a default entrypoint: /bin/sh -c)
+               so you could run the container just like an executable, ex.docker run -it [image] echo "this is a test"
+               ex. when you run docker as: "docker run -i -t ubuntu bash", the entrypoint is the default /bin/sh -c and the command is bash  
+                  ("/bin/sh -c bash" will get executed under the image ubuntu in the container)
+               ex. docker run -it [image] "parameters for the container" # run container like an executable that take parameters
+               ex. ENTRYPOINT ["/bin/cat"] # Dockerfile
+                   docker run -it [image] "/etc/fstab" # i.e. "/bin/cat /etc/fstab" gets excuted when the container is run
+                   
+   usage:
+     ENTRYPOINT command param1 param2  # shell form
+     ENTRYPOINT ["executable", "param1", "param2"] # exec form, preferred
+   difference with CMD:
+     ENTRYPOINT command and parameters are not ignored when Docker container runs with command line parameters
+     prefer ENTRYPOINT to CMD when building executable
+     use CMD if you need to provide extra default arguments that could be overwritten from command line when docker container runs
+   ex1. ENV name John
+        ENTRYPOINT echo "Hello, $name"
+        (when container runs as docker run -it <image> will produce output: Hello, John)  # normal shell processing happens
+   ex2. ENV name John
+        ENTRYPOINT ["/bin/echo", "Hello, $name"] # preferred, but here name is not substituted
+        (when container runs as docker run -it <image> will produce output: Hello, $name) # normal shell processing DOES NOT happen
+   ex3. ENV name John
+        ENTRYPOINT ["/bin/bash", "-c", "echo Hello, $name"]
+        (when container runs as docker run -it <image> will produce output: Hello, John)  # run bash 
+
+# Run Docker container
+  docker run -p 8080:80 [image_name]
+    ex. docker run -p 8080:80 [image_name] # publish port 8080 for the service (this binds port host machine port 80 to container port 80)
+  options:
+     -p, --publish: Publish a container's port(s) to the host (default [])
+       ex. docker run -p 127.0.0.1:8080:80/tcp ubuntu bash
+           this binds host machine on 127.0.0.1 port 8080 to container TCP port 80
+  note: to stop the running container, execute
+     docker ps
+     docker stop b5f07b1fa1f7
+
+# Run Docker shell
+  docker run -it [image] bash
+  docker run --entrypoint='/bin/bash' -it [image] # override entrypoint to bash
+# remove all unused or dangling (not related to any tagged images) images
+  docker system prune
+
+# docker run
+  1) Docker runs processes in isolated containers 
+  2) A container is a process which runs on a host (local/remote). 
+     when execute docker run, the container process that runs is isolated in that 
+     it has its own file system, its own networking, and its own isolated process 
+     tree separate from the host.
+  3) use the docker run command to define the container's resources at runtime
+
+  General form
+    $ docker run [OPTIONS] IMAGE[:TAG|@DIGEST] [COMMAND] [ARG...]
+      ex. docker run --rm -v `pwd`/logs --net=host [image]:[tag] echo hello
+    (must specify an IMAGE to derive the container from)
+    ([OPTIONS] override the image defaults)
+
+  options:
+    -t: allocate a pseudo-tty
+    -i: keep stdin open even if not attached
+      ex. sudo docker run -t -i ubuntu:14.04 /bin/bash
+      (initiate a bash terminal, allowing interactive mode)
+    -v, --volume=/tmp:/tmp: shared file system
+      ex. docker run -v "/tmp:/tmp" [image]:[tag]
+      ex. docker run -it -v `pwd`:/app -p 8080:80 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login (mount `pwd` to path /app inside docker container)
+          (this binds port 8080 of the container to TCP port 80 on 127.0.0.1 of the host machine)
+    -p: publish a container's port (or a range of ports) to the host
+      ex. docker run -p 8080:80 ...
+    --entrypoint: default command to execute at runtime
+      ex. docker run --entrypoint='/bin/bash' [image] # this overrides the entrypoint to execute shell instead (useful when a docker runs like an executable, this lets you execute its shell instead)
+    --env VAR_NAME=value: set environment variable with value
+    --login: register or login to a Docker Registry (i.e. Docker Hub)
+      require user to use sudo or be root
+    --network="bridge"/"host": set network mode for the container
+      'bridge': create a network stack on the default Docker bridge (use private ip)
+      'host': use the Docker host network stack                     (use public ip)
+              Note: the host mode gives the container full access to local system services such as D-bus and is therefore considered insecure
+      ex. docker run --network=host [image]:[tag]
+    --name=[name]: assign a name to the container
+      you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
+      ex. docker run --detach --publish=8080:80 --name=webserver nginx
+          docker stop webserver
+    -h, --hostname `hostname`: set the container host name (default container ID, ex. cf9b0cc060ad)
+      you can use this to override the hostname, but it only resolve with the internal docker DNS, not outside of the container
+    --restart=always: restart policy to apply when a container exits (default "no")
+      ex. docker run --network=host --restart=always [image]:[tag]
+
+# docker run: run a command in a new container
+ 1) -d, --detach: run container in background and print container ID
+    you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
+    ex. docker run --detach --publish=8080:80 --name=webserver nginx
+        docker stop webserver
+ 2) --rm: automatically remove the container when it exits
+    this runs the container at console which is removed when stopped
+    ex. docker run --network=host --rm [image]:[tag]
+    ex. docker run --rm -it -v `pwd`/logs:/opt/docker/logs [image]:[tag]
+      -it: keep stdin open even if not attached & allocate a pseudo-tty
+
+# List containers
+  docker ps
+    -a, --all: show all containers (default shows just running)
     ex. docker ps -a
       list all the containers, including running and exited containers
 
