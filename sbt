@@ -179,15 +179,15 @@ addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
 5) documentation:
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.3.+")
 
-# show dependency tree (i.e. mvn dependency:tree)
+# show dependency tree (ex. sbt dependencyGraph == mvn dependency:tree)
 1) add plugin to project/plugins.sbt
-   addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.2")
+   addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
 2) add sbt setting in build.sbt (can be skipped)
    net.virtualvoid.sbt.graph.Plugin.graphSettings
 3) run sbt commond
    sbt dependencyTree: shows an ASCII tree representation of the project's dependencies (in maven project, run command: mvn dependency:tree)
      this requires to add a plugin to project/plugins.sbt:
-     addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.8.0")
+     addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
    sbt dependencyGraph: shows an ASCII graph of the project's dependencies on the sbt console (only supported on sbt 0.13)
    sbt dependencyBrowseGraph: show the dependency graph on browser
 
