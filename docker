@@ -20,17 +20,26 @@
   docker images
 
 # list all container, remove container
-  docker container ls
+  docker container ls -a
   docker rm CONTAINER_ID
+  docker stop CONTAINER_ID
+  docker run -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [AN-EXISTING-RUNNING-CONTAINER]
+    # in order to run a similar container from a new image, you can run the above command to get the exact command of running AN-EXISTING-RUNNING-CONTAINER
 
 # fetch the logs of a container
   docker logs CONTAINER_ID
   ex. docker logs 015da0821bf1
 
 # docker save & docker load
-  docker save -o filename.tar example.com:443/org/appname
-  docker load i filename.tar # load docker image from local file 
-  docker load < filename.tar # load docker image from STDIN
+  docker save -o [filename] example.com:443/org_name/image_name
+    # this saves the image to a local image file
+  docker load i [filename] # load docker image from local file 
+    # this loads the local image file to the REPOSITORY, ex.
+    # REPOSITORY                                                 TAG                 IMAGE ID            CREATED             SIZE
+    # example.com:443/org_name/image_name 1.0.0               35b6f5234ffe        11 minutes ago      510 MB
+  docker load < [filename] # load docker image from STDIN
+  docker run --name=[container_name] --hostname=[local_hostname] --network=host --expose=4080/tcp --restart=always --detach=true --volume=/tmp:/tmp example.com:443/org_name/image_name:1.0.0
+    # run an image of REPOSITORY by giving it a [container_name], under a [local_hostname], mouted with [/tmp:/tmp] folders
 
 # remove all unused or dangling (not related to any tagged images) images
   docker system prune
