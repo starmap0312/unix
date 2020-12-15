@@ -180,8 +180,8 @@ addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.3.+")
 
 # show dependency tree (ex. sbt dependencyGraph == mvn dependency:tree)
-1) add plugin to project/plugins.sbt
-   addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.9.2")
+1) add plugin to project/plugins.sbt, or globally to ~/.sbt/1.0/plugins/plugins.sbt
+   addSbtPlugin("net.virtual-void" % "sbt-dependency-graph" % "0.10.0-RC1") # for sbt 1.3.x
 2) add sbt setting in build.sbt (can be skipped)
    net.virtualvoid.sbt.graph.Plugin.graphSettings
 3) run sbt commond
