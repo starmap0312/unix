@@ -35,10 +35,9 @@
        end
 
 # II) Chef Recipe: recipes organize resources
-  1) a file that groups related resources, ex. everything needed to configure a web server, database server, or
-     a load balancer
+  1) a file that groups related resources, ex. everything needed to configure a web server, database server, or a load balancer
   2) a collection of resources that describes a particular configuration or policy
-     i.e. it describes everything that is required to configure part of a system
+     i.e. it describes everything that is required to configure part of a system, ex.
           install and configure software components
           manage files
           deploy applications
