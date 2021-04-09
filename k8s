@@ -1,2 +1,13 @@
 # kubectl Cheat Sheet
 https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+
+# commands
+kubectl [command] [TYPE] [NAME] [flags]
+  command: specifies the operation, ex. create, get, describe, delete
+  TYPE: specifies the resource type, ex. pods, services, deployments (https://kubernetes.io/docs/reference/kubectl/overview/#resource-types)
+  NAME: specifies the name of the resource (if omitted, details for all resources are displayed), ex. example-pod1-name example-pod2-name
+  flags: specifies optional flags, ex. -A
+  ex.
+    kubectl get namespaces
+    kubectl get pods -A (all namespaces)
+    kubectl get pods etcd-minikube --namespace kube-system

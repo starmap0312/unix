@@ -286,6 +286,26 @@ sudo service docker restart
   options:
     -t, --tag: Name and optionally a tag in the 'name:tag' format (default [])
 
+# Run Docker container
+  docker run -p 8080:80 [image_name]
+    ex. docker run -p 8080:80 [image_name] # publish port 8080 for the service (this binds port host machine port 80 to container port 80)
+  options:
+     -p, --publish: Publish a container's port(s) to the host (default [])
+       ex. docker run -p 127.0.0.1:8080:80/tcp ubuntu bash
+           this binds host machine on 127.0.0.1 port 8080 to container TCP port 80
+  note: to stop the running container, execute
+     docker ps
+     docker stop b5f07b1fa1f7
+
+# Build a docker image by Docerfile and run it with a tag name
+  docker build -f Dockerfile -t [TAG_NAME] .
+    -t, --tag: Name and optionally a tag in the 'name:tag' format (default [])
+  docker run --rm -it --env BROKER=$1 [TAG_NAME]
+    --env VAR_NAME=value: set environment variable with value
+  ex.
+    docke build -f Dockerfile -t my-test-app .
+    docke run --rm -it --env MY_VAR=1 [TAG_NAME]
+
 # Dockerfile commands
 1) RUN: execute command(s) in a new layer and creates a new image (ex. installing software packages)
         use RUN instructions to build your image by adding layers on top of initial image
@@ -323,17 +343,24 @@ sudo service docker restart
         ENTRYPOINT ["/bin/bash", "-c", "echo Hello, $name"]
         (when container runs as docker run -it <image> will produce output: Hello, John)  # run bash 
 
-# Run Docker container
-  docker run -p 8080:80 [image_name]
-    ex. docker run -p 8080:80 [image_name] # publish port 8080 for the service (this binds port host machine port 80 to container port 80)
-  options:
-     -p, --publish: Publish a container's port(s) to the host (default [])
-       ex. docker run -p 127.0.0.1:8080:80/tcp ubuntu bash
-           this binds host machine on 127.0.0.1 port 8080 to container TCP port 80
-  note: to stop the running container, execute
-     docker ps
-     docker stop b5f07b1fa1f7
-
 # Run Docker shell
   docker run -it [image] bash
   docker run --entrypoint='/bin/bash' -it [image] # override entrypoint to bash
+
+# Find out the command of a running container
+  docker pull docker.io/assaflavie/runlike
+  docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [CONTAINER ID]
+
+# connecting to container service port
+ docker containers can connect to the outside world without any configuration; however, the outside world cannot connect to a Docker container by default
+ 1) you will need to export the docker container ports
+ ex. expose all ports:
+     docker run -P -d nginx
+ ex. expose a specific port:
+     docker run -p 80:80 -d nginx
+
+ 2) in Linux, you could use host networking so that the container shares the host networking namespace
+ i.e. if you run a container which binds to port 80 and use host networking, the container application is available on port 80 on the host IP address
+ # note this networking mode is NOT supported in Mac, you will have to go with option 1) 
+ ex. use host networking
+     docker run --network=host -d nginx

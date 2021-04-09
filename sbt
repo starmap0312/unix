@@ -274,13 +274,23 @@ in project/plugin.sbt
     }
   }
 
-  sbt run -D akka.cluster.seed-nodes=["akka.tcp://TestApp@host1:2552", "akka.tcp://TestApp@host2:2552"]
+  sbt run -Dakka.cluster.seed-nodes=["akka.tcp://TestApp@host1:2552", "akka.tcp://TestApp@host2:2552"]
   
   (similarly, in Java, we can pass parameters to main function as such)
 
   java [-options] -jar jarfile [args...]
 
+  # run java jar/class with system property set by command line, you could achieve this in Java code like this:
   ex. java -Darg1=true -jar myApplication.jar
+  ex. java -Dcustom_key="custom_value" application_launcher_class
+  # you could achieve the same thing in Java code like this:
+  ex. System.setProperty("custom_key", "custom_value");
+
+  # note that SBT runner does not normally create new processes, so you also have to tell it to do this if you want to set the system property
+  i.e. in build.sbt 
+    fork := true
+    javaOptions := Seq("-Dmx=1024M")
+  ex. sbt -Darg1=true run
 
 # where the packages are installed
   ex. /usr/local/Cellar/sbt/1.1.6/

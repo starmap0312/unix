@@ -510,3 +510,8 @@
      redirect stderr to /dev/null, so that error will not be outputed in console
      ex. </dev/null openssl s_client -connect www.google.com:443 2>/dev/null
   3) openssl s_client -connect [hostname]:[port] 2>/dev/null </dev/null | openssl x509 -noout -enddate
+
+# what does -- mean?
+  to signify the end of command options, after which only positional arguments are accepted
+  ex. to grep a file for the string -v
+      grep -- -v file (-v is not considered as an option of grep)
