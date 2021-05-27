@@ -260,3 +260,8 @@
     i.e. automatically test cookbook data across any combination of platforms and test suites
   kitchen list
   kitchen login <platform-suite>
+
+# Commands
+1) make chef to restore its original state
+   sudo chef-client
+     when a chef-client is run, it will perform all of the steps that are required to bring the node into the expected state
