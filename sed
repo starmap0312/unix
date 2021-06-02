@@ -18,6 +18,9 @@
   option:
     g: global, replace all occurrences (without g, it will only replace the first occurrence)
 
+# replace only the first occurrence of the keyword in a file
+  sed '0,/word1/s/word1/word2/'
+
 # replace one line in filename
   sed -i 'Ns/.*/replaced_content/' filename
     -i, --in-place: edit files in place
