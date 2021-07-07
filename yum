@@ -1,10 +1,15 @@
 # yum: Yellowdog Updater Modified
-  1) sudo yum update & upgrade
-  2) sudo yum install pkg_name
-  3) options:
-     -y: assumes yes to all questions
-     -q: quiet, run without output
-     ex. sudo yum update -y openssl
+  1) display rpm history
+     yum history: allows the user to view the history of transactions
+     yum history list all: list the transaction ID along with the date and time, 
+                           the actions performed and the number of packages altered 
+     yum history info <transaction_ID>
+  2) sudo yum update & upgrade
+  3) sudo yum install <pkg_name>
+     options:
+       -y: assumes yes to all questions
+       -q: quiet, run without output
+       ex. sudo yum update -y openssl
   4) yum --showduplicates list docker-engine | expand
      yum list: list all available and installed packages
      (available packages based on repos)
@@ -22,7 +27,13 @@
        baseurl=http://xxx.xxx.xxx:8000/artifactory/chef_rpms/rhel/$releasever/$basearch/release/
        enabled=1
        gpgcheck=0
-     sudo yum-config-manager --enable ==> set enabled=1 for [chef_rpms-release]
+     sudo yum-config-manager --enable <repo_id> ==> set enabled=1 for <repo_id>, ex. [chef_rpms-release]
+  8) add a repo:
+     sudo yum-config-manager --add-repo http://www.example.com/example.repo
+     note: run "yum repolist" if you want to check all the enabled repo
+  8) remove a repo: 
+     sudo yum-config-manager --disable <repo_id>
+     ex. sudo yum-config-manager --disable bintray--sbt-rpm
 
 # enable extra repo & install pip
   ex1.
@@ -45,7 +56,26 @@
 # rpm commands
 1) check the version of a package:
    rpm -q <pkg_name>
+   rpm -q <pkg_name> --last
+   rpm -qa --last
+   rpm -qa | grep <pkg_name>
+     list all rpm packages and grep a <pkg_name>
+  rpm -qi <pkg_name>
+     -i, --info: display package information, including name, version, and  description
 2) check which package a file belongs to:
-   rpm -qf <filename>
+   rpm -qf <filename>      ==> find package from its file
+     -f, --file <filename>: query package owning <filename>
+     ex. rpm -qr /path/to/folder/*
 3) list all package files:
-   rpm -ql <pkg_name>
+   rpm -ql <pkg_name>      ==> list all package files
+     -l, --list: list files belonging <pkg_name>
+4) search a package:
+   yum search <pkg_name>
+   note: run "yum repolist" if you want to check all the enabled repo
+5) remove a package:
+   yum remove <pkg_name>
+
+# remove corrupted db files
+  sudo rm -f /var/lib/rpm/__db.00? OR sudo rm -f /var/lib/rpm/__db*
+  sudo rpm --rebuilddb ==> rebuild the db files
+
