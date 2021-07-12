@@ -29,7 +29,8 @@
      sbt test:compile : compile test sources only without running the tests (i.e. src/test/scala/)
      sbt test:run     : test:run runs main classes defined in the test sources (i.e. src/test/scala/), i.e. similar to "sbt run" which runs main classes in the main sources (i.e. src/main/scala/)
        ex. sbt -Darg=value test:run
-       ex. sbt debug clean -Darg=value test:run (this provides debug information and clean the target/ before running the test)
+       ex. sbt -debug clean -Darg=value test:run (this cleans the target/ before running the test)
+     sbt -debug test: this sets sbt log level to DEBUG level
      sbt "testOnly [test_name]": run a specific test, ex. sbt "testOnly com.my_package.MyTest"
      sbt package      : creates jar file containing files in src/main/resources and classes compiled from
                         src/main/scala and src/main/java (only project classes will be included in the jar)
