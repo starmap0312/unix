@@ -1,13 +1,162 @@
-# kubectl Cheat Sheet
-https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+# https://kubernetes.io/docs/home/
 
-# commands
-kubectl [command] [TYPE] [NAME] [flags]
-  command: specifies the operation, ex. create, get, describe, delete
-  TYPE: specifies the resource type, ex. pods, services, deployments (https://kubernetes.io/docs/reference/kubectl/overview/#resource-types)
-  NAME: specifies the name of the resource (if omitted, details for all resources are displayed), ex. example-pod1-name example-pod2-name
-  flags: specifies optional flags, ex. -A
+# Kubernetes Components
+  cluster:
+    a cluster consists of a set of worker machines, called nodes, that run containerized applications
+  node:
+    a (worker) node hosts a set of pods that are the components of the application workload
+    a node is a virtual or physical machine, and each node is managed by the control plane and contains the services necessary to run Pods
+  pod:
+    a pod represents a set of running containers in your cluster 
+    a pod has shared storage and network resources, and a spec of how to run the containers
+      similar to Docker concepts, a Pod is a group of Docker containers with shared namespaces and shared filesystem volumes
+  control plane:
+    the control plane manages the worker nodes and the pods in the cluster
+
+# Kubernetes networking
+  1) Containers within a Pod use networking to communicate via loopback
+  2) Cluster networking provides communication between different Pods
+  3) Service resource lets you expose an application running in Pods to be reachable from outside your cluster
+     you can also use Service to publish services only inside your cluster
+
+# Kubernetes API
+  the Kubernetes API lets you query and manipulate the Kubernetes objects (API objects, ex. Namespaces, ConfigMaps, and Events)
+  most operations can be performed through the "kubectl" command-line interface, or directly using REST calls
+
+# Kubernetes objects
+  Kubernetes objects are "persistent" entities in the Kubernetes system, used to represent the state of your cluster
+  ex. they describe:
+    what containerized applications are running (and on which nodes)
+    the resources available to those applications
+    the policies of how those applications behave, such as restart policies, upgrades, and fault-tolerance
+  once you create an object, you are effectively telling the Kubernetes system what you want your cluster workload to look like (i.e. the cluster's desired state)
+  you use the kubectl command-line interface to create, modify, or delete Kubernetes objects
+  almost every Kubernetes object includes two nested fields:
+    object "spec": the characteristics you want the resource to have, i.e. its desired state
+    object "status": the current state of the object
+      the control plane continually manages every object's actual state to match the spec (desired state) you supplied
+    ex. 
+      a Deployment is an object that can represent an application running on your cluster
+      you might create and set the Deployment spec to have 2 replicas (pods) running
+      the Kubernetes system reads the Deployment spec and starts three instances of your desired application, updating the status to match the spec
+    most often, you provide the object information in a .yaml file. and use kubectl to convert the information to JSON and make the API request
+      ex. "kubectl apply -f https://k8s.io/examples/application/deployment.yaml --record"
+      apiVersion: apps/v1 # the version of the Kubernetes API used to create this object
+      kind: Deployment # what kind of object you want to create
+      metadata: # data that helps to identify the object, ex. a name, UID, and optional namespace
+        name: nginx-deployment
+      spec: # the desired state for the object (the spec is different for every Kubernetes objec: see https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.21/)
+        selector: # label selector for pods (existing ReplicaSets whose pods are selected by this will be affected by this deployment)
+          matchLabels: # a map of (key, value) pairs
+            app: nginx
+        replicas: 2 # Number of desired pods. this tells deployment to run 2 pods to match the template
+        template: # pod template: this describes the pods that will be created
+          metadata: # object's metadata
+            labels:
+              app: nginx
+          spec: # pod spec: this specifies the desired behavior of the pod
+            containers: # list of containers belonging to the pod
+            - name: nginx # name of the container (each container in a pod must have a unique name)
+              image: nginx:1.14.2 # docker image name
+              ports: # list of ports to expose from the container
+              - containerPort: 80 # this is primarily informational: any port listening on "0.0.0.0" inside a container will be accessible from the network
+
+# Service (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/service/)
+  a Service is an abstract way to expose an application running on a set of Pods as a network service
+    the Service abstraction defines a logical set of Pods and a policy by which to access them (i.e. micro-service)
+    the Service abstraction enables the decoupling of the micro-services (ex. frontend/backend) of an application
+    the set of Pods targeted by a Service is usually determined by a "selector"
+  as many Services need to expose more than one port, Kubernetes supports multiple port definitions on a Service object
+    each port definition can have the same or a different protocol
   ex.
-    kubectl get namespaces
-    kubectl get pods -A (all namespaces)
-    kubectl get pods etcd-minikube --namespace kube-system
+     if some Pods (backend) provides functionality to other Pods (frontend) inside your cluster, then
+     the frontend need to find out and keep track of which IP address to connect to, so that it can use the backend 
+     the Service abstraction decouples the two micro-services, so that the frontend does not need to be aware of the changes of the backend actual Pods
+  ex.
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: my-service
+    spec:
+      selector:
+        app: MyApp
+      ports:
+        - protocol: TCP
+          port: 80
+          targetPort: 9376
+
+  note: this spec creates a new Service object named "my-service", which targets TCP port 9376 on any Pod with the app=MyApp label
+        this Service is assigned an IP address 80 (called cluster IP) used by the Service proxies
+
+# Ingress (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/ingress/)
+  an API object that manages external access to the services in a cluster, typically HTTP
+    i.e. you use Ingress to expose your Service, i.e. it gives Services externally-reachable URLs
+         Ingress is not a Service type: it acts as the entry point for your cluster
+         it lets you consolidate your routing rules into a single resource as it can expose multiple services under the same IP address
+  Ingress also provides load balancing, SSL termination and name-based virtual hosting
+  ex.
+    apiVersion: networking.k8s.io/v1
+    kind: Ingress
+    metadata:
+      name: minimal-ingress # the name of an Ingress object must be a valid DNS subdomain name
+      annotations: # it uses annotations to configure some options depending on the Ingress controller
+        nginx.ingress.kubernetes.io/rewrite-target: /
+    spec: # the spec contains a list of rules matched against all incoming requests
+      rules:
+      - http:
+          paths: # a list of paths, each of which has an associated backend defined with a service.name and a service.port.name or service.port.number
+          - path: /testpath
+            pathType: Prefix
+            backend: # a backend is a combination of Service and port names as described in the Service object
+              service:
+                name: test
+                port:
+                  number: 80
+
+  note: this spec has all the information needed to configure a load balancer or proxy server 
+        it contains a list of rules matched against all incoming requests, i.e. rules for directing HTTP(S) traffic
+
+# Istio
+  Istio lets you efficiently run a distributed microservice architecture, and provides a uniform way to secure, connect, and monitor microservices
+    it makes it easy to create a network of deployed services with load balancing, service-to-service authentication, monitoring, etc.
+    you add Istio to services, which deploys a special sidecar proxy (Envoy proxy) that intercepts all network communication between microservices
+    you then configure and manage Istio, which supports:
+      fine-grained control of traffic behavior with rich routing rules, retries, failovers
+      automatic load balancing for HTTP, gRPC, WebSocket, and TCP traffic
+      a policy layer and configuration API supporting access controls, rate limits
+      secure service-to-service communication in a cluster with strong identity-based authentication and authorization
+  what is service mesh:
+    the term is used to describe the network of microservices and the interactions between them
+
+# Istio VirtualService (istio: https://istio.io/latest/docs/reference/config/networking/virtual-service/)
+  Istio VirtualService lets you configure how requests are routed to a service within an Istio service mesh
+  VirtualService vs. Service:
+    istio VirtualServices provides additional features: ex. external traffic routing (external to Pod communication, HTTPS communication, url rewriting, etc.)
+    you need classic Service to manage ingress traffic or service-to-service communication
+  a Service is a unit of application behavior bound to a unique name in a service registry
+    a Service consists of multiple network endpoints implemented by workload instances running on pods
+  a VirtualService defines a set of traffic routing rules to apply when a host is addressed
+    each routing rule defines matching criteria for traffic of a specific protocol, ex. http
+    if the traffic is matched (ex. matched protocol & port), then it is sent to a named destination service defined in the registry (ex. sent to a host name)
+
+# Gateway (istio: https://istio.io/latest/docs/reference/config/networking/gateway/)
+  a Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections
+    the spec describes a set of ports that should be exposed, the type of protocol to use, SNI configuration for the load balancer, etc
+
+  note: A VirtualService can be bound to a gateway to control the forwarding of traffic arriving at a particular host or gateway port
+
+# kubectl commands
+  kubectl Cheat Sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
+  kubectl [command] [TYPE] [NAME] [flags]
+    [command]: specifies the operation, ex. create, get, describe, delete
+    [TYPE]: specifies the resource type, ex. pods, services, deployments (https://kubernetes.io/docs/reference/kubectl/overview/#resource-types)
+    [NAME]: specifies the name of the resource (if omitted, details for all resources are displayed), ex. example-pod1-name example-pod2-name
+    [flags]: specifies optional flags, ex. -A
+    ex.
+      kubectl get namespaces
+      kubectl get pods -A (all namespaces)
+      kubectl get pods <POD_NAME> --namespace <NAMESPACE> (ex. kubectl get pods etcd-minikube --namespace kube-system)
+      kubectl get all --namespace <NAMESPACE> --context <CLUSTER>
+        list all the objects on the given cluster in the given namespace
+      kubectl delete pod <POD_NAME> --namespace <NAMESPACE> --context <CLUSTER> --now
+        delete a pod
