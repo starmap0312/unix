@@ -61,7 +61,7 @@
               ports: # list of ports to expose from the container
               - containerPort: 80 # this is primarily informational: any port listening on "0.0.0.0" inside a container will be accessible from the network
 
-# Service (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/service/)
+# Kubernetes Service (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/service/)
   a Service is an abstract way to expose an application running on a set of Pods as a network service
     the Service abstraction defines a logical set of Pods and a policy by which to access them (i.e. micro-service)
     the Service abstraction enables the decoupling of the micro-services (ex. frontend/backend) of an application
@@ -88,7 +88,7 @@
   note: this spec creates a new Service object named "my-service", which targets TCP port 9376 on any Pod with the app=MyApp label
         this Service is assigned an IP address 80 (called cluster IP) used by the Service proxies
 
-# Ingress (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/ingress/)
+# Kubernetes Ingress (Kubernetes object: https://kubernetes.io/docs/concepts/services-networking/ingress/)
   an API object that manages external access to the services in a cluster, typically HTTP
     i.e. you use Ingress to expose your Service, i.e. it gives Services externally-reachable URLs
          Ingress is not a Service type: it acts as the entry point for your cluster
@@ -130,20 +130,31 @@
 
 # Istio VirtualService (istio: https://istio.io/latest/docs/reference/config/networking/virtual-service/)
   Istio VirtualService lets you configure how requests are routed to a service within an Istio service mesh
-  VirtualService vs. Service:
-    istio VirtualServices provides additional features: ex. external traffic routing (external to Pod communication, HTTPS communication, url rewriting, etc.)
+
+  Istio VirtualService vs. Kubernetes Service:
+    Istio VirtualService provides additional features: ex. external traffic routing (external to Pod communication, HTTPS communication, url rewriting, etc.)
     you need classic Service to manage ingress traffic or service-to-service communication
+
   a Service is a unit of application behavior bound to a unique name in a service registry
     a Service consists of multiple network endpoints implemented by workload instances running on pods
   a VirtualService defines a set of traffic routing rules to apply when a host is addressed
     each routing rule defines matching criteria for traffic of a specific protocol, ex. http
     if the traffic is matched (ex. matched protocol & port), then it is sent to a named destination service defined in the registry (ex. sent to a host name)
 
-# Gateway (istio: https://istio.io/latest/docs/reference/config/networking/gateway/)
-  a Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections
+# Istio Gateway (istio: https://istio.io/latest/docs/reference/config/networking/gateway/)
+  Istio Gateway manages inbound and outbound traffic for your mesh, letting you specify which traffic you want to enter or leave the mesh
+    note that the configurations are applied to standalone Envoy proxies running at the edge of the mesh, not sidecar Envoy proxies running alongside service workloads
+
+  Istio Gateway vs. Kubernetes Ingress
+    unlike Kubernetes Ingress, Istio Gateway lets lets you configure layer 4-6 load balancing properties such as ports to expose, TLS settings, and so on
+    instead of adding application-layer traffic routing (L7) to the same API resource, you bind a Istio VirtualService to the Gateway
+
+  Istio Gateway describes a load balancer operating at the edge of the mesh receiving incoming or outgoing HTTP/TCP connections
     the spec describes a set of ports that should be exposed, the type of protocol to use, SNI configuration for the load balancer, etc
 
-  note: A VirtualService can be bound to a gateway to control the forwarding of traffic arriving at a particular host or gateway port
+  note: a VirtualService can be bound to a Gateway to control the forwarding of traffic arriving at a particular host or gateway port
+  note: a Gateway is primarily used to manage ingress traffic, but you can also configure egress gateways
+        an egress Gateway lets you configure a dedicated exit node for the traffic leaving the mesh, letting you limit which services can access external networks
 
 # kubectl commands
   kubectl Cheat Sheet: https://kubernetes.io/docs/reference/kubectl/cheatsheet/
