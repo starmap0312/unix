@@ -348,9 +348,16 @@ sudo service docker restart
   docker run -it [image] bash
   docker run --entrypoint='/bin/bash' -it [image] # override entrypoint to bash
 
+# docker run vs. docker exec
+  docker run: start up a new container and run a process within that new container
+    ex. docker run --name ubuntu_bash --rm -i -t ubuntu bash # start a new container named ubuntu_bash and start a Bash session
+  docker exec: execute a command in a container is already running
+    ex. docker exec -d ubuntu_bash touch /tmp/execWorks # create a new file /tmp/execWorks inside the running container ubuntu_bash, in the background
+        docker exec -it ubuntu_bash bash # execute an interactive bash shell on the running container named ubuntu_bash
+
 # Find out the command of a running container
   docker pull docker.io/assaflavie/runlike
-  docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [CONTAINER ID]
+  docker run --rm -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [CONTAINER_ID]
 
 # connecting to container service port
  docker containers can connect to the outside world without any configuration; however, the outside world cannot connect to a Docker container by default
