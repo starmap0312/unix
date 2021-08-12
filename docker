@@ -343,9 +343,12 @@ sudo service docker restart
         ENTRYPOINT ["/bin/bash", "-c", "echo Hello, $name"]
         (when container runs as docker run -it <image> will produce output: Hello, John)  # run bash 
 
-# Run Docker shell
-  docker run -it [image] bash
-  docker run --entrypoint='/bin/bash' -it [image] # override entrypoint to bash
+# Run the shell in a new container created 
+  docker run -it [image] /bin/bash
+  docker run --entrypoint='/bin/bash' -it [image] # override the entrypoint of the image to /bin/bash
+
+# Run the shell in a running container 
+  docker exec -it [CONTAINER_ID] /bin/bash
 
 # docker run vs. docker exec
   docker run: start up a new container and run a process within that new container
