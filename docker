@@ -89,17 +89,6 @@
     --restart=always: restart policy to apply when a container exits (default "no")
       ex. docker run --network=host --restart=always [image]:[tag]
 
-# docker run: run a command in a new container
- 1) -d, --detach: run container in background and print container ID
-    you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
-    ex. docker run --detach --publish=8080:80 --name=webserver nginx
-        docker stop webserver
- 2) --rm: automatically remove the container when it exits
-    this runs the container at console which is removed when stopped
-    ex. docker run --network=host --rm [image]:[tag]
-    ex. docker run --rm -it -v `pwd`/logs:/opt/docker/logs [image]:[tag]
-      -it: keep stdin open even if not attached & allocate a pseudo-tty
-
 # List containers
   docker ps
     -a, --all: show all containers (default shows just running)
@@ -235,16 +224,26 @@ sudo service docker restart
     --restart=always: restart policy to apply when a container exits (default "no")
       ex. docker run --network=host --restart=always [image]:[tag]
 
-# docker run: run a command in a new container
+# docker run: some commonly used options 
  1) -d, --detach: run container in background and print container ID
-    you can use it when referencing the container, ex. you can then stop the container by running "docker stop webserver"
+    as it runs in the background, you cannot CTRL-C to exit the container
+      instead, you need to manually run "docker stop [CONTAINER_ID]" to stop the container
     ex. docker run --detach --publish=8080:80 --name=webserver nginx
         docker stop webserver
  2) --rm: automatically remove the container when it exits
-    this runs the container at console which is removed when stopped
+    without --rm, the container (an instance of the image) still exists in the machine, which occupies the disk space, and
+      you will need to manually run "docker rm [CONTAINER_ID]" to remove it from the disk
     ex. docker run --network=host --rm [image]:[tag]
-    ex. docker run --rm -it -v `pwd`/logs:/opt/docker/logs [image]:[tag]
-      -it: keep stdin open even if not attached & allocate a pseudo-tty
+ 3) -it: keep stdin open even if not attached & allocate a pseudo-tty
+    this creates an interactive bash shell in the container
+    i.e. it instructs Docker to allocate a pseudo-TTY connected to the container’s stdin, creating an interactive bash shell in the container
+    ex. docker run -it ubuntu:14.04 /bin/bash 
+        $ exit 13 # you are inside a container, with an interactive bash shell, and then you exit the container with code 13
+        $ echo $? # you are outside of the container and are passed on the exit code 13
+          13
+        $ docker ps -a | grep test
+          d6c0fe130dba        debian:7            "/bin/bash"  
+    the bash shell is quit by entering exit 13. This exit code is passed on to the caller of docker run, and is recorded in the test container’s metadata.
 
 # List containers
   docker ps
