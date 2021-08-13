@@ -72,7 +72,14 @@
 4) search a package:
    yum search <pkg_name>
    note: run "yum repolist" if you want to check all the enabled repo
-5) remove a package:
+5) list all package versions:
+   yum --showduplicates list protobuf-c
+     Available Packages
+     protobuf-c.x86_64    1.1.1-30.el7    some repo
+6) install a specific package version:
+   yum install <pkg_name>-<version>
+   ex. yum install protobuf-c-1.1.1-30.el7
+6) remove a package:
    yum remove <pkg_name>
 
 # remove corrupted db files
