@@ -6,27 +6,24 @@
      note: copy the above line into ~/.bash_profile to avoid prepending all commands with chef exec
 
 # Chef terminology
-# I) Chef resource
-  1) one part of the system, ex. a file, a template, or a package
-  2) a part of the system and its desired state
-     ex. a file that should be generated
-         a package that should be installed
-         a service that should be running
-  3) every resource in Chef has a default action
-     ex. file resource has a default action ":create"  (create a file)
+# I) Chef resource: https://docs.chef.io/resources/
+  one part of the system, ex. a file, a template, or a package
+  a part of the system and its desired state
+    ex. a file that should be generated
+        a package that should be installed
+        a service that should be running
+  every resource in Chef has a default action
+    ex. file resource has a default action ":create"  (create a file)
 
      file 'motd' do
        content 'hello world'
      end
+     # the default action of file resource
+  other actions include: install a package, and start a service, etc.
 
-
-     file 'motd' do
-       action :create
-       content 'hello world'
-     end
-
-     ex. other actions: install a package, and start a service
-  4) resource attributes: can be ordered arbitrary
+  example resources:
+  1) Use the file resource to manage files directly on a node.
+     the resource attributes can be ordered arbitrary
      ex.
        file '/etc/motd' do
          owner 'root'          <== resource attribute can be put in front of action
@@ -34,10 +31,27 @@
          mode '0755'
          action :create
        end
-  5) use the execute resource to execute a single command 
+  2) Use the execute resource to execute a single command 
      ex. a single command that is run by itself
        execute 'log_folder' do
          command 'mkdir -p /tmp/log'
+       end
+  3) Use the service resource to manage a service:
+     ex.
+       service 'apache' do
+         action [ :enable, :start ]
+         retries 3
+       end
+  4) Use the yum_package resource to install, upgrade, and remove YUM packages
+     ex.
+       yum_package 'netpbm' do
+         action :install
+       end
+  5) Use the template resource to add cookbook templates to recipes
+       a cookbook template is an Embedded Ruby (ERB) template used to dynamically generate static text files
+     ex.
+       template '/tmp/config.conf' do
+         source 'config.conf.erb'
        end
 
 # II) Chef Recipe: recipes organize resources
@@ -78,7 +92,9 @@
           a) current state of the node
           b) what state the node was (previous run)
           c) what state the node should be (after current run)
-        it can be defined in a cookbook (or a recipe) and then used to override the default settings on a node
+        it can be defined in:
+          a) cookbooks (in attributes/ file, used to override the default settings on a node)
+          b) roles or environments
         attribute type:
           default:
             this automatically resets at the start of every run 
@@ -100,51 +116,21 @@
   it provides structure to your recipes and enables you to more easily reference external files
     i.e. a cookbook helps you stay organized
 
-# IV) Chef Run-list
-  let you specify which recipes to run, and the order in which to run them
-  important when there are multiple cookbooks (the order in which they run)
-  1) an ordered list of roles and/or recipes that are run in the exact order defined in the run-list
-     if a recipe appears more than once in the run-list, the chef-client will not run it twice
-  2) always specific to the node on which it runs
-     nodes may have a run-list that is identical to the run-list used by other nodes
-  3) stored as part of the node object on the Chef server
-  4) maintained using knife, and then uploaded from the workstation to the Chef server, or is maintained using
-     the Chef management console
-
-# V) Chef Attribute
-  1) a specific detail about a node
-  2) used by the chef-client to understand:
-     the current state of the node
-     what the state of the node was at the end of the previous chef-client run
-     what the state of the node should be at the end of the current chef-client run
-  3) defined by:
-     the state of the node itself
-     cookbooks (in attribute files and/or recipes)
-     roles
-     environments
-
-# VI) Chef Role
-  1) a way to define certain patterns and processes that exist across nodes in organization (same job function)
-  2) each role consists of zero (or more) attributes and a run-list
-  3) when a chef-client runs, it merges its own attributes and run-lists with those contained within each
-     assigned role
-  4) when a role is run against a node, the configuration details of that node are compared against the
-     attributes of the role, and then the contents of that role’s run-list are applied to the node’s
-     configuration details
-  5) each node can have zero (or more) roles assigned to it
-
-# VII) Chef Environment
-  1) a way to map an organization’s real-life workflow to what can be configured and managed when using
-     Chef server
-  2) every organization begins with a single environment called the _default environment, which cannot be
-     modified (or deleted)
-  3) additional environments can be created to reflect each organization’s patterns and workflow
-     ex. creating production, staging, testing, and development environments
-  4) an environment is also associated with one (or more) cookbook versions
-
-# VIII) Chef Policy
-  1) policy maps business and operational requirements, process, and workflow to settings and objects 
-     stored on the Chef server
+# IV) Chef Policy
+  the policy maps operational requirements, process, and workflow to objects (settings) that are stored on the Chef server
+   i) Roles define server types, such as "web server" or "database server"
+      roles are used to define certain job function that exist across nodes in organization
+      when a chef-client runs, it merges the attributes and run-lists of an assigned role
+        each role consists of zero (or more) attributes and a run-list
+  ii) Environments define process, such as "dev", "staging", or "production"
+      environments can be created to reflect the organization’s workflow
+        ex. production, staging, testing, and development environments
+      it is a way to map a organization’s workflow to what can be managed by Chef Infra 
+ iii) Run-list defines all of the information necessary for a node into its desired state
+      in roles, you define run-list which specifies which recipes to run, and the order in which to run them
+        it is important when there are multiple cookbooks and the order in which they run matters
+      it is stored as part of the node object on the Chef server
+        it is maintained using knife and then uploaded to Chef server
 
 # Chef Comparison
 # Role vs. Environment vs. Policy
