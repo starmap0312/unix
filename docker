@@ -19,6 +19,10 @@
 # list local docker images
   docker images
 
+# list local docker volumes 
+  docker volume ls
+  docker volume prune: remove all unused local volumes
+ 
 # list all container, remove container
   docker container ls -a
   docker rm CONTAINER_ID
@@ -374,3 +378,23 @@ sudo service docker restart
  # note this networking mode is NOT supported in Mac, you will have to go with option 1) 
  ex. use host networking
      docker run --network=host -d nginx
+
+# some useful commands
+  1) remove all containers in the disk
+     docker rm -f $(docker ps -aq): remove all containers in the disk
+
+# docker-compose commands
+  1) docker-compose build
+     if you change a service’s Dockerfile or the contents of its build directory, run docker-compose build to rebuild it
+  2) docker-compose run [service_name]
+     runs a one-time command against a service
+     ex. docker-compose run web bash
+     ex. docker-compose run --service-ports web bash
+         create the service’s ports that are mapped to the host
+  3) docker-compose up
+     builds, (re)creates, starts, and attaches to containers for a service
+     ex. docker-compose up --detach
+         start the containers in the background and leaves them running
+     ex. docker-compose up --force-recreate
+         stop and recreate all containers
+
