@@ -8,11 +8,12 @@
 # Chef terminology
 # I) Chef resource
   1) one part of the system, ex. a file, a template, or a package
-  2) a part of the system and its desired state, ex. a package that should be installed, a service that
-     should be running, or a file that should be generated
+  2) a part of the system and its desired state
+     ex. a file that should be generated
+         a package that should be installed
+         a service that should be running
   3) every resource in Chef has a default action
-     file resource has a default action ":create"  (create a file)
-     ex.
+     ex. file resource has a default action ":create"  (create a file)
 
      file 'motd' do
        content 'hello world'
@@ -24,7 +25,7 @@
        content 'hello world'
      end
 
-     other actions: install a package, and start a service
+     ex. other actions: install a package, and start a service
   4) resource attributes: can be ordered arbitrary
      ex.
        file '/etc/motd' do
@@ -33,14 +34,20 @@
          mode '0755'
          action :create
        end
+  5) use the execute resource to execute a single command 
+     ex. a single command that is run by itself
+       execute 'log_folder' do
+         command 'mkdir -p /tmp/log'
+       end
 
 # II) Chef Recipe: recipes organize resources
-  1) a file that groups related resources, ex. everything needed to configure a web server, database server, or a load balancer
+  1) a file that groups related resources
+     ex. everything needed to configure a web server, database server, or a load balancer
   2) a collection of resources that describes a particular configuration or policy
-     i.e. it describes everything that is required to configure part of a system, ex.
-          install and configure software components
-          manage files
-          deploy applications
+     i.e. it describes everything that is required to configure part of a system
+     ex. install and configure software components
+         manage files
+         deploy applications
      ex.
        package 'httpd'                <== default action for package resource is install
 
@@ -60,16 +67,35 @@
      ex.
        chef-client --local-mode filename.rb
        
-  3) Chef applies resources in the order they appea
+  3) Chef applies resources of a recipe in the order they appear
 
 # III) Chef Cookbook: make your recipe more manageable
   the fundamental unit of configuration and policy distribution, and it defines:
     i)  recipes/:
         recipes specify the resources to use and the order in which they are to be applied
     ii) attributes/:
-        an attribute value is a specific detail about a node
+        an attribute value is a specific detail about a node, used by Chef Infra Client to understand:
+          a) current state of the node
+          b) what state the node was (previous run)
+          c) what state the node should be (after current run)
         it can be defined in a cookbook (or a recipe) and then used to override the default settings on a node
+        attribute type:
+          default:
+            this automatically resets at the start of every run 
+            it has the lowest attribute precedence
+            use the default type as often as possible in cookbook
    iii) files/:
+        it stores files that are used in cookbook with the cookbook_file resource
+        use the cookbook_file resource defined in recipe
+        ex.
+          cookbook_file '/tmp/config.yaml' do # /tmp/config.yaml is path that the file to be created
+            source 'config.yaml' # this specifies the file that lies in cookbook's files/default folder
+          end
+        you can then define command to access the file in recipe
+          execute 'cat-config' do
+            command 'cat config.yaml'
+            cwd '/tmp'
+          end
 
   it provides structure to your recipes and enables you to more easily reference external files
     i.e. a cookbook helps you stay organized
