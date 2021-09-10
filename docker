@@ -30,6 +30,16 @@
   docker run -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [AN-EXISTING-RUNNING-CONTAINER]
     # in order to run a similar container from a new image, you can run the above command to get the exact command of running AN-EXISTING-RUNNING-CONTAINER
 
+# run bash in a container 
+  1) run bash in a new container
+     docker run -it [IMAGE_ID] /bin/bash
+       -it: initiate a bash terminal, allowing interactive mode
+       ex. docker run -it ubuntu:14.04 /bin/bash
+       ex. docker run -it --entrypoint="/bin/bash" ubuntu:14.04
+  2) run bash in a existing, running container
+     docker exec -it [CONTAINER_ID] /bin/bash
+       ex. docker exec -it 4a523634665a /bin/bash
+
 # fetch the logs of a container
   docker logs CONTAINER_ID
   ex. docker logs 015da0821bf1
@@ -65,9 +75,6 @@
   options:
     -i: keep stdin open even if not attached
     -t: allocate a pseudo-tty
-      ex. sudo docker run -it ubuntu:14.04 /bin/bash
-      ex. sudo docker run -it --entrypoint="/bin/bash" ubuntu:14.04
-      (initiate a bash terminal, allowing interactive mode)
     -v, --volume=/tmp:/tmp: shared file system
       ex. docker run -v "/tmp:/tmp" [image]:[tag]
       ex. docker run -it -v `pwd`:/app -p 8080:80 --entrypoint='/bin/bash' [REMOTE_IMAGE] --login (mount `pwd` to path /app inside docker container)
