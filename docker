@@ -423,3 +423,5 @@ ex. Dockerfile
     # build the prod image without creating the intermediate builder image
     $ docker build -t alexellis2/href-counter:latest .
 
+# the Docker Container Logs are Stored:
+  /var/lib/docker/containers/<container_id>/<container_id>-json.log
