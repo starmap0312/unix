@@ -174,9 +174,13 @@ addSbtPlugin("com.github.gseitz" % "sbt-release" % "1.0.4")
 addSbtPlugin("com.eed3si9n" % "sbt-assembly" % "0.14.3")
 
 4) dependency resolver:
-a Scala library to fetch dependencies from Maven / Ivy repositories
+a sbt plugin to fetch dependencies from Maven / Ivy repositories
 addSbtPlugin("io.get-coursier" % "sbt-coursier" % "1.0.0")
-
+  this ensures one's dependencies are fetched via coursier rather than by sbt itself, that relies on its own custom version of Ivy
+    Linux: ~/.cache/coursier/v1
+    OS X: ~/Library/Caches/Coursier/v1
+  note that, the plugin may not be compatible with certain sbt versions when downloading from insecure maven repo
+    ex. sbt 1.5.5 will throw "insecure HTTP request is unsupported 'http://example.com:9999/proximity/repository/public"
 5) documentation:
 addSbtPlugin("com.lightbend.paradox" % "sbt-paradox" % "0.3.+")
 
