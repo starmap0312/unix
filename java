@@ -153,6 +153,7 @@ public class SimpleThread {
 ref: https://github.com/jenv/jenv
 1) brew install jenv
 2) jenv add $(/usr/libexec/java_home) # add current java_home, ex. jdk1.14, to jenv
-   jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/ # add jdk1.8 jenv
+   jenv add /usr/local/Cellar/openjdk/17.0.1 # add openjdk-17
+   #jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/ # add jdk1.8 jenv
 3) jenv shell 1.8 # this manually sets the shell environment to use jdk1.8
    jenv local 1.8 # this creates a file .java-version in the directory for jenv to remember which jdk version it should use for this directory

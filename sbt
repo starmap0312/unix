@@ -319,3 +319,11 @@ in project/plugin.sbt
   3) at intellij -> Edit Configurations ..., add a Remote configuration
        + Remote (ex. Name = "run server", with Port = "5005")
   4) at intellij -> Run, Debug 'run server' to connect to the target VM with address: 'localhost:5005' and transport: 'socket'
+
+# run the main class of a sub-project (module)
+  sbt "project [proj_name]" run
+  specify the mainClass in the project's build.sbt:
+    Compile / mainClass := Some("com.example.proj_name.MyMainClass")
+  where object MyMainClass extends App
+
+  
