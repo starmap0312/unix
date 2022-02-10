@@ -1,0 +1,13 @@
+# ref: https://docs.fedoraproject.org/en-US/quick-docs/dnf/
+
+# search the repositories for a package type:
+sudo dnf search packagename
+
+# install the package:
+dnf install packagename
+
+# remove a package:
+dnf remove packagename
+
+# show repo details
+sudo dnf repolist -v
