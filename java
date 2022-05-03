@@ -157,3 +157,25 @@ ref: https://github.com/jenv/jenv
    #jenv add /Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/ # add jdk1.8 jenv
 3) jenv shell 1.8 # this manually sets the shell environment to use jdk1.8
    jenv local 1.8 # this creates a file .java-version in the directory for jenv to remember which jdk version it should use for this directory
+
+# jcmd: JVM diagnostic utility (heap memory status): ref: https://www.baeldung.com/java-heap-size-cli
+1) jps -l: find the process id of a particular Java application
+  ex.
+    73170 org.jetbrains.idea.maven.server.RemoteMavenServer36
+    4309  quarkus.jar
+    12070 sun.tools.jps.Jps
+2) jcmd <pid> GC.heap_info: check GC heap info
+ ex. jcmd 4309 GC.heap_info
+     4309:
+       garbage-first heap   total 206848K, used 43061K
+       region size 1024K, 43 young (44032K), 3 survivors (3072K)
+       Metaspace       used 12983K, capacity 13724K, committed 13824K, reserved 1060864K
+       class space    used 1599K, capacity 1740K, committed 1792K, reserved 1048576K
+
+3) jcmd <pid> GC.class_histogram: check GC class/created objects
+ ex. jcmd 1 GC.class_histogram | head -50
+4) jcmd <pid> VM.native_memory summary                                                                
+ ex. jcmd 1 VM.native_memory
+     # note: you can java enable native memory tracking by running the java application with parameter "-XX:NativeMemoryTracking=summary"
+
+

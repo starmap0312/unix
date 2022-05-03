@@ -1,3 +1,8 @@
+# quickstart
+https://www.cloudrepo.io/articles/what-is-a-maven-repository.html#article
+https://www.cloudrepo.io/articles/public-maven-repositories-maven-central-and-more.html#article
+
+
 # path of resolved/downloaded dependency jars or installed local SNAPSHOT jar
 (maven)
   ~/.m2/repository/[groupId]/[artifactId]/[version]/[artifactId]-[version].jar
