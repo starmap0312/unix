@@ -178,4 +178,9 @@ ref: https://github.com/jenv/jenv
  ex. jcmd 1 VM.native_memory
      # note: you can java enable native memory tracking by running the java application with parameter "-XX:NativeMemoryTracking=summary"
 
+# java heap dumps analysis: ref https://www.baeldung.com/java-heap-dump-capture
+1) add java options:
+   java -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=<local-dirpath>
+2) use intellij to analyze memory snapshots # ref: https://www.jetbrains.com/help/idea/analyze-hprof-memory-snapshots.html
+   View | Tool Windows | Profiler -> open snapshot: hprof file # note: you can find the heap dump file at the <local-dirpath> specified in the previous step
 
