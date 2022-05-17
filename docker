@@ -433,3 +433,8 @@ ex. Dockerfile
 
 # the Docker Container Logs are Stored:
   /var/lib/docker/containers/<container_id>/<container_id>-json.log
+
+# create docker volume
+1) docker volume COMMAND:
+  ex. docker volume ls            # list volumes
+  ex. docker volume create [name] # create a volume
