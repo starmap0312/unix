@@ -184,3 +184,52 @@ ref: https://github.com/jenv/jenv
 2) use intellij to analyze memory snapshots # ref: https://www.jetbrains.com/help/idea/analyze-hprof-memory-snapshots.html
    View | Tool Windows | Profiler -> open snapshot: hprof file # note: you can find the heap dump file at the <local-dirpath> specified in the previous step
 
+# Java is Pass-by-Value
+ref: https://www.javadude.com/articles/passbyvalue.htm
+ref: https://www.cprogramming.com/tutorial/references.html
+1) pointer: 
+   a pointer is a variable that indirectly tracks the location of some piece of data
+   the value of a pointer is often the memory address of the data, and you are able to manipulate that address in C++
+   the value uniquely identifies some object on the heap
+     Java object reference works just like a C++ pointer
+     Java does not allow pointer arithmetic like C++ does, and so there is no * and -> syntax
+   ex.
+     Dog d;             // Java
+     d.setName("Fifi");
+
+     Dog *d;            // C++ equivalent
+     d->setName("Fifi");
+
+2) reference (alias):
+   a reference is an alias to another object
+   any manipulation done to the reference object directly changes the original object
+   (there is a special null reference which refers to no object)
+   ex.
+     void swap(SomeType& arg1, Sometype& arg2) {
+       SomeType temp = arg1;
+       arg1 = arg2;
+       arg2 = temp;
+     }
+     SomeType var1 = ...; // value "A"
+     SomeType var2 = ...; // value "B"
+     swap(var1, var2); // swaps their values!
+     // now var1 has value "B" and var2 has value "A"
+  note: there is no reference (alias) in Java, an object reference in Java works just like C++ pointers
+        Java is pass-by-value, and there is no such thing as pass-by-reference in java
+
+  In a Java method call, you are not passing an object; you are passing a pointer to the object (i.e. object reference)
+  In a Java method call, pointers (object references) are passed by value, and primitives are also passed by value
+  ex.
+    public void foo(Dog someDog) {  // someDog is a new pointer to the same Dog object at address 42
+      someDog.setName("Max");       // the Dog object is set with a different name
+      someDog = new Dog("Fifi");    // someDog is changed to point to another Dog object newly created
+      someDog.setName("Rowlf");     // the new Dog object is set with a different name
+    }
+
+    Dog myDog = new Dog("Rover");   // myDog is a pointer to a Dog object at address 42 (heap memory)
+    foo(myDog);                     // myDog always point to the Dog object at address 42 (it's never changed to another object, safer programming)
+  ex.
+    Integer x = integerWrapper.getNum(); // In Java method return, pointer to an Integer is passed by value, so x is a new pointer to the Integer object of integerWrapper 
+    x = x + 1;                           // x is changed to point to another Integer object newly created, x + 1
+                                         // the Integer pointer inside integerWrapper is never changed to another object, safer programming
+

@@ -438,3 +438,4 @@ ex. Dockerfile
 1) docker volume COMMAND:
   ex. docker volume ls            # list volumes
   ex. docker volume create [name] # create a volume
+  ex. docker volume rm [name]     # remove a volume
