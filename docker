@@ -439,3 +439,9 @@ ex. Dockerfile
   ex. docker volume ls            # list volumes
   ex. docker volume create [name] # create a volume
   ex. docker volume rm [name]     # remove a volume
+
+# copy files/folders between a container and the local filesystem
+1) docker cp [OPTIONS] CONTAINER:SRC_PATH DEST_PATH|-
+ ex. docker cp ./local_file CONTAINER:/dirpath/
+     docker cp CONTAINER:/dirpath/ /tmp/
+
