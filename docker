@@ -12,7 +12,8 @@
   docker rmi <imageid>
   docker rmi -f <imageid> # force remove image that has dependent child images
   docker system df
-  docker image prune -a # remove all images without at least one container associated to them (clean up the disk space)
+  docker image prune    # remove all dangling images
+    docker image prune -a # remove all images without at least one container associated to them (clean up the disk space); use with extra caution!
   docker container prune # remove all stopped containers (clean up the disk space)
     ex. docker images -a | grep "<pattern>" | awk '{print $3}' | xargs docker rmi # grep images with <pattern> and delete them all together
   docker system prune # remove all images, containers, networks, volumes not used
@@ -26,6 +27,7 @@
  
 # list all container, remove container
   docker container ls -a
+  docker container prune # removes all stopped containers
   docker rm CONTAINER_ID
   docker stop CONTAINER_ID
   docker run -v /var/run/docker.sock:/var/run/docker.sock assaflavie/runlike [AN-EXISTING-RUNNING-CONTAINER]
