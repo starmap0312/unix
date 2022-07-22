@@ -447,3 +447,22 @@ ex. Dockerfile
  ex. docker cp ./local_file CONTAINER:/dirpath/
      docker cp CONTAINER:/dirpath/ /tmp/
 
+# Dockerfile: ENTRYPOINT vs. CMD
+both specify what to execute when the container is run
+1) ENTRYPOINT can NOT be overridden by docker run command 
+ex.
+    ENV name Darwin
+    ENTRYPOINT ["/bin/echo" "Hello, $name"]
+
+    docker run -it [IMAGE]          # this prints out "Hello, Darwin"
+    docker run -it [IMAGE] and more # this prints out "Hello, Darwin and more" 
+
+2) CMD can be overridden by docker run command 
+ex. 
+    CMD ["echo", "Hello, Darwin"]
+
+    docker run [IMAGE]          # this prints out "Hello, Darwin"
+    docker run [IMAGE] hostname # this prints out hostname, ex. "6e14beead430", as CMD is overridden
+
+Opt for ENTRYPOINT if you need the executable Docker image to execute the ENTRYPOINT.
+Opt for CMD if you need to define the default execution but may need to replace it with another explicit command
