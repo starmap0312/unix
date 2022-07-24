@@ -102,3 +102,18 @@
           chkconfig daemon off
           chkconfig --list daemon
           
+# pidof vs. pgrep 
+1) pidof [options] program
+   ex. pidof systemd
+       1                   # program name must be an exact match
+2) pgrep [options] pattern
+   ex. pgrep systemd
+       1
+       795                 # grep all programs that match the pattern, ex. systemd, systemd-journal, etc.
+   ex. pgrep -l systemd
+       1 systemd
+       795 systemd-journal
+   ex. kill -9 -$(pgrep -o <keyword>)
+3) other examples 
+   ex. kill -9 `pidof uwsgi`
+   ex. kill -9 -$(pgrep -o uwsgi) # pgrep -o: must be extact match
