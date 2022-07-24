@@ -96,6 +96,7 @@
    netstat -p: show PID/program names (netstat -pt: show tcp connections)
      ex. netstat -ap | grep ssh (find out which port a program is using)
          netstat -an | grep ':80' (find out which process is using port 80)
+     note: use -v in MacOS
    netstat -r: display the kernel routing information
    netstat -i: display the list of network interfaces
    netstat -anp: not resolve hostnames/portnames/usernames, show PID/Program
