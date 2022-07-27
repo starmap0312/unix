@@ -136,6 +136,8 @@ ex.
 [info]         +-*/*:homepage = None
 [info]         +-*/*:licenses = List()
 
+sbt [OPTIONS] +dependencyBrowseTreeHTML
+
 # shading support
 sbt-assembly can shade classes from your projects or from the library dependencies
 ex.
