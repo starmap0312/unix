@@ -359,3 +359,18 @@ ref: https://softwareengineering.stackexchange.com/questions/297276/what-is-a-sh
      extreme throughput and redundancy for downloads
      permission control for external users (entitlements)
      product and EULA support
+
+# maven plugins
+1) Mojo: Maven plain Old Java Object
+   a plugin is a distribution of one or more related mojos
+   each mojo is an executable goal in Maven
+
+# how maven resolves dependency
+ref: https://maven.apache.org/guides/introduction/introduction-to-dependency-mechanism.html
+1) Maven resolves version conflicts with a nearest-wins strategy
+   i.e. it uses the version of the closest dependency to your project in the tree of dependencies
+   ex. direct dependencies included in the project always win
+2) mvn dependency:tree -Dverbose
+   ex. org.junit.jupiter:junit-jupiter-api:jar:5.1.0:test - omitted for conflict with 5.2.0
+       i.e. 5.1.0 is dropped in favor of version 5.2.0
+       (if you want to use version 5.1.0, just add it to the project dependencies)
