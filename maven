@@ -374,3 +374,7 @@ ref: https://maven.apache.org/guides/introduction/introduction-to-dependency-mec
    ex. org.junit.jupiter:junit-jupiter-api:jar:5.1.0:test - omitted for conflict with 5.2.0
        i.e. 5.1.0 is dropped in favor of version 5.2.0
        (if you want to use version 5.1.0, just add it to the project dependencies)
+3) good practice: explicitly specify all the dependencies your project code needs 
+   although transitive dependencies can implicitly include your desired dependencies, but
+   it may cause build failure when one of your dependency suddenly removes a dependency you needs but not specified
+   also, the dependencies you list in pom.xml provides a good documentation for your project
