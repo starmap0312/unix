@@ -370,6 +370,7 @@ ref: https://maven.apache.org/guides/introduction/introduction-to-dependency-mec
 1) Maven resolves version conflicts with a nearest-wins strategy
    i.e. it uses the version of the closest dependency to your project in the tree of dependencies
    ex. direct dependencies included in the project always win
+   note if two dependency versions are at the same depth in the dependency tree, the first declaration wins
 2) mvn dependency:tree -Dverbose
    ex. org.junit.jupiter:junit-jupiter-api:jar:5.1.0:test - omitted for conflict with 5.2.0
        i.e. 5.1.0 is dropped in favor of version 5.2.0
