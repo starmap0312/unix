@@ -379,3 +379,6 @@ ref: https://maven.apache.org/guides/introduction/introduction-to-dependency-mec
    although transitive dependencies can implicitly include your desired dependencies, but
    it may cause build failure when one of your dependency suddenly removes a dependency you needs but not specified
    also, the dependencies you list in pom.xml provides a good documentation for your project
+4) dependency convergence: fail the build if dependencies conflict
+   ref: https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html
+   however, in many cases we may not want to enable such enforcer rules as it requires much effort to address all the conflicts
