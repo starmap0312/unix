@@ -382,3 +382,20 @@ ref: https://maven.apache.org/guides/introduction/introduction-to-dependency-mec
 4) dependency convergence: fail the build if dependencies conflict
    ref: https://maven.apache.org/enforcer/enforcer-rules/dependencyConvergence.html
    however, in many cases we may not want to enable such enforcer rules as it requires much effort to address all the conflicts
+
+# Maven Dependency Scope
+ref: https://howtodoinjava.com/maven/maven-dependency-scopes/
+ref: https://www.baeldung.com/maven-dependency-scopes
+
+<scope>compile</scope>
+  This is maven default scope. Dependencies with compile scope are needed to build, test, and run the project.
+  This is is used during build and test the project
+  They are also required to run, but should not exported, because the dependency will be provided by the runtime, for instance, by servlet container or application server
+<scope>provided</scope>
+  This is used during build and test the project
+  They are also required to run, but should not exported, because the dependency will be provided by the runtime, ex. by servlet container or application server
+<scope>test</scope>
+  needed to compile and run the unit tests.
+<scope>import</scope>
+  only supported in the dependencyManagement section
+  it indicates that this dependency should be replaced with all effective dependencies declared in the artifect's POM
